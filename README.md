@@ -1,4 +1,4 @@
-# Nyx - DreamPip's Messaging Platform
+# Hermes - DreamPip's Messaging Platform
 
 What: socket.io, Notion, OpenAI, Whatsapp/Telegram/etc APIs
 
