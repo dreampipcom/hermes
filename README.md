@@ -1,6 +1,6 @@
-# Nyx - DreamPip's Message Platform
+# Nyx - DreamPip's Messaging Platform
 
-What: Notion, OpenAI, Whatsapp/Telegram/etc APIs
+What: socket.io, Notion, OpenAI, Whatsapp/Telegram/etc APIs
 
 ## Getting Started
 
