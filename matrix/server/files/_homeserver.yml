@@ -9,7 +9,7 @@ listeners:
       - names: [client, federation]
         compress: false
 database:
-  name: hermesdb
+  name: psycopg2
   args:
     user: ${HERMES_DB_USER}
     password: ${HERMES_DB_PASS}
