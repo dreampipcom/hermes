@@ -1,2 +1,3 @@
 .env
-_*
+_*/
+matrix/server/docker-compose.yml
