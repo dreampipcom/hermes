@@ -1,5 +1,5 @@
 #!/bin/bash
-# init.sh
+# config.sh (needs sudo)
 echo -e "\033[0;62m\033[0;49;35m"
 set -a && source .env && set +a
 root_dir="$(pwd)"
