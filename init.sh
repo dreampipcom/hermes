@@ -58,6 +58,11 @@ log "dp::hermes::(busy)::creating folder structure."
 cd ./matrix/server
 mkdir data
 mkdir data-syn
+gosu
+sudo chmod -R a+rw data
+sudo chown $(whoami):docker data
+sudo chmod -R a+rw data-syn
+sudo chown $(whoami):docker data-syn
 cd $root_dir
 
 
