@@ -17,14 +17,13 @@ database:
     host: hermes-db
     cp_min: 5
     cp_max: 10
-log_config: "/data/example.log.config"
 media_store_path: /data/media_store
 enable_registration: True 
 suppress_key_server_warning: True
 enable_registration_without_verification: True
-registration_shared_secret: "keys"
+registration_shared_secret: ${HERMES_SECRET_CORE}
 report_stats: true
-macaroon_secret_key: "keys"
-signing_key_path: "/data/example.signing.key"
+macaroon_secret_key: ${HERMES_SECRET_GUEST}
+form_secret: ${HERMES_SECRET_FORM}
 trusted_key_servers:
   - server_name: "matrix.org"
