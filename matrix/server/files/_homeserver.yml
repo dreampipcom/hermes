@@ -25,7 +25,6 @@ enable_registration_without_verification: True
 registration_shared_secret: "keys"
 report_stats: true
 macaroon_secret_key: "keys"
-form_secret: "keys"
 signing_key_path: "/data/example.signing.key"
 trusted_key_servers:
   - server_name: "matrix.org"
