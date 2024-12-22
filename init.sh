@@ -44,7 +44,6 @@ tmpfile=$(mktemp)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
-any-sync-network create
 
 echo -e "\033[0;62m\033[0;49;32m"
 echo "dp::hermes::(idle)::all good."
