@@ -18,6 +18,8 @@ docker network create \
 echo "dp::hermes::(busy)::creating folder structure."
 cd ./matrix/server
 mkdir data
+chmod -R a+rw data
+chown $(whoami):docker data
 cd $root_dir
 
 
