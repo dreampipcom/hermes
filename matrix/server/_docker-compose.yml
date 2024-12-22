@@ -9,7 +9,7 @@ services:
       - SYNAPSE_CONFIG_PATH=/conf/homeserver.yml
     volumes:
       - ./data-syn:/data
-      - ./files:/conf
+      - ./files:/conf:default
     depends_on:
       - db
     ports:
