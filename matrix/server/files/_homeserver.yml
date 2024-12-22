@@ -11,8 +11,8 @@ listeners:
 database:
   name: hermesdb
   args:
-    user: HERMES_DB_USER
-    password: HERMES_DB_PASS
+    user: ${HERMES_DB_USER}
+    password: ${HERMES_DB_PASS}
     database: synapse
     host: synapse-db-1
     cp_min: 5
