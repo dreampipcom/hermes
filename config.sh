@@ -28,6 +28,8 @@ log () {
 log "dp::hermes::(busy)::preparing Hermes Matrix Synapsis configuration files."
 echo $HERMES_SERVER_NAME
 
+data_dir="./matrix/server/data"
+files_dir="./matrix/server/files"
 
 docker run -it --rm \
     --mount type=volume,src=synapse-data,dst=/data \
@@ -36,8 +38,17 @@ docker run -it --rm \
     matrixdotorg/synapse:latest generate
 
 cp -r /var/lib/docker/volumes/synapse-data/_data .
-cp -r ./_data/* ./matrix/server/files/
+cp -r ./_data/* $files_dir
 
+
+log "dp::hermes::(busy)::setting permissions."
+sudo chmod -R a+rw $data_dir
+sudo chown $(whoami):docker $data_dir
+sudo chmod -R a+rw $files_dir
+sudo chown $(whoami):docker $files_dir
+
+
+log "dp::hermes::(busy)::cleaning up dangling files."
 rm -r ./_data
 rm -r /var/lib/docker/volumes/synapse-data/_data/*
 

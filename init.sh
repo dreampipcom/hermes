@@ -57,9 +57,7 @@ docker network create \
 log "dp::hermes::(busy)::creating folder structure."
 cd ./matrix/server
 mkdir data
-gosu
-sudo chmod -R a+rw data
-sudo chown $(whoami):docker data
+mkdir files
 cd $root_dir
 
 
