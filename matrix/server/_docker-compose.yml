@@ -4,6 +4,7 @@ services:
   synapse:
     container_name: hermes-synapse
     image: docker.io/matrixdotorg/synapse:latest
+    user: "${UID}:docker"
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yml
