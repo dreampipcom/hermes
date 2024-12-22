@@ -26,10 +26,12 @@ log () {
 }
 
 log "dp::hermes::(busy)::preparing Hermes Matrix Synapsis configuration files."
+echo $HERMES_SERVER_NAME
+
 
 docker run -it --rm \
     --mount type=volume,src=synapse-data,dst=/data \
-    -e SYNAPSE_SERVER_NAME="$HERMES_SERVER_NAME" \
+    -e SYNAPSE_SERVER_NAME=$HERMES_SERVER_NAME \
     -e SYNAPSE_REPORT_STATS=yes \
     matrixdotorg/synapse:latest generate
 
