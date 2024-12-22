@@ -56,4 +56,4 @@ services:
 networks:
   default:
     external:
-      name: matrix_server
+      name: matrix_network
