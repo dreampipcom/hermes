@@ -4,6 +4,7 @@ echo -e "\033[0;62m\033[0;49;35m"
 set -a && source .env && set +a
 root_dir="$(pwd)"
 
+# docker setup
 echo "dp::hermes::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
@@ -11,6 +12,14 @@ docker network create \
   --gateway=10.10.10.1 \
   --attachable \
   matrix_network
+
+
+# dir setup
+echo "dp::hermes::(busy)::creating folder structure."
+cd ./matrix/server
+mkdir data
+cd $root_dir
+
 
 # prepare config
 echo "dp::hermes::(busy)::preparing Hermes Matrix Infrastructure configuration files."
