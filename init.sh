@@ -66,6 +66,7 @@ sudo chown $(whoami):docker data-syn
 cd $root_dir
 
 
+
 # prepare config
 echo "dp::hermes::(busy)::preparing Hermes Matrix Infrastructure configuration files."
 origin="./matrix/server/_docker-compose.yml"
@@ -75,12 +76,12 @@ cp -p $origin $tmpfile
 UID=$(whoami)
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
-log "dp::hermes::(busy)::preparing Hermes Matrix Home Server configuration files."
-origin="./matrix/server/files/_homeserver.yml"
-destination="./matrix/server/files/homeserver.yml"
-tmpfile=$(mktemp)
-cp -p $origin $tmpfile
-cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
+# log "dp::hermes::(busy)::preparing Hermes Matrix Home Server configuration files."
+# origin="./matrix/server/files/_homeserver.yml"
+# destination="./matrix/server/files/homeserver.yml"
+# tmpfile=$(mktemp)
+# cp -p $origin $tmpfile
+# cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 log "dp::hermes::(busy)::preparing Hermes Matrix Client configuration files."
 origin="./matrix/server/_element-config.json"
@@ -89,5 +90,17 @@ tmpfile=$(mktemp)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 cd $root_dir
+
+log "dp::hermes::(busy)::preparing Hermes Matrix Synapsis configuration files."
+
+docker run -it --rm \
+    --mount type=volume,src=synapse-data,dst=/data \
+    -e SYNAPSE_SERVER_NAME=dpip.cc \
+    -e SYNAPSE_REPORT_STATS=yes \
+    matrixdotorg/synapse:latest generate
+
+gosu
+cp -r /var/lib/docker/volumes/synapse-data/_data .
+cp -r 
 
 log "dp::hermes::(idle)::all good." 0
