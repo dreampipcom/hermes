@@ -37,6 +37,6 @@ cp -r /var/lib/docker/volumes/synapse-data/_data .
 cp -r ./_data/* ./matrix/server/files/
 
 rm -r ./_data
-rm -r /var/lib/docker/volumes/synapse-data/_data
+rm -r /var/lib/docker/volumes/synapse-data/_data/*
 
 log "dp::hermes::(idle)::all good." 0
