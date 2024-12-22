@@ -14,7 +14,7 @@ database:
     user: ${HERMES_DB_USER}
     password: ${HERMES_DB_PASS}
     database: synapse
-    host: synapse-db-1
+    host: hermes-db
     cp_min: 5
     cp_max: 10
 log_config: "/data/example.log.config"
