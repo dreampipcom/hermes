@@ -6,7 +6,7 @@ services:
     image: docker.io/matrixdotorg/synapse:latest
     restart: unless-stopped
     environment:
-      - SYNAPSE_CONFIG_PATH=/conf
+      - SYNAPSE_CONFIG_PATH=/conf/homeserver.yaml
     volumes:
       - ./data-syn:/data
       - ./files:/conf
