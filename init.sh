@@ -57,6 +57,9 @@ docker network create \
 log "dp::hermes::(busy)::creating folder structure."
 cd ./matrix/server
 mkdir data
+gosu
+sudo chmod -R a+rw data
+sudo chown $(whoami):docker data
 cd $root_dir
 
 
@@ -66,8 +69,7 @@ origin="./matrix/server/_docker-compose.yml"
 destination="./matrix/server/docker-compose.yml"
 tmpfile=$(mktemp)
 cp -p $origin $tmpfile
-UID="$(whoami)"
-echo $UID
+UID=$(whoami)
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 log "dp::hermes::(busy)::preparing Hermes Matrix Home Server configuration files."
