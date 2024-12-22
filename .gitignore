@@ -1,3 +1,5 @@
 .env
 _*/
 matrix/server/docker-compose.yml
+matrix/server/element-config.json
+matrix/server/files/homeserver.yml

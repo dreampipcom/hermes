@@ -1,0 +1,31 @@
+server_name: ${HERMES_HOSTNAME}
+pid_file: /data/homeserver.pid
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+database:
+  name: hermesdb
+  args:
+    user: HERMES_DB_USER
+    password: HERMES_DB_PASS
+    database: synapse
+    host: synapse-db-1
+    cp_min: 5
+    cp_max: 10
+log_config: "/data/example.log.config"
+media_store_path: /data/media_store
+enable_registration: True 
+suppress_key_server_warning: True
+enable_registration_without_verification: True
+registration_shared_secret: "keys"
+report_stats: true
+macaroon_secret_key: "keys"
+form_secret: "keys"
+signing_key_path: "/data/example.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
