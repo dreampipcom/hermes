@@ -83,7 +83,7 @@ services:
     image: dock.mau.dev/mautrix/meta:latest
     restart: unless-stopped
     volumes:
-      - ./data/bridge/meta/messenger/instagram:/data
+      - ./data/bridge/meta/instagram:/data
 
   bridge-discord:
     container_name: hermes-discord
