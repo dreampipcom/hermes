@@ -1,0 +1,15 @@
+email:
+  smtp_host: ${HERMES_EMAIL_HOST}
+  smtp_port: ${HERMES_EMAIL_PORT}
+  smtp_user: ${HERMES_EMAIL_USER}
+  smtp_pass: ${HERMES_EMAIL_PASS}
+  require_transport_security: true
+  notif_from: ${HERMES_EMAIL_FROM}
+app_service_config_files:
+- /data/bridge/whatsapp/registration.yaml
+- /data/bridge/telegram/registration.yaml
+- /data/bridge/signal/registration.yaml
+- /data/bridge/discord/registration.yaml
+- /data/bridge/slack/registration.yaml
+- /data/bridge/meta/messenger/registration.yaml
+- /data/bridge/meta/instagram/registration.yaml

@@ -57,6 +57,15 @@ docker network create \
 log "dp::hermes::(busy)::creating folder structure."
 cd ./matrix/server
 mkdir data
+mkdir data/bridge
+mkdir data/bridge/whatsapp
+mkdir data/bridge/telegram
+mkdir data/bridge/signal
+mkdir data/bridge/discord
+mkdir data/bridge/slack
+mkdir data/bridge/meta
+mkdir data/bridge/meta/instagram
+mkdir data/bridge/meta/messenger
 mkdir files
 cd $root_dir
 
