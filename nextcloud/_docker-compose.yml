@@ -68,4 +68,4 @@
 networks:
   default:
     external:
-      name: matrix
+      name: cloud

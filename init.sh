@@ -50,7 +50,14 @@ docker network create \
   --subnet=10.10.10.0/24 \
   --gateway=10.10.10.1 \
   --attachable \
-  matrix_network
+  matrix
+
+docker network create \
+  --driver bridge \
+  --subnet=10.10.101.0/24 \
+  --gateway=10.10.101.1 \
+  --attachable \
+  cloud
 
 
 # dir setup
@@ -68,8 +75,6 @@ mkdir data/bridge/meta/instagram
 mkdir data/bridge/meta/messenger
 mkdir files
 cd $root_dir
-
-
 
 # prepare config
 echo "dp::hermes::(busy)::preparing Hermes Matrix Infrastructure configuration files."
