@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+      - PYTHONPATH="$${PYTHONPATH}:/var/task"
     volumes:
       - ./files:/data:default
     depends_on:
