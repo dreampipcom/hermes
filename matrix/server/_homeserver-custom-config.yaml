@@ -13,3 +13,14 @@ app_service_config_files:
 - /data/bridge/slack/registration.yaml
 - /data/bridge/meta/messenger/registration.yaml
 - /data/bridge/meta/instagram/registration.yaml
+media_storage_providers:
+- module: s3_storage_provider.S3StorageProviderBackend
+  store_local: True
+  store_remote: True
+  store_synchronous: True
+  config:
+    bucket: ${HERMES_S3_BUCKET}
+    region_name: ${HERMES_S3_REGION}
+    endpoint_url: ${HERMES_S3_URL}
+    access_key_id: ${HERMES_S3_KEY}
+    secret_access_key: ${HERMES_S3_SECRET}

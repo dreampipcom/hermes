@@ -1,7 +1,11 @@
 .DS_Store
 .env
+.env.*private
 _*/
 matrix/server/docker-compose.yml
 matrix/server/element-config.json
 matrix/server/files/
+nextcloud/docker-compose.yml
+nextcloud/config.php
+
 data*
