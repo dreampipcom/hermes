@@ -24,6 +24,8 @@ log () {
 		echo -e "\033[35;46m$1\033[0m"
 	fi
 }
+log "dp::hermes::(busy)::Installing req deps."
+sudo apt-get install python3-venv libpq-dev
 
 log "dp::hermes::(busy)::preparing Hermes Matrix Synapsis configuration files."
 echo $HERMES_SERVER_NAME

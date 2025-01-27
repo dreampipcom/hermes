@@ -100,10 +100,5 @@ cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 cd $root_dir
 
-docker run -it -v ./data:/data -e SYNAPSE_SERVER_NAME=dpip.cc -e SYNAPSE_REPORT_STATS=yes matrixdotorg/synapse:latest generate
-
-sudo apt-get install python3-venv libpq-dev
-chown -R 991:991 ./data
-
 
 log "dp::hermes::(idle)::all good." 0
