@@ -20,6 +20,7 @@
       - PGID=1000
       - TZ=UTC
       - OVERWRITEWEBROOT="/nextcloud"
+      - TRUSTEDPROXIES="nginx" # csv, please add your docker network mask
       - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
       - MYSQL_USER=${HERMES_CLOUD_DB_USER}
       - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}

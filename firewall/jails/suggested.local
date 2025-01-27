@@ -1,0 +1,64 @@
+[nginx-http-auth]
+enabled = true
+action = route
+filter = nginx-http-auth
+port    = http,https
+logpath = /var/log/nginx/access.log
+
+[nginx-botsearch]
+action = route
+port     = http,https
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-noscript]
+enabled  = true
+action = route
+	 cloudflare
+port     = http,https
+filter   = nginx-noscript
+logpath  = /var/log/nginx/access.log
+maxretry = 9
+
+[nginx-noscript-post]
+enabled  = true
+action = route
+	 cloudflare
+port     = http,https
+filter   = nginx-noscript-post
+logpath  = /var/log/nginx/access.log
+maxretry = 9
+
+[nginx-badbots]
+enabled  = true
+action = route
+port     = http,https
+filter   = nginx-badbots
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-nohome]
+enabled  = true
+action = route
+port     = http,https
+filter   = nginx-nohome
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-noproxy]
+enabled  = true
+action = route
+port     = http,https
+filter   = nginx-noproxy
+logpath  = /var/log/nginx/access.log
+maxretry = 2
+
+[nginx-xmlrpc]
+enabled = true
+filter = nginx-xmlrpc
+port     = http,https
+action = route
+logpath = /var/log/nginx/access.log
+maxretry = 3
+findtime = 10800
+bantime = 86400

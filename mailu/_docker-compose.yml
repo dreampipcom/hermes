@@ -53,6 +53,7 @@ services:
       - "/mailu/overrides/nginx:/overrides:ro"
       - "/www:/var/www/html"
       - "/nextcloud:/var/www/html/nextcloud"
+      - "/nginx/logs:/var/log/nginx"
     depends_on:
       - resolver
     dns:

@@ -19,8 +19,6 @@ media_storage_providers:
   store_remote: True
   store_synchronous: True
   config:
-    bucket: ${HERMES_S3_BUCKET}
-    region_name: ${HERMES_S3_REGION}
-    endpoint_url: ${HERMES_S3_URL}
+    bucket: ${HERMES_CHAT_S3_BUCKET}
     access_key_id: ${HERMES_S3_KEY}
     secret_access_key: ${HERMES_S3_SECRET}

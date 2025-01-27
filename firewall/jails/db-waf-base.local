@@ -1,0 +1,40 @@
+[dp-nginx-patience]
+enabled 	= true
+filter 		= dp-nginx-patience
+port     	= http,https
+action 		=	route
+logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
+findtime 	= 300
+bantime 	= 7200
+maxretry 	= 1000
+
+[dp-nginx-shortcircuit]
+enabled 	= true
+filter 		= dp-nginx-patience
+port   		= http,https
+action 		= route
+logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
+findtime 	= 10
+bantime 	= 7200
+maxretry 	= 50
+
+[dp-mail-badauth]
+enabled 	= true
+filter 		= dp-mail-badauth
+action 		= route
+logpath 	= /var/log/messages
+findtime 	= 43200
+bantime 	= 7200
+maxretry 	= 5
+action 		= dp-action-docker
+
+[nextcloud]
+backend 	= auto
+enabled 	= true
+port 			= 80,443
+protocol 	= tcp
+filter 		= dp-nextcloud-badauth
+maxretry 	= 5
+bantime 	= 7200
+findtime 	= 43200
+logpath 	= ${HERMES_CLOUD_LOG_PATH}
