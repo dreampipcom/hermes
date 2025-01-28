@@ -49,11 +49,10 @@ services:
       - matrix
       - radio
     volumes:
-      - "/mailu/certs:/certs"
-      - "/mailu/overrides/nginx:/overrides:ro"
-      - "/www:/var/www/html"
-      - "/nextcloud:/var/www/html/nextcloud"
-      - "/nginx/logs:/var/log/nginx"
+      - "./certs:/certs"
+      - "./overrides/nginx:/overrides:ro"
+      - "./www:/var/www/html"
+      - "./nextcloud:/var/www/html/nextcloud"
     depends_on:
       - resolver
     dns:
@@ -74,7 +73,7 @@ services:
   admin:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:-2024.06}
     restart: always
-env_file: mailu.env
+    env_file: mailu.env
     logging:
       driver: journald
       options:

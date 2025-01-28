@@ -5,9 +5,9 @@ filter 		= dp-nginx-patience
 port     	= http,https
 action 		=	route
 logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
-findtime 	= 300
-bantime 	= 7200
-maxretry 	= 8000
+findtime 	= ${HERMES_BLOCKIP_DEFAULT_LOOKBACK}
+bantime 	= ${HERMES_BLOCKIP_SHORT_DURATION}
+maxretry 	= ${HERMES_BLOCKIP_10_PATIANCE_DURATION}
 
 [dp-nginx-shortcircuit]
 enabled 	= true
@@ -15,9 +15,9 @@ filter 		= dp-nginx-patience
 port   		= http,https
 action 		= route
 logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
-findtime 	= 10
-bantime 	= 7200
-maxretry 	= 1000
+findtime 	= ${HERMES_BLOCKIP_SHORT_LOOKBACK}
+bantime 	= ${HERMES_BLOCKIP_DEFAULT_DURATION}
+maxretry 	= ${HERMES_BLOCKIP_2_PATIENCE_DURATION}
 
 [dp-matrix-patience]
 enabled 	= true
@@ -25,18 +25,28 @@ filter 		= dp-matrix-patience
 port   		= http,https
 action 		= route
 logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
-findtime 	= 10
-bantime 	= 7200
-maxretry 	= 100
+findtime 	= ${HERMES_BLOCKIP_SHORT_LOOKBACK}
+bantime 	= ${HERMES_BLOCKIP_DEFAULT_DURATION}
+maxretry 	= ${HERMES_BLOCKIP_1_PATIENCE_DURATION}
+
+[dp-cloud-drive-patience]
+enabled 	= true
+filter 		= dp-cloud-drive-patience
+port   		= http,https
+action 		= route
+logpath 	= ${HERMES_WEB_ACESS_LOG_PATH}
+findtime 	= ${HERMES_BLOCKIP_SHORT_LOOKBACK}
+bantime 	= ${HERMES_BLOCKIP_DEFAULT_DURATION}
+maxretry 	= ${HERMES_BLOCKIP_1_PATIENCE_DURATION}
 
 [dp-mail-badauth]
 enabled 	= true
 filter 		= dp-mail-badauth
 action 		= route
 logpath 	= /var/log/messages
-findtime 	= 43200
-bantime 	= 7200
-maxretry 	= 5
+findtime 	= ${HERMES_BLOCKIP_DEFAULT_LOOKBACK}
+bantime 	= ${HERMES_BLOCKIP_DEFAULT_DURATION}
+maxretry 	= ${HERMES_BLOCKIP_0_PATIENCE_DURATION}
 action 		= dp-action-docker
 
 [nextcloud]
@@ -45,7 +55,18 @@ enabled 	= true
 port 			= 80,443
 protocol 	= tcp
 filter 		= dp-nextcloud-badauth
-maxretry 	= 5
-bantime 	= 7200
-findtime 	= 43200
+maxretry 	= ${HERMES_BLOCKIP_0_PATIENCE_DURATION}
+bantime 	= ${HERMES_BLOCKIP_DEFAULT_DURATION}
+findtime 	= ${HERMES_BLOCKIP_DEFAULT_LOOKBACK}
 logpath 	= ${HERMES_CLOUD_LOG_PATH}
+
+[postfix]
+
+enabled = true
+filter = postfix
+port = smtp,465,submission,imap,imaps,pop3,pop3s
+action = iptables[name=Postfix, port=smtp, protocol=tcp]
+logpath = /var/log/mail.log
+bantime = ${HERMES_BLOCKIP_LONG_DURATION}
+maxretry = ${HERMES_BLOCKIP_0_PATIENCE_DURATION}
+findtime = ${HERMES_BLOCKIP_10_PATIENCE_DURATION}
