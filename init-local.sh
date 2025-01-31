@@ -1,9 +1,9 @@
 #!/bin/bash
 # init weagle
 echo -e "\033[0;62m\033[0;49;35m"
-cp .env.ingress.private .env
+cp .env.ingress.local.private .env
 set -a && source .env && set +a
-set -a && source .env.common.private && set +a
+set -a && source .env.common.local.private && set +a
 root_dir="$(pwd)"
 
 log () {
@@ -41,23 +41,23 @@ gosu () {
 }
 
 take () {
-  log "dp::(idle)::let's wait ($1 * $HERMES_COOLDOWN_POINTER) seconds for $2." 2
-  while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER  -S -F '%t %p' > /dev/null
+  log "dp::(idle)::let's wait $1 seconds for $2." 2
+  while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
 }
 
 # docker setup
-log "dp::hermes::${HERMES_ENV}::init::(busy)::Initiating ${HERMES_ENV} env."
+log "dp::hermes::${HERMES_ENV}::(busy)::Initiating local env."
 
-log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Weagle (Ingress)." 2
+log "dp::hermes::${HERMES_ENV}::(busy)::Starting: Weagle (Ingress)." 2
 ./init-weagle.sh
 
-log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Drew: (Auth)." 2
+log "dp::hermes::${HERMES_ENV}::(busy)::Starting: Drew: (Auth)." 2
 ./init-auth.sh
 
-log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Aemilia: (Mail)." 2
+log "dp::hermes::${HERMES_ENV}::(busy)::Starting: Aemilia: (Mail)." 2
 ./init-mail.sh
 
-log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Claudia: (Storage, Calendar, MWC)." 2
-./init-cloud.sh
+log "dp::hermes::${HERMES_ENV}::(busy)::Starting: Claudia: (Storage, Calendar, MWC)." 2
+./init-mail.sh
 
-log "dp::hermes::${HERMES_ENV}::init::(idle)::all good." 0
+log "dp::hermes::${HERMES_ENV}::(idle)::all good." 0

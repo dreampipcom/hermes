@@ -1,0 +1,47 @@
+# hermes/ingress/manualtls/cluster(prod)
+services:
+  weagle:
+    image: docker.io/traefik:latest #v2.5
+    container_name: traefik2
+    ports:
+      - target: 80
+        published: 180
+        mode: host
+      - target: 443
+        published: 1443
+        mode: host
+      - target: 8080
+        published: 1808
+        mode: host
+    networks:
+      weagle:
+          ipv4_address: ${HERMES_DNS_RESOLVER}
+    command:
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    volumes:
+      - "./data/traefik/acme.json:/acme.json"
+      - "${HERMES_CERT_STORAGE_DIRNAME}${HERMES_CERT_STORAGE_FILENAME}:/certs/${HERMES_CERT_STORAGE_FILENAME}"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+networks:
+  weagle:
+    name: weagle
+    driver: bridge
+    external: true
+  matrix:
+    name: matrix
+    driver: bridge
+    external: true
+  cloud:
+    name: cloud
+    driver: bridge
+    external: true
+  # radio:
+  #   name: radio
+  #   driver: bridge
+  #   external: true

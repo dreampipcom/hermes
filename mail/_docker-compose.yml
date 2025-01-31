@@ -1,0 +1,46 @@
+# hermes/mail
+services:
+  mailserver:
+    image: ghcr.io/docker-mailserver/docker-mailserver:latest
+    container_name: mailserver
+    hostname: ${HERMES_HOSTNAME}
+    volumes:
+      - ./data/traefik/${HERMES_CERT_STORAGE_FILENAME}:${HERMES_CERT_STORAGE_DIRNAME}${HERMES_CERT_STORAGE_FILENAME}:ro
+      - ./data/dms/mail-data/:/var/mail/
+      - ./data/dms/mail-state/:/var/mail-state/
+      - ./data/dms/mail-logs/:/var/log/mail/
+      - ./data/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+    # environment:
+      # SSL_TYPE: ${HERMES_CERT_TYPE}
+      # SSL_DOMAIN: ${HERMES_HOSTNAME}
+      # for a wildcard certificate, use
+      # SSL_DOMAIN: example.com
+    environment:
+      - ACCOUNT_PROVISIONER=LDAP
+      - LDAP_SERVER_HOST=ldap://weasel
+      - LDAP_SEARCH_BASE=ou=people,dc=localhost,dc=localdomain
+      - LDAP_BIND_DN=cn=admin,dc=localhost,dc=localdomain
+      - LDAP_BIND_PW=admin
+      - LDAP_QUERY_FILTER_USER=(&(mail=%s)(mailEnabled=TRUE))
+      - LDAP_QUERY_FILTER_GROUP=(&(mailGroupMember=%s)(mailEnabled=TRUE))
+      - LDAP_QUERY_FILTER_ALIAS=(|(&(mailAlias=%s)(objectClass=PostfixBookMailForward))(&(mailAlias=%s)(objectClass=PostfixBookMailAccount)(mailEnabled=TRUE)))
+      - LDAP_QUERY_FILTER_DOMAIN=(|(&(mail=*@%s)(objectClass=PostfixBookMailAccount)(mailEnabled=TRUE))(&(mailGroupMember=*@%s)(objectClass=PostfixBookMailAccount)(mailEnabled=TRUE))(&(mailalias=*@%s)(objectClass=PostfixBookMailForward)))
+      - DOVECOT_PASS_FILTER=(&(objectClass=PostfixBookMailAccount)(uniqueIdentifier=%n))
+      - DOVECOT_USER_FILTER=(&(objectClass=PostfixBookMailAccount)(uniqueIdentifier=%n))
+      - ENABLE_SASLAUTHD=1
+      - SASLAUTHD_MECHANISMS=ldap
+      - SASLAUTHD_LDAP_SERVER=ldap
+      - SASLAUTHD_LDAP_BIND_DN=cn=admin,dc=localhost,dc=localdomain
+      - SASLAUTHD_LDAP_PASSWORD=admin
+      - SASLAUTHD_LDAP_SEARCH_BASE=ou=people,dc=localhost,dc=localdomain
+      - SASLAUTHD_LDAP_FILTER=(&(objectClass=PostfixBookMailAccount)(uniqueIdentifier=%U))
+      - POSTMASTER_ADDRESS=postmaster@localhost.localdomain
+    dns:
+      - ${HERMES_DNS_RESOLVER}
+
+networks:
+  weagle:
+    name: weagle
+    driver: bridge
+    external: true

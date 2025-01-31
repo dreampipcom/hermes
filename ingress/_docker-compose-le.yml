@@ -1,0 +1,52 @@
+# hermes/ingress/letsencryptca/cluster(prod)
+services:
+  weagle:
+    image: docker.io/traefik:latest #v2.5
+    container_name: traefik2
+    ports:
+      - target: 80
+        published: 180
+        mode: host
+      - target: 443
+        published: 1443
+        mode: host
+      - target: 8080
+        published: 1808
+        mode: host
+    networks:
+      weagle:
+          ipv4_address: ${HERMES_DNS_RESOLVER}
+    command:
+      - "--providers.docker"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.http.http.redirections.entryPoint.to=https"
+      - "--entrypoints.http.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.https.address=:443"
+      - "--entrypoints.https.http.tls.certResolver=${HERMES_CERT_RESOLVER}"
+      - "--certificatesresolvers.tls.acme.email=${HERMES_ROOT_HANDLE}@${HERMES_HOSTNAME}"
+      - "--certificatesresolvers.tls.acme.storage=${HERMES_CERT_STORAGE_DIRNAME}/${HERMES_CERT_STORAGE_FILENAME}"
+      - "--certificatesresolvers.tls.acme.httpchallenge.entrypoint=http"
+    volumes:
+      - "./data/traefik/acme.json:/acme.json"
+      - "./data/certs/:/etc/certs/"
+      - "./data/letsencrypt:/letsencrypt"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+networks:
+  weagle:
+    name: weagle
+    driver: bridge
+    external: true
+  matrix:
+    name: matrix
+    driver: bridge
+    external: true
+  cloud:
+    name: cloud
+    driver: bridge
+    external: true
+  # radio:
+  #   name: radio
+  #   driver: bridge
+  #   external: true

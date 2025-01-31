@@ -31,8 +31,9 @@ services:
       default:
         ipv4_address: 10.10.10.4
 
-  db:
-    container_name: hermes-db
+  # move to data layer
+  postgres:
+    container_name: postgres
     image: docker.io/postgres:12-alpine
     environment:
       - POSTGRES_USER=${HERMES_DB_USER}
@@ -43,6 +44,17 @@ services:
     networks:
         default:
           ipv4_address: 10.10.10.2
+
+  # move to web clients
+  element:
+    container_name: element
+    image: vectorim/element-web:latest
+    restart: unless-stopped
+    volumes:
+      - ./element-config.json:/app/config.json
+    networks:
+      default:
+        ipv4_address: 10.10.10.3
 
   # bridge-whatsapp:
   #   container_name: hermes-whatsapp
@@ -92,16 +104,6 @@ services:
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/discord:/data
-
-  element:
-    container_name: hermes-element
-    image: vectorim/element-web:latest
-    restart: unless-stopped
-    volumes:
-      - ./element-config.json:/app/config.json
-    networks:
-      default:
-        ipv4_address: 10.10.10.3
 
 networks:
   default:
