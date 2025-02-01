@@ -45,41 +45,6 @@ take () {
   while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
 }
 
-# docker setup
-log "dp::hermes::weagle::(busy)::creating Docker network."
-docker network create \
-  --driver bridge \
-  --subnet=$HERMES_INGRESS_SUBNET \
-  --gateway=$HERMES_INGRESS_GATEWAY \
-  --attachable \
-  weagle
-
-log "dp::hermes::weagle::(busy)::creating Docker network."
-docker network create \
-  --driver bridge \
-  --subnet=$HERMES_MAIL_SUBNET \
-  --gateway=$HERMES_MAIL_GATEWAY \
-  --attachable \
-  mail
-
-# docker setup
-log "dp::hermes::weagle::(busy)::creating Docker network."
-docker network create \
-  --driver bridge \
-  --subnet=$HERMES_CLOUD_SUBNET \
-  --gateway=$HERMES_CLOUD_GATEWAY \
-  --attachable \
-  cloud
-
-log "dp::hermes::weagle::(busy)::creating Docker network."
-docker network create \
-  --driver bridge \
-  --subnet=$HERMES_CHAT_SUBNET \
-  --gateway=$HERMES_CHAT_GATEWAY \
-  --attachable \
-  chat
-
-
 
 log "dp::hermes::weagle::(busy)::preparing Weagle (Ingress: Traefik, Grafana, Prometheus) configuration files." 2
 origin="./ingress/_docker-compose.yml"

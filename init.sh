@@ -46,6 +46,41 @@ take () {
 }
 
 # docker setup
+log "dp::hermes::weagle::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_INGRESS_SUBNET \
+  --gateway=$HERMES_INGRESS_GATEWAY \
+  --attachable \
+  hermes-weagle
+
+log "dp::hermes::weagle::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MAIL_SUBNET \
+  --gateway=$HERMES_MAIL_GATEWAY \
+  --attachable \
+  hermes-mail
+
+# docker setup
+log "dp::hermes::weagle::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_CLOUD_SUBNET \
+  --gateway=$HERMES_CLOUD_GATEWAY \
+  --attachable \
+  hermes-cloud
+
+log "dp::hermes::weagle::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_CHAT_SUBNET \
+  --gateway=$HERMES_CHAT_GATEWAY \
+  --attachable \
+  hermes-chat
+
+
+# docker setup
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Initiating ${HERMES_ENV} env."
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Weagle (Ingress)." 2
