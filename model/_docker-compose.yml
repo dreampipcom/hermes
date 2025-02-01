@@ -44,16 +44,14 @@ services:
     image: docker.io/postgres:12-alpine
     container_name: hermes_model_postgres
     networks:
-      - hermes_net_model_chat
+        hermes_net_model_chat:
+          ipv4_address: ${HERMES_MODEL_DB_FIXED_IP}
     environment:
       - POSTGRES_USER=${HERMES_CHAT_DB_USER}
       - POSTGRES_PASSWORD=${HERMES_CHAT_DB_PASS}
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     volumes:
       - ./data/postgres:/var/lib/postgresql/data:default
-    networks:
-        hermes_net_model_chat:
-          ipv4_address: ${HERMES_MODEL_DB_FIXED_IP}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
