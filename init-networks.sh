@@ -1,7 +1,6 @@
 #!/bin/bash
-# init weagle
+# init networks
 echo -e "\033[0;62m\033[0;49;35m"
-set -a && source .env.k8s.private && set +a
 set -a && source .env.common.private && set +a
 root_dir="$(pwd)"
 
@@ -61,46 +60,62 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV
 # sudo mv ./kompose /usr/local/bin/kompose
 
 # docker setup
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks."
-./init-networks.sh
+log "dp::hermes::init::(busy):: Creating docker networks."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_INGRESS_SUBNET \
+  --gateway=$HERMES_INGRESS_GATEWAY \
+  --attachable \
+  hermes_net_weagle
 
-# prepare
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: creating namespaces."
-kubectl create namespace hermes
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_ALL_SUBNET \
+  --gateway=$HERMES_MODEL_ALL_GATEWAY \
+  --attachable \
+  hermes_net_model_all
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Weagle (Ingress)." 2
-./init-weagle.sh
-cd ingress
-kompose convert --out data/charts/
-kubectl apply -f *
-cd $root_dir
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_CHAT_SUBNET \
+  --gateway=$HERMES_MODEL_CHAT_GATEWAY \
+  --attachable \
+  hermes_net_model_chat
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Daegis: (Databases)." 2
-./init-model.sh
-cd model
-kompose convert --out data/charts/
-kubectl apply -f *
-cd $root_dir
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_CLOUD_SUBNET \
+  --gateway=$HERMES_MODEL_CLOUD_GATEWAY \
+  --attachable \
+  hermes_net_model_cloud
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Drew: (Auth)." 2
-./init-auth.sh
-cd auth
-kompose convert --out data/charts/
-kubectl apply -f *
-cd $root_dir
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_AUTH_SUBNET \
+  --gateway=$HERMES_MODEL_AUTH_GATEWAY \
+  --attachable \
+  hermes_net_model_auth
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Aemilia: (Mail)." 2
-./init-mail.sh
-cd mail
-kompose convert --out data/charts/
-kubectl apply -f *
-cd $root_dir
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MAIL_SUBNET \
+  --gateway=$HERMES_MAIL_GATEWAY \
+  --attachable \
+  hermes_net_mail
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Claudia: (Storage, Calendar, MWC)." 2
-./init-cloud.sh
-cd cloud
-kompose convert --out data/charts/
-kubectl apply -f *
-cd $root_dir
+# docker setup
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_CLOUD_SUBNET \
+  --gateway=$HERMES_CLOUD_GATEWAY \
+  --attachable \
+  hermes_net_cloud
+
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_CHAT_SUBNET \
+  --gateway=$HERMES_CHAT_GATEWAY \
+  --attachable \
+  hermes_net_chat
 
 log "dp::hermes::${HERMES_ENV}::k8s::(idle)::all good." 0
