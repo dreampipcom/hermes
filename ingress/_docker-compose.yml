@@ -40,7 +40,7 @@ services:
     container_name: hermes_ingress_whoami
     restart: always
     environment:
-      - WHOAMI_PORT_NUMBER: 1234
+      WHOAMI_PORT_NUMBER: 1234
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
