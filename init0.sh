@@ -44,7 +44,7 @@ gosu () {
 
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
-	while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
+	while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER -S -F '%t %p' > /dev/null
 }
 
 log "dp::hermes::${HERMES_ENV}::(busy):: Shutdown. Are you sure?."

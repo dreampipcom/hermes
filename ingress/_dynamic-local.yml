@@ -1,4 +1,4 @@
-# hermes/ingress/traefik/dynamic
+# hermes/ingress/traefik/dynamic(snakeoil)
 tls:
   certificates:
     - certFile: /certs/${HERMES_CERT_FILE}
