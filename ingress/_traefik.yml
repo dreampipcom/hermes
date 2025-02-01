@@ -28,7 +28,6 @@ metrics:
 providers:
   docker:
     exposedByDefault: false
-    useBindPortIP: true
     watch: true
   file:
     fileName: /etc/traefik/dynamic.yml
