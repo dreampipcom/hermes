@@ -52,7 +52,7 @@ docker network create \
   --subnet=$HERMES_INGRESS_SUBNET \
   --gateway=$HERMES_INGRESS_GATEWAY \
   --attachable \
-  hermes_net_init
+  hermes_net_weagle
 
 log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
