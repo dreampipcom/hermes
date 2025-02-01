@@ -62,8 +62,8 @@ docker rm hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheu
 cd $root_dir
 
 cd model
-docker stop hermes_model_redis hermes_model_mariab hermes_model_postgres # to sort
-docker rm hermes_model_redis hermes_model_mariab hermes_model_postgres # to sort
+docker stop hermes_model_redis hermes_model_mariadb hermes_model_postgres # to sort
+docker rm hermes_model_redis hermes_model_mariadb hermes_model_postgres # to sort
 cd $root_dir
 
 cd mail
