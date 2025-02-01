@@ -1,44 +1,24 @@
 # hermes/ingress/traefik/dynamic(fqdn)
-tls:
-  options:
-    default:
-      sniStrict: true
-  certificates:
-    - certFile: /etc/certs/${HERMES_CERT_FILE}
-      keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
-
-entryPoints:
-  web:
-    address: :80
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-          permanent: false
-  websecure:
-    address: :443
-
 http:
   routers:
     traefik:
-      entrypoints: websecure
+      entryPoints: websecure
       rule: "PathPrefix(`/_sre/dashboard`)"
       tls: true
       service: "api@internal"
     whoami:
-      entrypoints: websecure
+      entryPoints: websecure
       rule: "PathPrefix(`/_sre/whoami`)"
       tls: true
     grafana:
-      entrypoints: websecure
+      entryPoints: websecure
       rule: "PathPrefix(`/_sre/grafana`)"
       tls: true
     prometheus:
-      entrypoints: websecure
+      entryPoints: websecure
       rule: "PathPrefix(`/_sre/prometheus`)"
       tls: true
     node-exporter:
-      entrypoints: websecure
+      entryPoints: websecure
       rule: "PathPrefix(`/_sre/node-exporter`)"
       tls: true
