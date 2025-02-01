@@ -33,7 +33,7 @@ services:
 
   # move to data layer
   postgres:
-    container_name: postgres
+    container_name: hermes-postgres
     image: docker.io/postgres:12-alpine
     environment:
       - POSTGRES_USER=${HERMES_DB_USER}
@@ -47,7 +47,7 @@ services:
 
   # move to web clients
   element:
-    container_name: element
+    container_name: hermes-element
     image: vectorim/element-web:latest
     restart: unless-stopped
     volumes:

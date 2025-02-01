@@ -2,7 +2,7 @@
 services:
   nextcloud:
     image: nextcloud:fpm
-    container_name: nextcloud2
+    container_name: nextcloud
     restart: unless-stopped
     networks: 
       - weagle
@@ -33,7 +33,7 @@ services:
   # split to data lib later
   redis:
     image: redis:alpine
-    container_name: redis2
+    container_name: redis
     restart: always
     networks:
       - weagle
@@ -63,7 +63,7 @@ services:
   # split to office lib later
   collabora:
     image: collabora/code
-    container_name: collabora2
+    container_name: collabora
     restart: unless-stopped
     networks:
       - weagle

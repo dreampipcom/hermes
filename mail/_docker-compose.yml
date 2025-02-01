@@ -2,7 +2,7 @@
 services:
   mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
-    container_name: mailserver
+    container_name: hermes-mailserver
     hostname: ${HERMES_HOSTNAME}
     volumes:
       - ../certs/data/:/tmp/dms/custom-certs/:ro
