@@ -57,32 +57,32 @@ docker network create \
 log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=$HERMES_MODEL_SUBNET \
-  --gateway=$HERMES_MODEL_GATEWAY \
+  --subnet=$HERMES_MODEL_ALL_SUBNET \
+  --gateway=$HERMES_MODEL_ALL_GATEWAY \
   --attachable \
   hermes_net_model_all
 
 log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=$HERMES_MODEL_SUBNET \
-  --gateway=$HERMES_MODEL_GATEWAY \
+  --subnet=$HERMES_MODEL_CHAT_SUBNET \
+  --gateway=$HERMES_MODEL_CHAT_GATEWAY \
   --attachable \
   hermes_net_model_chat
 
 log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=$HERMES_MODEL_SUBNET \
-  --gateway=$HERMES_MODEL_GATEWAY \
+  --subnet=$HERMES_MODEL_CLOUD_SUBNET \
+  --gateway=$HERMES_MODEL_CLOUD_GATEWAY \
   --attachable \
   hermes_net_model_cloud
 
 log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=$HERMES_MODEL_SUBNET \
-  --gateway=$HERMES_MODEL_GATEWAY \
+  --subnet=$HERMES_MODEL_AUTH_SUBNET \
+  --gateway=$HERMES_MODEL_AUTH_GATEWAY \
   --attachable \
   hermes_net_model_auth
 
