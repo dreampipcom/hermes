@@ -15,7 +15,7 @@ services:
         published: 8080
         mode: host
     networks:
-      hermes_hermes_weagle:
+      hermes_weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
     logging:
       options:
