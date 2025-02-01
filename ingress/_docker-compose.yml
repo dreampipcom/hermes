@@ -65,12 +65,6 @@ services:
       GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
       GF_USERS_ALLOW_SIGN_UP: 'false'
       GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=PathPrefix(`/_sre/graf`)"
-      - "traefik.http.routers.grafana.tls=${HERMES_TLS}"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-      - "traefik.docker.network=hermes-net-weagle"
     dns:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
@@ -95,12 +89,6 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.size=768MB"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=PathPrefix(`/_sre/prom`)"
-      - "traefik.http.routers.prometheus.tls=${HERMES_TLS}"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-      - "traefik.docker.network=hermes-net-weagle"
     dns:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
