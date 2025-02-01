@@ -66,24 +66,28 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: creating nam
 kubectl create namespace hermes
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Weagle (Ingress)." 2
+./init-weagle.sh
 cd ingress
 kompose convert
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Drew: (Auth)." 2
+./init-auth.sh
 cd auth
 kompose convert
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Aemilia: (Mail)." 2
+./init-mail.sh
 cd mail
 kompose convert
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Claudia: (Storage, Calendar, MWC)." 2
+./init-cloud.sh
 cd cloud
 kompose convert
 kubectl apply -f *
