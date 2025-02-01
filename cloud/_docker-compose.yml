@@ -1,6 +1,6 @@
   # Nextcloud
 services:
-  nextcloud:
+  hermes_cloud_nextcloud:
     image: nextcloud:fpm
     container_name: hermes_cloud_nextcloud
     restart: always
@@ -34,7 +34,7 @@ services:
     dns:
         - ${HERMES_DNS_RESOLVER}
 
-  collabora:
+  hermes_cloud_collabora:
     image: collabora/code
     container_name: hermes_cloud_collabora
     restart: unless-stopped
