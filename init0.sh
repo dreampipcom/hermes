@@ -52,28 +52,28 @@ take 10 "dp::hermes::${HERMES_ENV}::shutdown::(busy):: Gracefully shutting down 
 
 
 cd auth
-docker stop ldap
-docker rm ldap
+docker stop hermes_ldap
+docker rm hermes_ldap
 cd $root_dir
 
 cd ingress
-docker stop traefik2 grafana prometheus alert-manager node-explorer # to sort
-docker rm traefik2 grafana prometheus alert-manager node-explorer # to sort
+docker stop hermes_traefik hermes_grafana hermes_prometheus hermes_alert-manager hermes_node-explorer # to sort
+docker rm hermes_traefik hermes_grafana hermes_prometheus hermes_alert-manager hermes_node-explorer # to sort
 cd $root_dir
 
 cd mail
-docker stop mailserver
-docker rm mailserver
+docker stop hermes_mailserver
+docker rm hermes_mailserver
 cd $root_dir
 
 cd cloud
-docker stop nextcloud2 redis2 collabora # to sort
-docker rm nextcloud2 redis2 collabora # to sort
+docker stop hermes_nextcloud hermes_redis hermes_collabora # to sort
+docker rm hermes_nextcloud hermes_redis hermes_collabora # to sort
 cd $root_dir
 
 cd chat
-docker stop synapse element postgres # to sort
-docker rm synapse element postgres # to sort
+docker stop hermes_synapse hermes_element hermes_postgres # to sort
+docker rm hermes_synapse hermes_element hermes_postgres # to sort
 cd $root_dir
 
 
