@@ -46,75 +46,75 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}99:1423/tcp"
 
-  hermes-ingress-grafana:
-    image: grafana/grafana-oss
-    container_name: hermes-ingress-grafana
-    restart: always
-    labels:
-      - "traefik.enable=true"
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
-      GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
-      GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
-      GF_USERS_ALLOW_SIGN_UP: 'false'
-      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
+  # hermes-ingress-grafana:
+  #   image: grafana/grafana-oss
+  #   container_name: hermes-ingress-grafana
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   environment:
+  #     GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
+  #     GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
+  #     GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
+  #     GF_USERS_ALLOW_SIGN_UP: 'false'
+  #     GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   # ports:
+  #   #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
 
-  hermes-ingress-prometheus:
-    image: prom/prometheus
-    container_name: hermes-ingress-prometheus
-    restart: always
-    labels:
-      - "traefik.enable=true"
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-      - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.size=768MB"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}09:9090/tcp"
+  # hermes-ingress-prometheus:
+  #   image: prom/prometheus
+  #   container_name: hermes-ingress-prometheus
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #   volumes:
+  #     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+  #     - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   command:
+  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  #     - "--storage.tsdb.path=/prometheus"
+  #     - "--storage.tsdb.retention.size=768MB"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   ports:
+  #     - "${HERMES_PORT_PREFIX}09:9090/tcp"
 
-  hermes-ingress-node-exporter:
-    image: prom/node-exporter
-    container_name: hermes-ingress-node-exporter
-    restart: always
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    labels:
-      - "traefik.enable=true"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}10:9100/tcp"
+  # hermes-ingress-node-exporter:
+  #   image: prom/node-exporter
+  #   container_name: hermes-ingress-node-exporter
+  #   restart: always
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   labels:
+  #     - "traefik.enable=true"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   ports:
+  #     - "${HERMES_PORT_PREFIX}10:9100/tcp"
   
   # hermes-ingress-alert-manager:
   #   image: prom/alertmanager
