@@ -10,19 +10,19 @@ http:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/whoami`)"
       tls: true
-      service: "whoami"
+      service: "p80"
     grafana:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/grafana`)"
       tls: true
-      service: "grafana"
+      service: "p3000"
     prometheus:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/prometheus`)"
       tls: true
-      service: "prometheus"
+      service: "p9090"
     node-exporter:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/node-exporter`)"
       tls: true
-      service: "node-exporter"
+      service: "p9100"
