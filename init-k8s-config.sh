@@ -103,28 +103,35 @@ kubectl create namespace hermes
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Weagle (Ingress)." 2
 ./init-weagle.sh
 cd ingress
-kompose convert data/charts
+kompose convert --out data/charts/
+kubectl apply -f *
+cd $root_dir
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Daegis: (Databases)." 2
+./init-model.sh
+cd model
+kompose convert --out data/charts/
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Drew: (Auth)." 2
 ./init-auth.sh
 cd auth
-kompose convert -o data/charts
+kompose convert --out data/charts/
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Aemilia: (Mail)." 2
 ./init-mail.sh
 cd mail
-kompose convert data/charts
+kompose convert --out data/charts/
 kubectl apply -f *
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Deploying: Claudia: (Storage, Calendar, MWC)." 2
 ./init-cloud.sh
 cd cloud
-kompose convert data/charts
+kompose convert --out data/charts/
 kubectl apply -f *
 cd $root_dir
 
