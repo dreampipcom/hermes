@@ -1,12 +1,12 @@
   # Nextcloud
 services:
-  hermes_cloud_nextcloud:
+  hermes-cloud-nextcloud:
     image: nextcloud:fpm
-    container_name: hermes_cloud_nextcloud
+    container_name: hermes-cloud-nextcloud
     restart: always
     networks: 
-      - hermes_net_weagle
-      - hermes_net_model_cloud
+      - hermes-net_-eagle
+      - hermes-net-model-cloud
     logging:
       options:
         max-size: "10m"
@@ -40,9 +40,9 @@ services:
       - "${HERMES_PORT_PREFIX}05:443/tcp"
       - "${HERMES_PORT_PREFIX}06:8080/tcp"
 
-  hermes_cloud_collabora:
+  hermes-cloud-collabora:
     image: collabora/code
-    container_name: hermes_cloud_collabora
+    container_name: hermes-cloud-collabora
     restart: unless-stopped
     networks:
       - hermes_net_weagle
@@ -62,11 +62,11 @@ services:
       - "${HERMES_PORT_PREFIX}07:9980/tcp"
 
 networks:
-  hermes_net_weagle:
-    name: hermes_net_weagle
+  hermes-net-weagle:
+    name: hermes-net-weagle
     driver: bridge
     external: true
-  hermes_net_model_cloud:
-    name: hermes_net_model_cloud
+  hermes-net-model-cloud:
+    name: hermes-net-model-cloud
     driver: bridge
     external: true

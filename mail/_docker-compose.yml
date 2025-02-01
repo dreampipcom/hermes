@@ -1,11 +1,11 @@
 # hermes/mail
 services:
-  hermes_mail_mailserver:
+  hermes-mail-mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
-    container_name: hermes_mail_server
+    container_name: hermes-lmail-server
     hostname: ${HERMES_HOSTNAME}
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     logging:
       options:
         max-size: "10m"
@@ -52,7 +52,7 @@ services:
       - "${HERMES_PORT_PREFIX}15:993/tcp"
 
 networks:
-  hermes_net_weagle:
-    name: hermes_net_weagle
+  hermes-net-weagle:
+    name: hermes-net-weagle
     driver: bridge
     external: true

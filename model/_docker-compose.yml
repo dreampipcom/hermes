@@ -1,7 +1,7 @@
 services:
-  hermes_model_redis:
+  hermes-model-redis:
     image: redis:alpine
-    container_name: hermes_model_redis
+    container_name: hermes-model-redis
     restart: always
     networks:
       - hermes_net_model_cloud
@@ -14,9 +14,9 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}16:6379/tcp"
 
-  hermes_model_mariadb:
+  hermes-model-mariadb:
     image: mariadb
-    container_name: hermes_model_mariadb
+    container_name: hermes-model-mariadb
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
@@ -40,9 +40,9 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}17:3306/tcp"
 
-  hermes_model_postgres:
+  hermes-model-postgres:
     image: docker.io/postgres:12-alpine
-    container_name: hermes_model_postgres
+    container_name: hermes-model-postgres
     networks:
       hermes_net_model_chat:
         ipv4_address: ${HERMES_MODEL_CHAT_DB_FIXED_IP}
@@ -59,20 +59,20 @@ services:
 
 
 networks:
-  hermes_net_weagle:
-    name: hermes_net_weagle
+  hermes-net-weagle:
+    name: hermes-net-weagle
     driver: bridge
     external: true
-  hermes_net_model_all:
-    name: hermes_net_model_all
+  hermes-net-model-all:
+    name: hermes-net-model-all
     driver: bridge
     external: true
-  hermes_net_model_chat:
-    name: hermes_net_model_chat
+  hermes-net-model-chat:
+    name: hermes-net-model-chat
     driver: bridge
     external: true
-  hermes_net_model_cloud:
-    name: hermes_net_model_cloud
+  hermes-net-model-cloud:
+    name: hermes-net-model-cloud
     driver: bridge
     external: true
   # radio:

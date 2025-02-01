@@ -1,8 +1,8 @@
 # hermes/ingress/manualtls/cluster(prod)
 services:
-  hermes_ingress_traefik:
+  hermes-ingress-traefik:
     image: docker.io/traefik:latest
-    container_name: hermes_ingress_traefik
+    container_name: hermes-ingress-traefik
     restart: always
     ports:
       # - "80:80"
@@ -18,7 +18,7 @@ services:
         published: 8080
         mode: host
     networks:
-      hermes_net_weagle:
+      hermes-net-weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
     logging:
       options:
@@ -34,9 +34,9 @@ services:
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  hermes_ingress_whoami:
+  hermes-ingress-whoami:
     image: traefik/whoami
-    container_name: hermes_ingress_whoami
+    container_name: hermes-ingress-whoami
     restart: always
     environment:
       WHOAMI_PORT_NUMBER: 1234
@@ -45,12 +45,12 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}99:1234/tcp"
 
-  hermes_ingress_grafana:
+  hermes-ingress-grafana:
     image: grafana/grafana-oss
-    container_name: hermes_ingress_grafana
+    container_name: hermes-ingress-grafana
     restart: always
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     logging:
       options:
         max-size: "10m"
@@ -74,15 +74,15 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}08:3000/tcp"
 
-  hermes_ingress_prometheus:
+  hermes-ingress-prometheus:
     image: prom/prometheus
-    container_name: hermes_ingress_prometheus
+    container_name: hermes-ingress-prometheus
     restart: always
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     logging:
       options:
         max-size: "10m"
@@ -104,12 +104,12 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}09:9090/tcp"
 
-  hermes_ingress_node-exporter:
+  hermes-ingress-node-exporter:
     image: prom/node-exporter
-    container_name: hermes_ingress_node-exporter
+    container_name: hermes-ingress-node-exporter
     restart: always
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     logging:
       options:
         max-size: "10m"
@@ -127,14 +127,14 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}10:9100/tcp"
   
-  hermes_ingress_alert-manager:
+  hermes-ingress-alert-manager:
     image: prom/alertmanager
-    container_name: hermes_ingress_alert-manager
+    container_name: hermes-ingress-alert-manager
     restart: always
     volumes:
       - "./alertmanager.yml:/alertmanager/alertmanager.yml"
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     logging:
       options:
         max-size: "10m"
@@ -153,16 +153,16 @@ services:
       - "${HERMES_PORT_PREFIX}11:9093/tcp"
 
 networks:
-  hermes_net_weagle:
-    name: hermes_net_weagle
+  hermes-net-weagle:
+    name: hermes-net-weagle
     driver: bridge
     external: true
-  hermes_net_chat:
-    name: hermes_net_chat
+  hermes-net-chat:
+    name: hermes-net-chat
     driver: bridge
     external: true
-  hermes_net_cloud:
-    name: hermes_net_cloud
+  hermes-net-cloud:
+    name: hermes-net-cloud
     driver: bridge
     external: true
   # radio:

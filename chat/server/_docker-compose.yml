@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  synapse:
-    container_name: hermes_chat_synapse
+  hermes-chat-synapse:
+    container_name: hermes-chat-synapse
     build: .
     restart: unless-stopped
     environment:
@@ -11,7 +11,7 @@ services:
     volumes:
       - ./files:/data:default
     depends_on:
-      - hermes_model_mariadb
+      - hermes-model-mariadb
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
@@ -35,8 +35,8 @@ services:
       hermes_net_model_chat: 
 
   # move to web clients
-  element:
-    container_name: hermes_chat_element
+  hermes-chat-element:
+    container_name: hermes-chat-element
     image: vectorim/element-web:latest
     restart: unless-stopped
     # # traefik ignores ports,
@@ -100,15 +100,15 @@ services:
   #     - ./data/bridge/discord:/data
 
 networks:
-  hermes_net_weagle:
-    name: hermes_net_weagle
+  hermes-net-weagle:
+    name: hermes-net-weagle
     driver: bridge
     external: true
-  hermes_net_chat:
-    name: hermes_net_chat
+  hermes-net-chat:
+    name: hermes-net-chat
     driver: bridge
     external: true
-  hermes_net_model_chat:
-    name: hermes_net_model_chat
+  hermes-net-model-chat:
+    name: hermes-net-model-chat
     driver: bridge
     external: true

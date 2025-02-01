@@ -124,31 +124,31 @@ cd $root_dir
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)."
 cd ingress
 cd data/charts
-kubectl apply -k .
+kubectl apply -f .
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Daegis: (Databases)."
 cd model
 cd data/charts
-kubectl apply -k .
+kubectl apply -f .
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Drew: (Auth)."
 cd auth
 cd data/charts
-kubectl apply -k .
+kubectl apply -f .
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Aemilia: (Mail)."
 cd mail
 cd data/charts
-kubectl apply -k .
+kubectl apply -f .
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)." 2
 cd cloud
 cd data/charts
-kubectl apply -k .
+kubectl apply -f .
 cd $root_dir
 
 
