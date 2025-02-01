@@ -12,8 +12,8 @@ services:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      - hermes_model_mariadb
-      - hermes_model_redis
+      - mariadb
+      - redis
     volumes:
       - ./data/cloud/html:/var/www/html
       - ./data/cloud/custom_apps:/var/www/html/custom_apps
@@ -34,6 +34,8 @@ services:
       - OBJECTSTORE_S3_REGION=${HERMES_CLOUD_S3_REGION}
       - OBJECTSTORE_S3_KEY=${HERMES_CLOUD_S3_KEY}
       - OBJECTSTORE_S3_SECRET=${HERMES_CLOUD_S3_SECRET}
+    dns:
+        - ${HERMES_DNS_RESOLVER}
 
   collabora:
     image: collabora/code
