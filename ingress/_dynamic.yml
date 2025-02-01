@@ -44,10 +44,16 @@ http:
   services:
     grafana:
       loadbalancer:
-          port: 3000
+          passHostHeader: true
+          server:
+            port: 3000
     prometheus:
       loadbalancer:
-          port: 9090
+          passHostHeader: true
+          server:
+            port: 9090
     node-exporter:
       loadbalancer:
-          port: 9100
+          passHostHeader: true
+          server:
+            port: 9100
