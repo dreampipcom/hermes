@@ -45,7 +45,7 @@ services:
     container_name: hermes-cloud-collabora
     restart: unless-stopped
     networks:
-      - hermes_net_weagle
+      - hermes-net-weagle
     environment:
       PUID: 1000
       PGID: 1000
