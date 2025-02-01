@@ -3,7 +3,7 @@ global:
   checkNewVersion: true
 
 log:
-  level: WARN
+  level: DEBUG
 
 api:
   insecure: false
