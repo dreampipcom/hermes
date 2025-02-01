@@ -45,7 +45,7 @@ services:
     container_name: hermes_model_postgres
     networks:
         hermes_net_model_chat:
-          ipv4_address: ${HERMES_MODEL_DB_FIXED_IP}
+          ipv4_address: ${HERMES_MODEL_CHAT_DB_FIXED_IP}
     environment:
       - POSTGRES_USER=${HERMES_CHAT_DB_USER}
       - POSTGRES_PASSWORD=${HERMES_CHAT_DB_PASS}
