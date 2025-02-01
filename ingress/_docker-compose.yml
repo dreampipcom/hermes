@@ -31,7 +31,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes:
       - "../certs/data:/certs/"
-      - "./data/traefik/acme.json:/acme.json"
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
@@ -44,7 +43,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}99:1234/tcp
+      - "${HERMES_PORT_PREFIX}99:1234/tcp"
 
   hermes_ingress_grafana:
     image: grafana/grafana-oss
@@ -73,7 +72,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}08:3000/tcp
+      - "${HERMES_PORT_PREFIX}08:3000/tcp"
 
   hermes_ingress_prometheus:
     image: prom/prometheus
@@ -81,7 +80,7 @@ services:
     restart: always
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-      - ${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus
+      - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
     networks:
       - hermes_net_weagle
     logging:
@@ -103,9 +102,9 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}09:9090/tcp
+      - "${HERMES_PORT_PREFIX}09:9090/tcp"
 
-  node-exporter:
+  hermes_ingress_node-exporter:
     image: prom/node-exporter
     container_name: hermes_ingress_node-exporter
     restart: always
@@ -126,9 +125,9 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}10:9100/tcp
+      - "${HERMES_PORT_PREFIX}10:9100/tcp"
   
-  alert-manager:
+  hermes_ingress_alert-manager:
     image: prom/alertmanager
     container_name: hermes_ingress_alert-manager
     restart: always
@@ -151,7 +150,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}11:9093/tcp
+      - "${HERMES_PORT_PREFIX}11:9093/tcp"
 
 networks:
   hermes_net_weagle:

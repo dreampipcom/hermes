@@ -36,9 +36,9 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}04:80/tcp
-      - ${HERMES_PORT_PREFIX}05:443/tcp
-      - ${HERMES_PORT_PREFIX}06:8080/tcp
+      - "${HERMES_PORT_PREFIX}04:80/tcp"
+      - "${HERMES_PORT_PREFIX}05:443/tcp"
+      - "${HERMES_PORT_PREFIX}06:8080/tcp"
 
   hermes_cloud_collabora:
     image: collabora/code
@@ -47,21 +47,19 @@ services:
     networks:
       - hermes_net_weagle
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
-      - password=${HERMES_CLOUD_OFFICE_PASS}
-      - username=${HERMES_CLOUD_OFFICE_USER}
-      - domain=${HERMES_CLOUD_HOSTNAME}
-      - extra_params=--o:ssl.enable=true
-    ports:
-      - 9980:9980
+      PUID: 1000
+      PGID: 1000
+      TZ: UTC
+      password: ${HERMES_CLOUD_OFFICE_PASS}
+      username: ${HERMES_CLOUD_OFFICE_USER}
+      domain: ${HERMES_CLOUD_HOSTNAME}
+      extra_params: --o:ssl.enable=true
     dns:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}07:9980/tcp
+      - "${HERMES_PORT_PREFIX}07:9980/tcp"
 
 networks:
   hermes_net_weagle:
