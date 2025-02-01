@@ -42,42 +42,42 @@ gosu () {
 
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
-	while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER -S -F '%t %p' > /dev/null
+	while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES-COOLDOWN-POINTER -S -F '%t %p' > /dev/null
 }
 
-log "dp::hermes::${HERMES_ENV}::(busy):: Shutdown. Are you sure?."
-take 10 "dp::hermes::${HERMES_ENV}::shutdown::(busy):: Gracefully shutting down ${HERMES_ENV}."
+log "dp::hermes::${HERMES-ENV}::(busy):: Shutdown. Are you sure?."
+take 10 "dp::hermes::${HERMES-ENV}::shutdown::(busy):: Gracefully shutting down ${HERMES-ENV}."
 
 cd auth
-docker stop hermes_auth_ldap
-docker rm hermes_auth_ldap
+docker stop hermes-auth-ldap
+docker rm hermes-auth-ldap
 cd $root_dir
 
 cd ingress
-docker stop hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_ingress_whoami # to sort
-docker rm hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_ingress_whoami # to sort
+docker stop hermes-ingress-traefik hermes-ingress-grafana hermes-ingress-prometheus hermes-ingress-alert-manager hermes-ingress-node-exporter hermes-ingress-whoami # to sort
+docker rm hermes-ingress-traefik hermes-ingress-grafana hermes-ingress-prometheus hermes-ingress-alert-manager hermes-ingress-node-exporter hermes-ingress-whoami # to sort
 cd $root_dir
 
 cd model
-docker stop hermes_model_redis hermes_model_mariadb hermes_model_postgres # to sort
-docker rm hermes_model_redis hermes_model_mariadb hermes_model_postgres # to sort
+docker stop hermes-model-redis hermes-model-mariadb hermes-model-postgres # to sort
+docker rm hermes-model-redis hermes-model-mariadb hermes-model-postgres # to sort
 cd $root_dir
 
 cd mail
-docker stop hermes_mail_server
-docker rm hermes_mail_server
+docker stop hermes-mail-server
+docker rm hermes-mail-server
 cd $root_dir
 
 cd cloud
-docker stop hermes_cloud_nextcloud hermes_cloud_collabora # to sort
-docker rm hermes_cloud_nextcloud hermes_cloud_collabora # to sort
+docker stop hermes-cloud-nextcloud hermes-cloud-collabora # to sort
+docker rm hermes-cloud-nextcloud hermes-cloud-collabora # to sort
 cd $root_dir
 
 cd chat
-docker stop hermes_chat_synapse hermes_chat_element hermes_chat_postgres # to sort
-docker rm hermes_chat_synapse hermes_chat_element hermes_chat_postgres # to sort
+docker stop hermes-chat-synapse hermes-chat-element hermes-chat-postgres # to sort
+docker rm hermes-chat-synapse hermes-chat-element hermes-chat-postgres # to sort
 cd $root_dir
 
-docker network rm hermes_net_weagle hermes_net_chat hermes_net_cloud hermes_net_mail hermes_net_model_all hermes_net_model_auth hermes_net_model_chat hermes_net_model_cloud
+docker network rm hermes-net-weagle hermes-net-chat hermes-net-cloud hermes-net-mail hermes-net-model-all hermes-net-model-auth hermes-net-model-chat hermes-net-model-cloud
 
-log "dp::hermes::${HERMES_ENV}::shutdown::(idle)::all good." 0
+log "dp::hermes::${HERMES-ENV}::shutdown::(idle)::all good." 0
