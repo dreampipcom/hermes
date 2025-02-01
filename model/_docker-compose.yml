@@ -9,6 +9,10 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}17:6379/tcp
 
   hermes_model_mariadb:
     image: mariadb
@@ -30,20 +34,30 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}
       - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
-      - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
+      - MYSQL_USER=${HERMES_CLOUD_DB_USER}
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}16:3306/tcp
 
-  # hermes_model_postgres:
-  #   container_name: hermes_model_postgres
-  #   image: docker.io/postgres:12-alpine
-  #   environment:
-  #     - POSTGRES_USER=${HERMES_DB_USER}
-  #     - POSTGRES_PASSWORD=${HERMES_DB_PASS}
-  #     - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
-  #   volumes:
-  #     - ./data/postgres:/var/lib/postgresql/data:default
-  #   networks:
-  #       hermes_net_modle_chat:
-  #         ipv4_address: 101.203.3.2
+  hermes_model_postgres:
+    image: docker.io/postgres:12-alpine
+    container_name: hermes_model_postgres
+    networks:
+      - hermes_net_model_chat
+    environment:
+      - POSTGRES_USER=${HERMES_CHAT_DB_USER}
+      - POSTGRES_PASSWORD=${HERMES_CHAT_DB_PASS}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data:default
+    networks:
+        hermes_net_model_chat:
+          ipv4_address: ${HERMES_MODEL_DB_FIXED_IP}
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}17:5432/tcp
 
 
 networks:

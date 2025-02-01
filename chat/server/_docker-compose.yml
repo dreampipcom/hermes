@@ -12,8 +12,10 @@ services:
       - ./files:/data:default
     depends_on:
       - hermes_model_mariadb
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_MATRIX_INTERNAL_PORT}:8448/tcp
+      - ${HERMES_PORT_PREFIX}03:8448/tcp
     labels:
       - traefik.enable=true
       - traefik.http.routers.http-synapse.entryPoints=http
@@ -30,13 +32,18 @@ services:
     networks:
       hermes_net_chat:
         ipv4_address: 10.10.10.4
-      hermes_net_model_chat:
+      hermes_net_model_chat: 
 
   # move to web clients
   element:
     container_name: hermes_chat_element
     image: vectorim/element-web:latest
     restart: unless-stopped
+    # # traefik ignores ports,
+    # # keep it for k8s/helm charts only. 
+    # ports:
+    #   - ${HERMES_PORT_PREFIX}01:80/tcp
+    #   - ${HERMES_PORT_PREFIX}02:443/tcp
     volumes:
       - ./element-config.json:/app/config.json
     networks:

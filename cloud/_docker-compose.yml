@@ -33,6 +33,12 @@ services:
       - OBJECTSTORE_S3_SECRET=${HERMES_CLOUD_S3_SECRET}
     dns:
         - ${HERMES_DNS_RESOLVER}
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}04:80/tcp
+      - ${HERMES_PORT_PREFIX}05:443/tcp
+      - ${HERMES_PORT_PREFIX}06:8080/tcp
 
   hermes_cloud_collabora:
     image: collabora/code
@@ -52,6 +58,10 @@ services:
       - 9980:9980
     dns:
       - ${HERMES_DNS_RESOLVER}
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}07:9980/tcp
 
 networks:
   hermes_net_weagle:
