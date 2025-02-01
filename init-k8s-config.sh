@@ -85,18 +85,18 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV
 # sudo apt-get update
 
 # docker setup
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Cleaning up previous deployment."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Cleaning up previous deployment." 2
 ./init0.sh
 
 # docker setup
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks." 2
 ./init-networks.sh
 
 # prepare
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Initiating Kubernetes: creating namespaces."
 kubectl create namespace hermes
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Weagle (Ingress)."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Weagle (Ingress)." 2
 ./init-weagle.sh
 cd ingress
 _kompose
@@ -129,7 +129,7 @@ cd $root_dir
 
 # deploy
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)." 2
 cd ingress
 cd data/charts
 _deploy
@@ -153,7 +153,7 @@ cd data/charts
 _deploy
 cd $root_dir
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)." 2
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)."
 cd cloud
 cd data/charts
 _deploy

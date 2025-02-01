@@ -43,7 +43,7 @@ services:
   hermes-cloud-collabora:
     image: collabora/code
     container_name: hermes-cloud-collabora
-    restart: unless-stopped
+    restart: always
     networks:
       - hermes-net-weagle
     environment:
