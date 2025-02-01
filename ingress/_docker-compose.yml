@@ -2,7 +2,7 @@
 services:
   hermes_net_weagle:
     image: docker.io/traefik:latest #v2.5
-    container_name: hermes_auth_traefik
+    container_name: hermes_ingress_traefik
     restart: always
     ports:
       - target: 80
@@ -35,12 +35,12 @@ services:
 
   whoami:
     image: traefik/whoami
-    container_name: hermes_auth_whoami
+    container_name: hermes_ingress_whoami
     restart: always
 
   grafana:
     image: grafana/grafana-oss
-    container_name: hermes_auth_grafana
+    container_name: hermes_ingress_grafana
     restart: always
     networks:
       - hermes_net_weagle
@@ -65,7 +65,7 @@ services:
 
   prometheus:
     image: prom/prometheus
-    container_name: hermes_auth_prometheus
+    container_name: hermes_ingress_prometheus
     restart: always
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
@@ -91,7 +91,7 @@ services:
 
   node-exporter:
     image: prom/node-exporter
-    container_name: hermes_auth_node-exporter
+    container_name: hermes_ingress_node-exporter
     restart: always
     networks:
       - hermes_net_weagle
@@ -110,7 +110,7 @@ services:
   
   alert-manager:
     image: prom/alertmanager
-    container_name: hermes_auth_alert-manager
+    container_name: hermes_ingress_alert-manager
     restart: always
     volumes:
       - "./alertmanager.yml:/alertmanager/alertmanager.yml"
@@ -143,6 +143,6 @@ networks:
     driver: bridge
     external: true
   # radio:
-  #   name: hermes_auth_radio
+  #   name: hermes_ingress_radio
   #   driver: bridge
   #   external: true
