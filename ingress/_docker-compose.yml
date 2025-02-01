@@ -39,6 +39,12 @@ services:
     image: traefik/whoami
     container_name: hermes_ingress_whoami
     restart: always
+    environment:
+      - WHOAMI_PORT_NUMBER: 1234
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}99:1234/tcp
 
   hermes_ingress_grafana:
     image: grafana/grafana-oss
