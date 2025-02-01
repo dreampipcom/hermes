@@ -2,7 +2,7 @@
 services:
   hermes-mail-mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
-    container_name: hermes-lmail-server
+    container_name: hermes-mail-server
     hostname: ${HERMES_HOSTNAME}
     networks:
       - hermes-net-weagle
