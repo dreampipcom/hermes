@@ -1,6 +1,6 @@
 # hermes/ingress/manualtls/cluster(prod)
 services:
-  hermes_ingress_weagle:
+  hermes_ingress_traefik:
     image: docker.io/traefik:latest
     container_name: hermes_ingress_traefik
     restart: always
