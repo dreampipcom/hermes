@@ -56,8 +56,9 @@ ssh ${HERMES_REMOTE} "mkdir dp; \
 											git clone https://github.com/dreampipcom/hermes.git; \
 											mv ../.env.*.private hermes/; \
 											cd hermes;
-											chmod +x ./install-deps.sh
-											./install-deps.sh
+											git checkout ${HERMES_BRANCH};
+											chmod +x ./install-deps.sh;
+											./install-deps.sh;
 											"
 
 

@@ -44,14 +44,14 @@ take () {
 }
 
 log "dp::hermes::ci::(busy):: Installing dependencies: Deploying secrets." 2
-if [[ "$(which diesel)" == "" || "$(which pv)" == "" || "$(which docker)" == "" || "$(which minikube)" == "" || "$(which helm)" == "" || "$(which jq)" == "" || "$(which kubectl)" == "" || "$(which kustomize)" == "" ]]; then
+if [[ "$(which pv)" == "" || "$(which docker)" == "" ]]; then
         if [ "$(uname)" == "Darwin" ]; then
                         log "dp::hermes::ci::(busy)::installing for MacOS."
                         brew install docker --cask
                         # brew install pv minikube helm jq kubectl kustomize fswatch
         elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
                         source /etc/os-release && \
-            if [[ $ID == "debian" ]]; then \
+            if [[ $ID == "debian" || $ID == "ubuntu" ]]; then \
             		# from docker official docs
 								sudo apt-get update
 								sudo apt-get install ca-certificates curl
