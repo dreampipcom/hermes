@@ -30,7 +30,9 @@ services:
       - "./dynamic.yml:/etc/traefik/dynamic.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes:
-      - "../certs/data:/etc/certs/"
+      # - "../certs/data:/etc/certs/"
+      - "../certs/data/${HERMES_CERT_FILE}/:/etc/certs/${HERMES_CERT_FILE}"
+      - "../certs/data/${HERMES_CERT_KEY_FILE}/:/etc/certs/${HERMES_CERT_KEY_FILE}"
       - "./data:/data"
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "./dynamic.yml:/etc/traefik/dynamic.yml"
