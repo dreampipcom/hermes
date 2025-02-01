@@ -66,42 +66,42 @@ docker network create \
   --subnet=$HERMES_INGRESS_SUBNET \
   --gateway=$HERMES_INGRESS_GATEWAY \
   --attachable \
-  hermes_net_weagle
+  hermes-net-weagle
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MODEL_ALL_SUBNET \
   --gateway=$HERMES_MODEL_ALL_GATEWAY \
   --attachable \
-  hermes_net_model_all
+  hermes-net-model-all
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MODEL_CHAT_SUBNET \
   --gateway=$HERMES_MODEL_CHAT_GATEWAY \
   --attachable \
-  hermes_net_model_chat
+  hermes-net-model-chat
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MODEL_CLOUD_SUBNET \
   --gateway=$HERMES_MODEL_CLOUD_GATEWAY \
   --attachable \
-  hermes_net_model_cloud
+  hermes-net-model-cloud
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MODEL_AUTH_SUBNET \
   --gateway=$HERMES_MODEL_AUTH_GATEWAY \
   --attachable \
-  hermes_net_model_auth
+  hermes-net-model-auth
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MAIL_SUBNET \
   --gateway=$HERMES_MAIL_GATEWAY \
   --attachable \
-  hermes_net_mail
+  hermes-net-mail
 
 # docker setup
 docker network create \
@@ -109,13 +109,13 @@ docker network create \
   --subnet=$HERMES_CLOUD_SUBNET \
   --gateway=$HERMES_CLOUD_GATEWAY \
   --attachable \
-  hermes_net_cloud
+  hermes-net-cloud
 
 docker network create \
   --driver bridge \
   --subnet=$HERMES_CHAT_SUBNET \
   --gateway=$HERMES_CHAT_GATEWAY \
   --attachable \
-  hermes_net_chat
+  hermes-net-chat
 
 log "dp::hermes::${HERMES_ENV}::k8s::(idle)::all good." 0
