@@ -10,7 +10,7 @@ http:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/whoami`)"
       tls: true
-      service: "p80"
+      service: "p1423"
     grafana:
       entryPoints: websecure
       rule: "PathPrefix(`/_sre/grafana`)"

@@ -47,11 +47,11 @@ entryPoints:
     address: :443
 
 services:
-    p80:
+    p1423:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: http://localhost:80
+          - url: http://localhost:1423
     p3000:
       loadBalancer:
         passHostHeader: true
