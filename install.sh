@@ -50,14 +50,16 @@ log "dp::hermes::ci::(busy):: Installing on server: Deploying secrets."
 # helm uninstall traefik traefik-crd -n kube-system
 # sudo systemctl restart k3s
 
+
 log "dp::hermes::ci::(busy):: Installing on server: installing dependencies." 2
 ssh ${HERMES_REMOTE} "mkdir dp; \
 											cd dp; \
 											git clone https://github.com/dreampipcom/hermes.git; \
 											mv ../.env.*.private hermes/; \
-											cd hermes;
-											git checkout ${HERMES_BRANCH};
-											chmod +x ./install-deps.sh;
+											cd hermes; \
+											git checkout ${HERMES_BRANCH}; \
+											git pull; \
+											chmod +x ./install-deps.sh; \
 											./install-deps.sh;
 											"
 
