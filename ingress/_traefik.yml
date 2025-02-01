@@ -45,25 +45,3 @@ entryPoints:
           permanent: false
   websecure:
     address: :443
-
-services:
-    p1423:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://localhost:1423
-    p3000:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://localhost:3000
-    p9090:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://localhost:9090
-    p9100:
-      loadBalancer:
-        passHostHeader: true
-        servers:
-          - url: http://localhost:9100
