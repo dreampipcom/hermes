@@ -65,10 +65,10 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks."
 ./init-networks.sh
 
 # prepare
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: creating namespaces."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Initiating Kubernetes: creating namespaces."
 kubectl create namespace hermes
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Creating Charts: Weagle (Ingress)."
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Weagle (Ingress)."
 ./init-weagle.sh
 cd ingress
 kompose convert --out data/charts/
@@ -98,7 +98,44 @@ cd cloud
 kompose convert --out data/charts/
 cd $root_dir
 
-log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts: Claudia: (Storage, Calendar, MWC)." 2
-kubectl apply -f . -R
+
+# deploy
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)."
+./init-weagle.sh
+cd ingress
+cd data/charts
+kubectl apply -k
+cd $root_dir
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Daegis: (Databases)."
+./init-model.sh
+cd model
+cd data/charts
+kubectl apply -k
+cd $root_dir
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Drew: (Auth)."
+./init-auth.sh
+cd auth
+cd data/charts
+kubectl apply -k
+cd $root_dir
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Aemilia: (Mail)."
+./init-mail.sh
+cd mail
+cd data/charts
+kubectl apply -k
+cd $root_dir
+
+log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)." 2
+./init-cloud.sh
+cd cloud
+cd data/charts
+kubectl apply -k
+cd $root_dir
+
+
 
 log "dp::hermes::${HERMES_ENV}::k8s::(idle)::all good." 0
