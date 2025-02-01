@@ -99,6 +99,6 @@ kompose convert --out data/charts/
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts: Claudia: (Storage, Calendar, MWC)." 2
-kubectl apply -f --recursive .
+kubectl apply -f -R
 
 log "dp::hermes::${HERMES_ENV}::k8s::(idle)::all good." 0
