@@ -11,7 +11,6 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certificates:
           certFile: /certs/${HERMES_CERT_FILE}
           keyFile: /certs/${HERMES_CERT_KEY_FILE}
     alt:
