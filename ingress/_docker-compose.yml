@@ -19,7 +19,7 @@ services:
         mode: host
     networks:
       hermes-net-weagle:
-          ipv4_address: ${HERMES_DNS_RESOLVER}
+          ipv4_address: ${HERMES_INGRESS_GATEWAY}
     logging:
       options:
         max-size: "10m"
@@ -44,8 +44,8 @@ services:
       WHOAMI_PORT_NUMBER: 1423
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}99:1234/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}99:1423/tcp"
 
   hermes-ingress-grafana:
     image: grafana/grafana-oss
@@ -73,8 +73,8 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}08:3000/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
 
   hermes-ingress-prometheus:
     image: prom/prometheus
@@ -103,8 +103,8 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}09:9090/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}09:9090/tcp"
 
   hermes-ingress-node-exporter:
     image: prom/node-exporter
@@ -126,8 +126,8 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}10:9100/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}10:9100/tcp"
   
   hermes-ingress-alert-manager:
     image: prom/alertmanager
@@ -151,8 +151,8 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}11:9093/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}11:9093/tcp"
 
 networks:
   hermes-net-weagle:
