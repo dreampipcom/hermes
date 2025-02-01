@@ -13,7 +13,7 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          - alertmanager:9093
+          - hermes-ingress-alert-manager:${HERMES_PORT_PREFIX}09
 
 # rule_files:
 #   - "first_rules.yml"
