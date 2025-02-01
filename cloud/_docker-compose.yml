@@ -35,10 +35,10 @@ services:
         - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}04:80/tcp"
-    #   - "${HERMES_PORT_PREFIX}05:443/tcp"
-    #   - "${HERMES_PORT_PREFIX}06:8080/tcp"
+    ports:
+      - "${HERMES_PORT_PREFIX}04:80/tcp"
+      - "${HERMES_PORT_PREFIX}05:443/tcp"
+      - "${HERMES_PORT_PREFIX}06:8080/tcp"
 
   hermes-cloud-collabora:
     image: collabora/code
@@ -58,8 +58,8 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}07:9980/tcp"
+    ports:
+      - "${HERMES_PORT_PREFIX}07:9980/tcp"
 
 networks:
   hermes-net-weagle:

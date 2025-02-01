@@ -45,11 +45,11 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}12:25/tcp"
-    #   - "${HERMES_PORT_PREFIX}13:465/tcp"
-    #   - "${HERMES_PORT_PREFIX}14:995/tcp"
-    #   - "${HERMES_PORT_PREFIX}15:993/tcp"
+    ports:
+      - "${HERMES_PORT_PREFIX}12:25/tcp"
+      - "${HERMES_PORT_PREFIX}13:465/tcp"
+      - "${HERMES_PORT_PREFIX}14:995/tcp"
+      - "${HERMES_PORT_PREFIX}15:993/tcp"
 
 networks:
   hermes-net-weagle:
