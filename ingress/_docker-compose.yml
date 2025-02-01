@@ -44,7 +44,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.services.node-exporter.loadbalancer.server.port=80"
     environment:
       WHOAMI_PORT_NUMBER: 1423
     # traefik ignores ports,
@@ -139,10 +139,7 @@ services:
         max-file: "3"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.alertmanager.rule=PathPrefix(`/_sre/prom/alerts`)"
-      - "traefik.http.routers.alertmanager.tls=${HERMES_TLS}"
       - "traefik.http.services.alertmanager.loadbalancer.server.port=9093"
-      - "traefik.docker.network=hermes-net-weagle"
     dns:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
