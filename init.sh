@@ -60,7 +60,7 @@ docker network create \
   --subnet=$HERMES_MAIL_SUBNET \
   --gateway=$HERMES_MAIL_GATEWAY \
   --attachable \
-  hermes_mail
+  hermes_net_mail
 
 # docker setup
 log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
@@ -85,6 +85,9 @@ log "dp::hermes::${HERMES_ENV}::init::(busy)::Initiating ${HERMES_ENV} env."
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Weagle (Ingress)." 2
 ./init-weagle.sh
+
+log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Daegis (Databases)." 2
+./init-model.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Drew: (Auth)." 2
 ./init-auth.sh
