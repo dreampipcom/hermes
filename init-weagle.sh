@@ -121,14 +121,6 @@ cd $root_dir
 take 5 "dp::hermes::weagle::(busy):: Launching Docker Compose Swarms."
 cd ingress
 
-# docker pull ghcr.io/dreampipcom/${HERMES_REPO}:main
-
-# docker stop ${}
-
-# docker rm hypnos
-
-# docker run -d --name hypnos --restart unless-stopped -p 3001:3001 ghcr.io/dreampipcom/hypnos:main
-
 docker compose up -d
 cd $root_dir
 

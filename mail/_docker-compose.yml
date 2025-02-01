@@ -12,12 +12,10 @@ services:
       - ./data/dms/config/:/tmp/docker-mailserver/
       - /etc/localtime:/etc/localtime:ro
     environment:
-      SSL_TYPE: ${HERMES_CERT_TYPE}
-      SSL_DOMAIN: ${HERMES_APEX}
-      SSL_CERT_PATH: /tmp/dms/custom-certs/${HERMES_CERT_FILE}
-      SSL_KEY_PATH: /tmp/dms/custom-certs/${HERMES_CERT_KEY_FILE}
-environment:
-    environment:
+      - SSL_TYPE=${HERMES_CERT_TYPE}
+      - SSL_DOMAIN=${HERMES_APEX}
+      - SSL_CERT_PATH=/tmp/dms/custom-certs/${HERMES_CERT_FILE}
+      - SSL_KEY_PATH=/tmp/dms/custom-certs/${HERMES_CERT_KEY_FILE}
       - ACCOUNT_PROVISIONER=LDAP
       - LDAP_SERVER_HOST=ldap://ldap
       - LDAP_SEARCH_BASE=ou=people,dc=localhost,dc=localdomain
