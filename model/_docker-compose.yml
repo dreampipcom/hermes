@@ -12,7 +12,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}17:6379/tcp
+      - "${HERMES_PORT_PREFIX}16:6379/tcp"
 
   hermes_model_mariadb:
     image: mariadb
@@ -38,7 +38,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}16:3306/tcp
+      - "${HERMES_PORT_PREFIX}17:3306/tcp"
 
   hermes_model_postgres:
     image: docker.io/postgres:12-alpine
@@ -55,7 +55,7 @@ services:
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_PORT_PREFIX}17:5432/tcp
+      - "${HERMES_PORT_PREFIX}18:5432/tcp"
 
 
 networks:
