@@ -87,6 +87,7 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV
 # docker setup
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Cleaning up previous deployment." 2
 ./init0.sh
+kubectl delete --all deployments --namespace hermes
 
 # docker setup
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks." 2
