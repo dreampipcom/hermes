@@ -17,6 +17,6 @@ services:
 
 networks:
   weagle:
-    name: weagle
+    name: hermes-weagle
     driver: bridge
     external: true

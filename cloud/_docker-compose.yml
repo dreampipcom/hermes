@@ -3,9 +3,13 @@ services:
   nextcloud:
     image: nextcloud:fpm
     container_name: nextcloud
-    restart: unless-stopped
+    restart: always
     networks: 
       - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     depends_on:
       - mariadb
       - redis
@@ -37,16 +41,24 @@ services:
     restart: always
     networks:
       - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     dns:
       - ${HERMES_DNS_RESOLVER}
 
   mariadb:
     image: mariadb
     container_name: mariadb
-    restart: unless-stopped
+    restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
       - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - ./data/db:/var/lib/mysql
     environment:
@@ -82,6 +94,6 @@ services:
 
 networks:
   weagle:
-    name: weagle
+    name: hermes-weagle
     driver: bridge
     external: true

@@ -4,6 +4,12 @@ services:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
     container_name: hermes-mailserver
     hostname: ${HERMES_HOSTNAME}
+    networks:
+      - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes:
       - ../certs/data/:/tmp/dms/custom-certs/:ro
       - ./data/dms/mail-data/:/var/mail/
@@ -40,6 +46,6 @@ services:
 
 networks:
   weagle:
-    name: weagle
+    name: hermes-weagle
     driver: bridge
     external: true
