@@ -55,11 +55,9 @@ ssh ${HERMES_REMOTE} "mkdir dp; \
 											cd dp; \
 											git clone https://github.com/dreampipcom/hermes.git; \
 											mv ../.env.*.private hermes/; \
-											sudo apt-get update; \
-											sudo apt-get install -y docker.io pv ca-certificates curl; \
-											curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-linux-amd64 -o kompose; \
-											chmod +x kompose; \
-											sudo mv ./kompose /usr/local/bin/kompose;
+											cd hermes;
+											chmod +x ./install-deps.sh
+											./install-deps.sh
 											"
 
 
