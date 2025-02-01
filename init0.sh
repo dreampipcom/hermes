@@ -57,8 +57,13 @@ docker rm hermes_auth_ldap
 cd $root_dir
 
 cd ingress
-docker stop hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_whoami # to sort
-docker rm hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_whoami # to sort
+docker stop hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_ingress_whoami # to sort
+docker rm hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter hermes_ingress_whoami # to sort
+cd $root_dir
+
+cd model
+docker stop hermes_model_redis hermes_model_mariab hermes_model_postgres # to sort
+docker rm hermes_model_redis hermes_model_mariab hermes_model_postgres # to sort
 cd $root_dir
 
 cd mail
