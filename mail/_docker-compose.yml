@@ -5,7 +5,7 @@ services:
     container_name: mailserver
     hostname: ${HERMES_HOSTNAME}
     volumes:
-      - ./data/traefik/${HERMES_CERT_STORAGE_FILENAME}:${HERMES_CERT_STORAGE_DIRNAME}${HERMES_CERT_STORAGE_FILENAME}:ro
+      - ../certs/data/:/tmp/dms/custom-certs/:ro
       - ./data/dms/mail-data/:/var/mail/
       - ./data/dms/mail-state/:/var/mail-state/
       - ./data/dms/mail-logs/:/var/log/mail/
@@ -14,9 +14,12 @@ services:
     environment:
       SSL_TYPE: ${HERMES_CERT_TYPE}
       SSL_DOMAIN: ${HERMES_APEX}
+      SSL_CERT_PATH: /tmp/dms/custom-certs/${HERMES_CERT_FILE}
+      SSL_KEY_PATH: /tmp/dms/custom-certs/${HERMES_CERT_KEY_FILE}
+environment:
     environment:
       - ACCOUNT_PROVISIONER=LDAP
-      - LDAP_SERVER_HOST=ldap://weasel
+      - LDAP_SERVER_HOST=ldap://ldap
       - LDAP_SEARCH_BASE=ou=people,dc=localhost,dc=localdomain
       - LDAP_BIND_DN=cn=admin,dc=localhost,dc=localdomain
       - LDAP_BIND_PW=admin

@@ -114,15 +114,8 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 
 # dir setup
-#log "dp::hermes::weagle::(busy)::creating folder structure."
-#cd ingress
-#mkdir data
-#cd data
-#mkdir traefik
-#cd traefik
-# dir setup
-#log "dp::hermes::weagle::(busy):: Creating (localhost) .PEM certificates (Snakeoil)." 2
-#mkcert $HERMES_HOSTNAME
+# log "dp::hermes::weagle::(busy):: Adding .PEM certificates (CA)." 2
+# cp ./certs/data/* ./ingress/data/certs
 cd $root_dir
 
 take 5 "dp::hermes::weagle::(busy):: Launching Docker Compose Swarms."
