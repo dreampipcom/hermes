@@ -50,7 +50,6 @@ take () {
 log "dp::hermes::${HERMES_ENV}::(busy):: Shutdown. Are you sure?."
 take 10 "dp::hermes::${HERMES_ENV}::shutdown::(busy):: Gracefully shutting down ${HERMES_ENV}."
 
-
 cd auth
 docker stop hermes_auth_ldap
 docker rm hermes_auth_ldap
@@ -81,7 +80,6 @@ docker stop hermes_net_chat_synapse hermes_net_chat_element hermes_net_chat_post
 docker rm hermes_net_chat_synapse hermes_net_chat_element hermes_net_chat_postgres # to sort
 cd $root_dir
 
-docker network rm hermes_net_chat hermes_net_cloud hermes_net_mail hermes_net_model_all hermes_net_model_auth hermes_net_model_chat hermes_net_model_cloud
-
+docker network rm hermes_net_weagle hermes_net_chat hermes_net_cloud hermes_net_mail hermes_net_model_all hermes_net_model_auth hermes_net_model_chat hermes_net_model_cloud
 
 log "dp::hermes::${HERMES_ENV}::shutdown::(idle)::all good." 0
