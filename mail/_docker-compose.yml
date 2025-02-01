@@ -45,7 +45,7 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  weagle:
+  hermes_weagle:
     name: hermes_weagle
     driver: bridge
     external: true

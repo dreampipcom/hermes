@@ -1,7 +1,7 @@
   # Nextcloud
 services:
-  nextcloud:
-    image: nextcloud:fpm
+  nexthermes_cloud:
+    image: nexthermes_cloud:fpm
     container_name: nextcloud
     restart: always
     networks: 
@@ -93,7 +93,7 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  weagle:
+  hermes_weagle:
     name: hermes_weagle
     driver: bridge
     external: true

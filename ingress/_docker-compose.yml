@@ -1,6 +1,6 @@
 # hermes/ingress/manualtls/cluster(prod)
 services:
-  weagle:
+  hermes_weagle:
     image: docker.io/traefik:latest #v2.5
     container_name: hermes_traefik
     restart: always
@@ -15,7 +15,7 @@ services:
         published: 8080
         mode: host
     networks:
-      hermes_weagle:
+      hermes_hermes_weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
     logging:
       options:
@@ -130,15 +130,15 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  weagle:
+  hermes_weagle:
     name: hermes_weagle
     driver: bridge
     external: true
-  matrix:
+  hermes_chat:
     name: hermes_chat
     driver: bridge
     external: true
-  cloud:
+  hermes_cloud:
     name: hermes_cloud
     driver: bridge
     external: true

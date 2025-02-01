@@ -62,7 +62,7 @@ log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV
 # sudo mv ./kompose /usr/local/bin/kompose
 
 # docker setup
-log "dp::hermes::weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_INGRESS_SUBNET \
@@ -70,7 +70,7 @@ docker network create \
   --attachable \
   hermes_weagle
 
-log "dp::hermes::weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MAIL_SUBNET \
@@ -79,7 +79,7 @@ docker network create \
   hermes_mail
 
 # docker setup
-log "dp::hermes::weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_CLOUD_SUBNET \
@@ -87,7 +87,7 @@ docker network create \
   --attachable \
   hermes_cloud
 
-log "dp::hermes::weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_CHAT_SUBNET \

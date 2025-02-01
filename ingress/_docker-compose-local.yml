@@ -1,6 +1,6 @@
 # hermes/ingress/snakeoiltls/cluster(local)
 services:
-  weagle:
+  hermes_weagle:
     image: docker.io/traefik:latest #v2.5
     container_name: traefik
     ports:
@@ -8,10 +8,10 @@ services:
       - "443:443"
       - "8080:8080"
     networks:
-      weagle:
+      hermes_weagle:
         ipv4_address: ${HERMES_DNS_RESOLVER}
-      matrix:
-      cloud:
+      hermes_cloud:
+      hermes_cloud:
     labels:
       - "traefik.http.routers.traefik.rule=PathPrefix(`/`)`)"
       - "traefik.http.routers.traefik.service=api@internal"
@@ -109,16 +109,16 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  weagle:
+  hermes_weagle:
     name: hermes_weagle
     driver: bridge
     external: true
-  matrix:
-    name: matrix
+  hermes_chat:
+    name: hermes_chat
     driver: bridge
     external: true
-  cloud:
-    name: cloud
+  hermes_cloud:
+    name: hermes_cloud
     driver: bridge
     external: true
   # radio:

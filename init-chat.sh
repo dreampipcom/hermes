@@ -47,7 +47,7 @@ take () {
 # docker setup
 
 # dir setup
-log "dp::hermes::matrix::(busy)::creating folder structure."
+log "dp::hermes::hermes_cloud::(busy)::creating folder structure."
 cd ./chat/server
 mkdir data
 mkdir data/bridge
@@ -63,7 +63,7 @@ mkdir files
 cd $root_dir
 
 # prepare config
-echo "dp::hermes::matrix::(busy)::preparing Maevis (Chat: Matrix) configuration files."
+echo "dp::hermes::hermes_cloud::(busy)::preparing Maevis (Chat: Matrix) configuration files."
 origin="./chat/server/_docker-compose.yml"
 destination="./chat/server/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir=.)
@@ -71,14 +71,14 @@ cp -p $origin $tmpfile
 UID=$(whoami)
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
-# log "dp::hermes::matrix::(busy)::preparing Hermes Matrix Home Server configuration files."
+# log "dp::hermes::hermes_cloud::(busy)::preparing Hermes Matrix Home Server configuration files."
 # origin="./chat/server/files/_homeserver.yml"
 # destination="./chat/server/files/homeserver.yml"
 # tmpfile=$(mktemp)
 # cp -p $origin $tmpfile
 # cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
-log "dp::hermes::matrix::(busy)::preparing Hermes Matrix Client configuration files."
+log "dp::hermes::hermes_cloud::(busy)::preparing Hermes Matrix Client configuration files."
 origin="./chat/server/_element-config.json"
 destination="./chat/server/element-config.json"
 tmpfile=$(mktemp --tmpdir=.)
@@ -87,4 +87,4 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 cd $root_dir
 
 
-log "dp::hermes::matrix::(idle)::all good." 0
+log "dp::hermes::hermes_cloud::(idle)::all good." 0

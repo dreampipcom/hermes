@@ -4,7 +4,7 @@ global:
   smtp_from: ${HERMES_INGRESS_STMP_FROM}
 cluster:
   advertise-address:
-    - hermes_weagle:9093
+    - hermes_hermes_weagle:9093
 route:
   receiver: sre-email
   group_by: [alertname]

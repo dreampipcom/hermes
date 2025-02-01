@@ -108,4 +108,4 @@ services:
 networks:
   default:
     external:
-      name: matrix
+      name: hermes_chat

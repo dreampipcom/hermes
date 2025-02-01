@@ -45,7 +45,7 @@ take () {
 }
 
 # Cloud
-log "dp::hermes::cloud::(busy):: Preparign Claudia (Storage, Calendar, Mail Web Client: Nextcloud)." 2
+log "dp::hermes::hermes_cloud::(busy):: Preparign Claudia (Storage, Calendar, Mail Web Client: Nextcloud)." 2
 origin="./cloud/_docker-compose.yml"
 destination="./cloud/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir=.)
@@ -53,11 +53,11 @@ cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 # dir setup
-take 5 "dp::hermes::cloud::(busy):: Launching Docker Compose Swarms."
+take 5 "dp::hermes::hermes_cloud::(busy):: Launching Docker Compose Swarms."
 
 
 cd cloud
 docker compose up -d
 cd $root_dir
 
-log "dp::hermes::cloud::(idle)::all good." 0
+log "dp::hermes::hermes_cloud::(idle)::all good." 0
