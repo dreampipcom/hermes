@@ -11,7 +11,7 @@ services:
       - hermes_net_weagle
     volumes:
       - './data/openldap:/bitnami/openldap'
-      - './data/openldap_data:/bitnami/openldap/data'
+      # - './data/openldap_data:/bitnami/openldap/data'
     dns:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
