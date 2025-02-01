@@ -9,8 +9,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
 
   mariadb:
     image: mariadb
@@ -33,8 +31,6 @@ services:
       - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}
       - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
       - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
-    dns:
-      - ${HERMES_DNS_RESOLVER}
 
   postgres:
     container_name: hermes_chat_postgres
@@ -48,8 +44,6 @@ services:
     networks:
         hermes_net_chat:
           ipv4_address: 10.10.10.2
-    dns:
-      - ${HERMES_DNS_RESOLVER}
 
 networks:
   hermes_net_weagle:
