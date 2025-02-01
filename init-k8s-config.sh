@@ -44,6 +44,14 @@ take () {
   while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER  -S -F '%t %p' > /dev/null
 }
 
+_deploy () {
+  kubectl apply -f . -n hermes
+}
+
+_kompose () {
+  kompose convert --out data/charts/
+}
+
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV} env."
 
@@ -91,31 +99,31 @@ kubectl create namespace hermes
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Weagle (Ingress)."
 ./init-weagle.sh
 cd ingress
-kompose convert --out data/charts/
+_kompose
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Daegis: (Databases)."
 ./init-model.sh
 cd model
-kompose convert --out data/charts/
+_kompose
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Drew: (Auth)."
 ./init-auth.sh
 cd auth
-kompose convert --out data/charts/
+_kompose
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Aemilia: (Mail)."
 ./init-mail.sh
 cd mail
-kompose convert --out data/charts/
+_kompose
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Creating Charts: Claudia: (Storage, Calendar, MWC)."
 ./init-cloud.sh
 cd cloud
-kompose convert --out data/charts/
+_kompose
 cd $root_dir
 
 
@@ -124,31 +132,31 @@ cd $root_dir
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)."
 cd ingress
 cd data/charts
-kubectl apply -f .
+_deploy
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Daegis: (Databases)."
 cd model
 cd data/charts
-kubectl apply -f .
+_deploy
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Drew: (Auth)."
 cd auth
 cd data/charts
-kubectl apply -f .
+_deploy
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Aemilia: (Mail)."
 cd mail
 cd data/charts
-kubectl apply -f .
+_deploy
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)." 2
 cd cloud
 cd data/charts
-kubectl apply -f .
+_deploy
 cd $root_dir
 
 
