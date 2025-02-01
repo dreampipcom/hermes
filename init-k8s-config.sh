@@ -47,18 +47,34 @@ take () {
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy)::Initiating Kubernetes: ${HERMES_ENV} env."
 
-# install kompose
-# Linux
+# # install kompose
+# # Linux
 # curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-linux-amd64 -o kompose
 
-# # macOS
-# curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-darwin-amd64 -o kompose
+# # # macOS
+# # curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-darwin-amd64 -o kompose
 
-# # Windows
-# curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-windows-amd64.exe -o kompose.exe
+# # # Windows
+# # curl -L https://github.com/kubernetes/kompose/releases/download/v1.34.0/kompose-windows-amd64.exe -o kompose.exe
 
 # chmod +x kompose
 # sudo mv ./kompose /usr/local/bin/kompose
+
+
+# # install docker
+# # Add Docker's official GPG key:
+# sudo apt-get update
+# sudo apt-get install ca-certificates curl
+# sudo install -m 0755 -d /etc/apt/keyrings
+# sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+# sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# # Add the repository to Apt sources:
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+#   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
 
 # docker setup
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Configuring networks."
@@ -102,35 +118,30 @@ cd $root_dir
 # deploy
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Weagle (Ingress)."
-./init-weagle.sh
 cd ingress
 cd data/charts
 kubectl apply -k
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Daegis: (Databases)."
-./init-model.sh
 cd model
 cd data/charts
 kubectl apply -k
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Drew: (Auth)."
-./init-auth.sh
 cd auth
 cd data/charts
 kubectl apply -k
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Aemilia: (Mail)."
-./init-mail.sh
 cd mail
 cd data/charts
 kubectl apply -k
 cd $root_dir
 
 log "dp::hermes::${HERMES_ENV}::k8s::(busy):: Deploying: Applying Charts for Claudia: (Storage, Calendar, MWC)." 2
-./init-cloud.sh
 cd cloud
 cd data/charts
 kubectl apply -k
