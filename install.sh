@@ -44,10 +44,10 @@ take () {
 }
 
 log "dp::hermes::ci::(busy):: Installing on server: Deploying secrets."
-# ./deploy-secrets.sh install
+./deploy-secrets.sh install
 
 
-log "dp::hermes::ci::(busy):: Installing on server." 2
+log "dp::hermes::ci::(busy):: Installing on server: installing dependencies." 2
 ssh ${HERMES_REMOTE} "mkdir dp; \
 											cd dp; \
 											mv ../.env.install.gh.private ../.ssh/gh; \

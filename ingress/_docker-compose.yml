@@ -31,7 +31,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes:
       - "../certs/data:/certs/"
+      - "./data:/data"
       - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   hermes-ingress-whoami:
