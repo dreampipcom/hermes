@@ -1,7 +1,7 @@
   # Nextcloud
 services:
   nexthermes_cloud:
-    image: nexthermes_cloud:fpm
+    image: nextcloud:fpm
     container_name: nextcloud
     restart: always
     networks: 
