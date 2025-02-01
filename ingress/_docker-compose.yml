@@ -19,7 +19,7 @@ services:
         mode: host
     networks:
       hermes-net-weagle:
-          ipv4_address: ${HERMES_INGRESS_GATEWAY}
+          ipv4_address: ${HERMES_DNS_RESOLVER}
     logging:
       options:
         max-size: "10m"
