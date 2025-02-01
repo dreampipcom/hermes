@@ -45,7 +45,7 @@ take () {
 }
 
 
-log "dp::hermes::hermes_net_weagle::(busy)::preparing Weagle (Ingress: Traefik, Grafana, Prometheus) configuration files." 2
+log "dp::hermes::${HERMES_ENV}::ingress::(busy)::preparing Weagle (Ingress: Traefik, Grafana, Prometheus) configuration files." 2
 origin="./ingress/_docker-compose.yml"
 destination="./ingress/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir=.)
@@ -78,15 +78,15 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 
 # dir setup
-# log "dp::hermes::hermes_net_weagle::(busy):: Adding .PEM certificates (CA)." 2
+# log "dp::hermes::${HERMES_ENV}::ingress::(busy):: Adding .PEM certificates (CA)." 2
 # cp ./certs/data/* ./ingress/data/certs
 cd $root_dir
 
-take 5 "dp::hermes::hermes_net_weagle::(busy):: Launching Docker Compose Swarms."
+take 5 "dp::hermes::${HERMES_ENV}::ingress::(busy):: Launching Docker Compose Swarms."
 cd ingress
 
 docker compose up -d
 cd $root_dir
 
 
-log "dp::hermes::hermes_net_weagle::(idle)::all good." 0
+log "dp::hermes::${HERMES_ENV}::ingress::(idle)::all good." 0
