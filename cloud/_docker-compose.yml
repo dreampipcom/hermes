@@ -5,7 +5,7 @@ services:
     container_name: hermes-cloud-nextcloud
     restart: always
     networks: 
-      - hermes-net_-eagle
+      - hermes-net-weagle
       - hermes-net-model-cloud
     logging:
       options:
