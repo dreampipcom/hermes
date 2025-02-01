@@ -116,26 +116,26 @@ services:
     ports:
       - "${HERMES_PORT_PREFIX}10:9100/tcp"
   
-  hermes-ingress-alert-manager:
-    image: prom/alertmanager
-    container_name: hermes-ingress-alert-manager
-    restart: always
-    volumes:
-      - "./alertmanager.yml:/alertmanager/alertmanager.yml"
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    labels:
-      - "traefik.enable=true"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}11:9093/tcp"
+  # hermes-ingress-alert-manager:
+  #   image: prom/alertmanager
+  #   container_name: hermes-ingress-alert-manager
+  #   restart: always
+  #   volumes:
+  #     - "./alertmanager.yml:/alertmanager/alertmanager.yml"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   labels:
+  #     - "traefik.enable=true"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   ports:
+  #     - "${HERMES_PORT_PREFIX}11:9093/tcp"
 
 networks:
   hermes-net-weagle:
