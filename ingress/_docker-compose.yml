@@ -24,7 +24,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     volumes:
       - "./data/traefik/acme.json:/acme.json"
-      - "${HERMES_CERT_STORAGE_DIRNAME}${HERMES_CERT_STORAGE_FILENAME}:/certs/${HERMES_CERT_STORAGE_FILENAME}"
+      - "${HERMES_CERT_STORAGE_DIRNAME}:/certs/"
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
