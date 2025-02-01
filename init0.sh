@@ -3,8 +3,6 @@
 #
 # SCRAPBOOK: PRAGMA: EZSH SHELL PRAGMA DRAFT: Ergonomika ZSH: As an abstraction: e.g. I can reboot docker containers and perceive visual comfortable progress instead of crazy matrix logs, and interact with the real/physical world, all while glancing at my terminal and feeling psychologically safe that there is perceivable made progress.
 echo -e "\033[0;62m\033[0;49;35m"
-cp .env.auth.private .env
-set -a && source .env && set +a
 set -a && source .env.common.private && set +a
 root_dir="$(pwd)"
 

@@ -1,8 +1,6 @@
 #!/bin/bash
 # init weagle
 echo -e "\033[0;62m\033[0;49;35m"
-cp .env.ingress.private .env
-set -a && source .env && set +a
 set -a && source .env.common.private && set +a
 root_dir="$(pwd)"
 

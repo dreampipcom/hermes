@@ -1,8 +1,8 @@
 #!/bin/bash
 # init maivis
 echo -e "\033[0;62m\033[0;49;35m"
-set -a && source .env.matrix.private && set +a
 set -a && source .env.common.private && set +a
+set -a && source .env.chat.private && set +a
 root_dir="$(pwd)"
 
 log () {
