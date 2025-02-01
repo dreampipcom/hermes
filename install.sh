@@ -43,15 +43,13 @@ take () {
 	while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
 }
 
-log "dp::hermes::ci::(busy):: Deploying secrets." 2
+log "dp::hermes::ci::(busy):: Installing on server: Deploying secrets."
+./deploy-secrets.sh install
 
-if [ "$1" == "install" ]; then
-	log "dp::hermes::ci::(busy):: Sending to installation dir."
-  scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_HOME
-else
-	log "dp::hermes::ci::(busy):: Sending to hermes dir."
-  scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_ROOT
-fi
 
+log "dp::hermes::ci::(busy):: Installing on server." 2
+ssh ${HERMES_REMOTE} "mkdir dp; cd dp; git clone git@github.com:dreampipcom/hermes.git"
+
+ssh ${HERMES_REMOTE} "mkdir dp; cd dp; git clone git@github.com:dreampipcom/hermes.git"
 
 log "dp::hermes::ci::(idle)::all good." 0
