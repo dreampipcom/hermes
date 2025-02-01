@@ -12,8 +12,8 @@ services:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      - mariadb
-      - redis
+      - hermes_model_mariadb
+      - hermes_model_redis
     volumes:
       - ./data/cloud/html:/var/www/html
       - ./data/cloud/custom_apps:/var/www/html/custom_apps
