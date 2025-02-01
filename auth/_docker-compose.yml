@@ -16,9 +16,9 @@ services:
       - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}01:1389/tcp"
-      - "${HERMES_PORT_PREFIX}02:1689/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}01:1389/tcp"
+    #   - "${HERMES_PORT_PREFIX}02:1689/tcp"
 
 networks:
   hermes-net-weagle:
