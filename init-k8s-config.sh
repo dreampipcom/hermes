@@ -68,7 +68,7 @@ docker network create \
   --subnet=$HERMES_INGRESS_SUBNET \
   --gateway=$HERMES_INGRESS_GATEWAY \
   --attachable \
-  hermes-weagle
+  hermes_weagle
 
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
@@ -76,7 +76,7 @@ docker network create \
   --subnet=$HERMES_MAIL_SUBNET \
   --gateway=$HERMES_MAIL_GATEWAY \
   --attachable \
-  hermes-mail
+  hermes_mail
 
 # docker setup
 log "dp::hermes::weagle::(busy)::creating Docker network."
@@ -85,7 +85,7 @@ docker network create \
   --subnet=$HERMES_CLOUD_SUBNET \
   --gateway=$HERMES_CLOUD_GATEWAY \
   --attachable \
-  hermes-cloud
+  hermes_cloud
 
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
@@ -93,7 +93,7 @@ docker network create \
   --subnet=$HERMES_CHAT_SUBNET \
   --gateway=$HERMES_CHAT_GATEWAY \
   --attachable \
-  hermes-chat
+  hermes_chat
 
 
 # prepare

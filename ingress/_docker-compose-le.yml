@@ -35,7 +35,7 @@ services:
 
 networks:
   weagle:
-    name: hermes-weagle
+    name: hermes_weagle
     driver: bridge
     external: true
   matrix:

@@ -36,7 +36,7 @@ services:
     image: grafana/grafana-oss
     container_name: grafana
     networks:
-      - hermes-weagle
+      - hermes_weagle
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
       GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
@@ -59,7 +59,7 @@ services:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - ${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus
     networks:
-      - hermes-weagle
+      - hermes_weagle
     restart: always
     logging:
       options:
@@ -82,7 +82,7 @@ services:
     image: prom/node-exporter
     container_name: node-exporter
     networks:
-      - hermes-weagle
+      - hermes_weagle
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nodeexporter.rule=PathPrefix(`/_sre/prom/node`)"
@@ -98,7 +98,7 @@ services:
     volumes:
       - "./alertmanager.yml:/alertmanager/alertmanager.yml"
     networks:
-      - hermes-weagle
+      - hermes_weagle
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.alertmanager.rule=PathPrefix(`/_sre/prom/alerts`)"
@@ -110,7 +110,7 @@ services:
 
 networks:
   weagle:
-    name: hermes-weagle
+    name: hermes_weagle
     driver: bridge
     external: true
   matrix:
