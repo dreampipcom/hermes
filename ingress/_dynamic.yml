@@ -1,5 +1,7 @@
 # hermes/ingress/traefik/dynamic(fqdn)
 tls:
-  certificates:
-    - certFile: /certs/${HERMES_CERT_FILE}
-      keyFile: /certs/${HERMES_CERT_KEY_FILE}
+  stores:
+    defaultCertificate:
+      certificates:
+        - certFile: /certs/${HERMES_CERT_FILE}
+          keyFile: /certs/${HERMES_CERT_KEY_FILE}
