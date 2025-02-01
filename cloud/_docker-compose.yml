@@ -5,7 +5,7 @@ services:
     container_name: hermes_nextcloud
     restart: always
     networks: 
-      - hermes_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -40,7 +40,7 @@ services:
     container_name: hermes_redis
     restart: always
     networks:
-      - hermes_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -54,7 +54,7 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
-      - hermes_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -78,7 +78,7 @@ services:
     container_name: hermes_collabora
     restart: unless-stopped
     networks:
-      - hermes_weagle
+      - hermes_net_weagle
     environment:
       - PUID=1000
       - PGID=1000
@@ -93,7 +93,7 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  hermes_weagle:
-    name: hermes_weagle
+  hermes_net_weagle:
+    name: hermes_net_weagle
     driver: bridge
     external: true

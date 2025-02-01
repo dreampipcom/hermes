@@ -5,7 +5,7 @@ services:
     container_name: hermes_mailserver
     hostname: ${HERMES_HOSTNAME}
     networks:
-      - hermes_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -45,7 +45,7 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  hermes_weagle:
-    name: hermes_weagle
+  hermes_net_weagle:
+    name: hermes_net_weagle
     driver: bridge
     external: true

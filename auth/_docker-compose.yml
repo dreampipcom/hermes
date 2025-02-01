@@ -1,14 +1,14 @@
 services:
   weasels:
     image: bitnami/openldap:2
-    container_name: hermes_ldap
+    container_name: hermes_auth_ldatp
     environment:
       - LDAP_ADMIN_USERNAME=${HERMES_LDAP_ADMIN_USER}
       - LDAP_ADMIN_PASSWORD=${HERMES_LDAP_ADMIN_PASS}
       - LDAP_USERS=${HERMES_FIRST_USER}
       - LDAP_PASSWORDS=${HERMES_FIRST_USER_PASS}
     networks:
-      - hermes_weagle
+      - hermes_net_weagle
     volumes:
       - './data/openldap:/bitnami/openldap'
       - './data/openldap_data:/bitnami/openldap/data'
@@ -16,7 +16,7 @@ services:
       - ${HERMES_DNS_RESOLVER}
 
 networks:
-  hermes_weagle:
-    name: hermes_weagle
+  hermes_net_weagle:
+    name: hermes_net_weagle
     driver: bridge
     external: true

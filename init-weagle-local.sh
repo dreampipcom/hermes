@@ -46,7 +46,7 @@ take () {
 }
 
 # docker setup
-log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=129.101.0.0/24 \
@@ -54,7 +54,7 @@ docker network create \
   --attachable \
   weagle
 
-log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=129.101.101.0/24 \
@@ -63,7 +63,7 @@ docker network create \
   mail
 
 # docker setup
-log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=129.101.102.0/24 \
@@ -71,7 +71,7 @@ docker network create \
   --attachable \
   cloud
 
-log "dp::hermes::hermes_weagle::(busy)::creating Docker network."
+log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=129.102.103.0/24 \
@@ -81,7 +81,7 @@ docker network create \
 
 
 
-log "dp::hermes::hermes_weagle::(busy)::preparing Weagle (Ingress: Traefik, Grafana, Prometheus) configuration files." 2
+log "dp::hermes::hermes_net_weagle::(busy)::preparing Weagle (Ingress: Traefik, Grafana, Prometheus) configuration files." 2
 origin="./ingress/_docker-compose-local.yml"
 destination="./ingress/docker-compose.yml"
 tmpfile=$(mktemp)
@@ -114,18 +114,18 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 
 # dir setup
-log "dp::hermes::hermes_weagle::(busy)::creating folder structure."
+log "dp::hermes::hermes_net_weagle::(busy)::creating folder structure."
 cd ingress
 mkdir data
 cd data
 mkdir traefik
 cd traefik
 # dir setup
-log "dp::hermes::hermes_weagle::(busy):: Creating (localhost) .PEM certificates (Snakeoil)." 2
+log "dp::hermes::hermes_net_weagle::(busy):: Creating (localhost) .PEM certificates (Snakeoil)." 2
 mkcert $HERMES_HOSTNAME
 cd $root_dir
 
-take 5 "dp::hermes::hermes_weagle::(busy):: Launching Docker Compose Swarms."
+take 5 "dp::hermes::hermes_net_weagle::(busy):: Launching Docker Compose Swarms."
 cd ingress
 
 # docker pull ghcr.io/dreampipcom/${HERMES_REPO}:main
@@ -140,4 +140,4 @@ docker compose up -d
 cd $root_dir
 
 
-log "dp::hermes::hermes_weagle::(idle)::all good." 0
+log "dp::hermes::hermes_net_weagle::(idle)::all good." 0

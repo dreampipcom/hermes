@@ -1,8 +1,8 @@
 # hermes/ingress/letsencryptca/cluster(prod)
 services:
-  hermes_weagle:
+  hermes_auth_weagle:
     image: docker.io/traefik:latest #v2.5
-    container_name: hermes_traefik
+    container_name: hermes_auth_traefik
     ports:
       - target: 80
         published: 180
@@ -14,7 +14,7 @@ services:
         published: 1808
         mode: host
     networks:
-      hermes_weagle:
+      hermes_auth_weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
     command:
       - "--providers.docker"
@@ -34,16 +34,16 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 networks:
-  hermes_weagle:
-    name: hermes_weagle
+  hermes_auth_weagle:
+    name: hermes_auth_weagle
     driver: bridge
     external: true
-  hermes_chat:
-    name: hermes_chat
+  hermes_auth_chat:
+    name: hermes_auth_chat
     driver: bridge
     external: true
-  hermes_cloud:
-    name: hermes_cloud
+  hermes_auth_cloud:
+    name: hermes_auth_cloud
     driver: bridge
     external: true
   # radio:

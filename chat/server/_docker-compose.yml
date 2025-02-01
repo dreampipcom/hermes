@@ -108,4 +108,4 @@ services:
 networks:
   default:
     external:
-      name: hermes_chat
+      name: hermes_net_chat

@@ -52,28 +52,28 @@ take 10 "dp::hermes::${HERMES_ENV}::shutdown::(busy):: Gracefully shutting down 
 
 
 cd auth
-docker stop hermes_ldap
-docker rm hermes_ldap
+docker stop hermes_auth_ldap
+docker rm hermes_auth_ldap
 cd $root_dir
 
 cd ingress
-docker stop hermes_traefik hermes_grafana hermes_prometheus hermes_alert-manager hermes_node-explorer # to sort
-docker rm hermes_traefik hermes_grafana hermes_prometheus hermes_alert-manager hermes_node-explorer # to sort
+docker stop hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter # to sort
+docker rm hermes_ingress_traefik hermes_ingress_grafana hermes_ingress_prometheus hermes_ingress_alert-manager hermes_ingress_node-exporter # to sort
 cd $root_dir
 
 cd mail
-docker stop hermes_mailserver
-docker rm hermes_mailserver
+docker stop hermes_mail_server
+docker rm hermes_mail_server
 cd $root_dir
 
 cd cloud
-docker stop hermes_nextcloud hermes_redis hermes_collabora # to sort
-docker rm hermes_nextcloud hermes_redis hermes_collabora # to sort
+docker stop hermes_net_cloud_nextcloud hermes_net_cloud_redis hermes_net_cloud_collabora # to sort
+docker rm hermes_net_cloud_nextcloud hermes_net_cloud_redis hermes_net_cloud_collabora # to sort
 cd $root_dir
 
 cd chat
-docker stop hermes_synapse hermes_element hermes_postgres # to sort
-docker rm hermes_synapse hermes_element hermes_postgres # to sort
+docker stop hermes_net_chat_synapse hermes_net_chat_element hermes_net_chat_postgres # to sort
+docker rm hermes_net_chat_synapse hermes_net_chat_element hermes_net_chat_postgres # to sort
 cd $root_dir
 
 
