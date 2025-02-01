@@ -1,6 +1,6 @@
 # hermes/ingress/manualtls/cluster(prod)
 services:
-  hermes_auth_weagle:
+  hermes_net_weagle:
     image: docker.io/traefik:latest #v2.5
     container_name: hermes_auth_traefik
     restart: always
@@ -15,7 +15,7 @@ services:
         published: 8080
         mode: host
     networks:
-      hermes_auth_weagle:
+      hermes_net_weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
     logging:
       options:
@@ -43,7 +43,7 @@ services:
     container_name: hermes_auth_grafana
     restart: always
     networks:
-      - hermes_auth_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -71,7 +71,7 @@ services:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - ${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus
     networks:
-      - hermes_auth_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -94,7 +94,7 @@ services:
     container_name: hermes_auth_node-exporter
     restart: always
     networks:
-      - hermes_auth_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"
@@ -115,7 +115,7 @@ services:
     volumes:
       - "./alertmanager.yml:/alertmanager/alertmanager.yml"
     networks:
-      - hermes_auth_weagle
+      - hermes_net_weagle
     logging:
       options:
         max-size: "10m"

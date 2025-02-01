@@ -1,7 +1,7 @@
 services:
   weasels:
     image: bitnami/openldap:2
-    container_name: hermes_auth_ldatp
+    container_name: hermes_auth_ldap
     environment:
       - LDAP_ADMIN_USERNAME=${HERMES_LDAP_ADMIN_USER}
       - LDAP_ADMIN_PASSWORD=${HERMES_LDAP_ADMIN_PASS}
