@@ -3,6 +3,7 @@ services:
   weagle:
     image: docker.io/traefik:latest #v2.5
     container_name: hermes-traefik
+    restart: always
     ports:
       - target: 80
         published: 180
@@ -16,6 +17,10 @@ services:
     networks:
       weagle:
           ipv4_address: ${HERMES_DNS_RESOLVER}
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     command:
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
@@ -31,12 +36,18 @@ services:
   whoami:
     image: traefik/whoami
     container_name: hermes-whoami
+    restart: always
 
   grafana:
     image: grafana/grafana-oss
     container_name: hermes-grafana
+    restart: always
     networks:
-      - weagle
+      - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
       GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
@@ -55,12 +66,12 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: hermes-prometheus
+    restart: always
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - ${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus
     networks:
-      - weagle
-    restart: always
+      - hermes-weagle
     logging:
       options:
         max-size: "10m"
@@ -81,8 +92,13 @@ services:
   node-exporter:
     image: prom/node-exporter
     container_name: hermes-node-exporter
+    restart: always
     networks:
-      - weagle
+      - hermes-weagle
+        logging:
+    options:
+      max-size: "10m"
+      max-file: "3"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nodeexporter.rule=PathPrefix(`/_sre/prom/node`)"
@@ -95,10 +111,15 @@ services:
   alert-manager:
     image: prom/alertmanager
     container_name: hermes-alert-manager
+    restart: always
     volumes:
       - "./alertmanager.yml:/alertmanager/alertmanager.yml"
     networks:
-      - weagle
+      - hermes-weagle
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.alertmanager.rule=PathPrefix(`/_sre/prom/alerts`)"
@@ -110,18 +131,18 @@ services:
 
 networks:
   weagle:
-    name: weagle
+    name: hermes-weagle
     driver: bridge
     external: true
   matrix:
-    name: matrix
+    name: hermes-chat
     driver: bridge
     external: true
   cloud:
-    name: cloud
+    name: hermes-cloud
     driver: bridge
     external: true
   # radio:
-  #   name: radio
+  #   name: hermes-radio
   #   driver: bridge
   #   external: true

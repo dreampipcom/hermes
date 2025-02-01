@@ -8,7 +8,7 @@ services:
       - LDAP_USERS=${HERMES_FIRST_USER}
       - LDAP_PASSWORDS=${HERMES_FIRST_USER_PASS}
     networks:
-      - weagle
+      - hermes-weagle
     volumes:
       - './data/openldap:/bitnami/openldap'
       - './data/openldap_data:/bitnami/openldap/data'

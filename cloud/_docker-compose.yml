@@ -5,7 +5,7 @@ services:
     container_name: nextcloud
     restart: unless-stopped
     networks: 
-      - weagle
+      - hermes-weagle
     depends_on:
       - mariadb
       - redis
@@ -36,7 +36,7 @@ services:
     container_name: redis
     restart: always
     networks:
-      - weagle
+      - hermes-weagle
     dns:
       - ${HERMES_DNS_RESOLVER}
 
@@ -46,7 +46,7 @@ services:
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
-      - weagle
+      - hermes-weagle
     volumes:
       - ./data/db:/var/lib/mysql
     environment:
@@ -66,7 +66,7 @@ services:
     container_name: collabora
     restart: unless-stopped
     networks:
-      - weagle
+      - hermes-weagle
     environment:
       - PUID=1000
       - PGID=1000
