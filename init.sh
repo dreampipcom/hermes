@@ -42,7 +42,7 @@ gosu () {
 
 take () {
   log "dp::(idle)::let's wait ($1 * $HERMES_COOLDOWN_POINTER) seconds for $2." 2
-  while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER  -S -F '%t %p' > /dev/null
+  while true; do echo -n .; sleep 1; done | pv -s *$1 * $HERMES_COOLDOWN_POINTER()  -S -F '%t %p' > /dev/null
 }
 
 # docker setup

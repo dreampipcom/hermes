@@ -49,16 +49,16 @@ take () {
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=129.101.0.0/24 \
-  --gateway=129.101.0.1 \
+  --subnet=$HERMES_INGRESS_SUBNET \
+  --gateway=$HERMES_INGRESS_GATEWAY \
   --attachable \
   weagle
 
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=129.101.101.0/24 \
-  --gateway=129.101.101.1 \
+  --subnet=$HERMES_MAIL_SUBNET \
+  --gateway=$HERMES_MAIL_GATEWAY \
   --attachable \
   mail
 
@@ -66,18 +66,18 @@ docker network create \
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=129.101.102.0/24 \
-  --gateway=129.101.102.1 \
+  --subnet=$HERMES_CLOUD_SUBNET \
+  --gateway=$HERMES_CLOUD_GATEWAY \
   --attachable \
   cloud
 
 log "dp::hermes::weagle::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
-  --subnet=129.102.103.0/24 \
-  --gateway=129.102.103.1 \
+  --subnet=$HERMES_CHAT_SUBNET \
+  --gateway=$HERMES_CHAT_GATEWAY \
   --attachable \
-  matrix
+  chat
 
 
 
