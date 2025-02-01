@@ -25,26 +25,26 @@ http:
   routers:
     traefik:
       entryPoints: websecure
-      rule: "PathPrefix(`/_sre/dashboard`)"
+      rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
       tls: true
       service: "api@internal"
     whoami:
       entryPoints: websecure
-      rule: "PathPrefix(`/_sre/whoami`)"
+      rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       tls: true
       service: "p1423"
     grafana:
       entryPoints: websecure
-      rule: "PathPrefix(`/_sre/grafana`)"
+      rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
       tls: true
       service: "p3000"
     prometheus:
       entryPoints: websecure
-      rule: "PathPrefix(`/_sre/prometheus`)"
+      rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/prometheus`)"
       tls: true
       service: "p9090"
     node-exporter:
       entryPoints: websecure
-      rule: "PathPrefix(`/_sre/node-exporter`)"
+      rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/node-exporter`)"
       tls: true
       service: "p9100"
