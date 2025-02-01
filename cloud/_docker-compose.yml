@@ -1,8 +1,8 @@
   # Nextcloud
 services:
-  nexthermes_cloud:
+  nextcloud:
     image: nextcloud:fpm
-    container_name: nextcloud
+    container_name: hermes_nextcloud
     restart: always
     networks: 
       - hermes_weagle
@@ -37,7 +37,7 @@ services:
   # split to data lib later
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: hermes_redis
     restart: always
     networks:
       - hermes_weagle
@@ -50,7 +50,7 @@ services:
 
   mariadb:
     image: mariadb
-    container_name: mariadb
+    container_name: hermes_mariadb
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
@@ -75,7 +75,7 @@ services:
   # split to office lib later
   collabora:
     image: collabora/code
-    container_name: collabora
+    container_name: hermes_collabora
     restart: unless-stopped
     networks:
       - hermes_weagle

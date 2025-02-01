@@ -2,7 +2,7 @@
 services:
   hermes_weagle:
     image: docker.io/traefik:latest #v2.5
-    container_name: traefik2
+    container_name: hermes_traefik
     ports:
       - target: 80
         published: 180
