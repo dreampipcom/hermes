@@ -1,6 +1,6 @@
 # hermes/mail
 services:
-  mailserver:
+  hermes_mail_mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
     container_name: hermes_mail_server
     hostname: ${HERMES_HOSTNAME}

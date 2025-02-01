@@ -1,6 +1,6 @@
 # hermes/ingress/manualtls/cluster(prod)
 services:
-  hermes_net_weagle:
+  hermes_ingress_weagle:
     image: docker.io/traefik:latest #v2.5
     container_name: hermes_ingress_traefik
     restart: always
@@ -32,12 +32,12 @@ services:
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  whoami:
+  hermes_ingress_whoami:
     image: traefik/whoami
     container_name: hermes_ingress_whoami
     restart: always
 
-  grafana:
+  hermes_ingress_grafana:
     image: grafana/grafana-oss
     container_name: hermes_ingress_grafana
     restart: always
@@ -62,7 +62,7 @@ services:
     dns:
       - ${HERMES_DNS_RESOLVER}
 
-  prometheus:
+  hermes_ingress_prometheus:
     image: prom/prometheus
     container_name: hermes_ingress_prometheus
     restart: always

@@ -1,5 +1,5 @@
 services:
-  weasels:
+  hermes_auth_ldap:
     image: bitnami/openldap:2
     container_name: hermes_auth_ldap
     environment:

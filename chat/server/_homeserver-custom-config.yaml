@@ -21,5 +21,5 @@ media_storage_providers:
   store_synchronous: True
   config:
     bucket: ${HERMES_CHAT_S3_BUCKET}
-    access_key_id: ${HERMES_S3_KEY}
-    secret_access_key: ${HERMES_S3_SECRET}
+    access_key_id: ${HERMES_CHAT_S3_KEY}
+    secret_access_key: ${HERMES_CHAT_S3_SECRET}

@@ -1,5 +1,5 @@
 services:
-  redis:
+  hermes_model_redis:
     image: redis:alpine
     container_name: hermes_model_redis
     restart: always
@@ -10,7 +10,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  mariadb:
+  hermes_model_mariadb:
     image: mariadb
     container_name: hermes_model_mariadb
     restart: always
@@ -32,7 +32,7 @@ services:
       - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
       - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
 
-  # postgres:
+  # hermes_model_postgres:
   #   container_name: hermes_model_postgres
   #   image: docker.io/postgres:12-alpine
   #   environment:
