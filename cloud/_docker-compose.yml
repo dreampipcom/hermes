@@ -6,6 +6,7 @@ services:
     restart: always
     networks: 
       - hermes_net_weagle
+      - hermes_net_model_cloud
     logging:
       options:
         max-size: "10m"
@@ -56,5 +57,9 @@ services:
 networks:
   hermes_net_weagle:
     name: hermes_net_weagle
+    driver: bridge
+    external: true
+  hermes_net_model_cloud:
+    name: hermes_net_model_cloud
     driver: bridge
     external: true

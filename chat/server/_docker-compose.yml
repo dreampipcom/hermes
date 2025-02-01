@@ -11,7 +11,7 @@ services:
     volumes:
       - ./files:/data:default
     depends_on:
-      - db
+      - hermes_model_mariadb
     ports:
       - ${HERMES_MATRIX_INTERNAL_PORT}:8448/tcp
     labels:
@@ -28,22 +28,9 @@ services:
       - traefik.http.services.synapse.loadbalancer.server.port=8008
       - traefik.http.routers.https-synapse.tls.certResolver=le-ssl
     networks:
-      default:
+      hermes_net_chat:
         ipv4_address: 10.10.10.4
-
-  # move to data layer
-  postgres:
-    container_name: hermes_chat_postgres
-    image: docker.io/postgres:12-alpine
-    environment:
-      - POSTGRES_USER=${HERMES_DB_USER}
-      - POSTGRES_PASSWORD=${HERMES_DB_PASS}
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
-    volumes:
-      - ./data:/var/lib/postgresql/data:default
-    networks:
-        default:
-          ipv4_address: 10.10.10.2
+      hermes_net_model_chat:
 
   # move to web clients
   element:
@@ -53,7 +40,7 @@ services:
     volumes:
       - ./element-config.json:/app/config.json
     networks:
-      default:
+      hermes_net_chat:
         ipv4_address: 10.10.10.3
 
   # bridge-whatsapp:
@@ -106,6 +93,15 @@ services:
   #     - ./data/bridge/discord:/data
 
 networks:
-  default:
-    external:
-      name: hermes_net_chat
+  hermes_net_weagle:
+    name: hermes_net_weagle
+    driver: bridge
+    external: true
+  hermes_net_chat:
+    name: hermes_net_chat
+    driver: bridge
+    external: true
+  hermes_net_model_chat:
+    name: hermes_net_model_chat
+    driver: bridge
+    external: true

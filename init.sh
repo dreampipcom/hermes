@@ -46,15 +46,47 @@ take () {
 }
 
 # docker setup
-log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
+log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_INGRESS_SUBNET \
   --gateway=$HERMES_INGRESS_GATEWAY \
   --attachable \
-  hermes_net_weagle
+  hermes_net_init
 
-log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
+log "dp::hermes::init::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_SUBNET \
+  --gateway=$HERMES_MODEL_GATEWAY \
+  --attachable \
+  hermes_net_model_all
+
+log "dp::hermes::init::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_SUBNET \
+  --gateway=$HERMES_MODEL_GATEWAY \
+  --attachable \
+  hermes_net_model_chat
+
+log "dp::hermes::init::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_SUBNET \
+  --gateway=$HERMES_MODEL_GATEWAY \
+  --attachable \
+  hermes_net_model_cloud
+
+log "dp::hermes::init::(busy)::creating Docker network."
+docker network create \
+  --driver bridge \
+  --subnet=$HERMES_MODEL_SUBNET \
+  --gateway=$HERMES_MODEL_GATEWAY \
+  --attachable \
+  hermes_net_model_auth
+
+log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_MAIL_SUBNET \
@@ -63,7 +95,7 @@ docker network create \
   hermes_net_mail
 
 # docker setup
-log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
+log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_CLOUD_SUBNET \
@@ -71,7 +103,7 @@ docker network create \
   --attachable \
   hermes_net_cloud
 
-log "dp::hermes::hermes_net_weagle::(busy)::creating Docker network."
+log "dp::hermes::init::(busy)::creating Docker network."
 docker network create \
   --driver bridge \
   --subnet=$HERMES_CHAT_SUBNET \

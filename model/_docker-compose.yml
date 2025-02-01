@@ -4,7 +4,7 @@ services:
     container_name: hermes_model_redis
     restart: always
     networks:
-      - hermes_net_cloud
+      - hermes_net_model_cloud
     logging:
       options:
         max-size: "10m"
@@ -16,7 +16,7 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
-      - hermes_net_cloud
+      - hermes_net_model_cloud
     logging:
       options:
         max-size: "10m"
@@ -32,30 +32,35 @@ services:
       - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
       - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
 
-  postgres:
-    container_name: hermes_model_postgres
-    image: docker.io/postgres:12-alpine
-    environment:
-      - POSTGRES_USER=${HERMES_DB_USER}
-      - POSTGRES_PASSWORD=${HERMES_DB_PASS}
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
-    volumes:
-      - ./data/postgres:/var/lib/postgresql/data:default
-    networks:
-        hermes_net_chat:
-          ipv4_address: 10.10.10.2
+  # postgres:
+  #   container_name: hermes_model_postgres
+  #   image: docker.io/postgres:12-alpine
+  #   environment:
+  #     - POSTGRES_USER=${HERMES_DB_USER}
+  #     - POSTGRES_PASSWORD=${HERMES_DB_PASS}
+  #     - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+  #   volumes:
+  #     - ./data/postgres:/var/lib/postgresql/data:default
+  #   networks:
+  #       hermes_net_modle_chat:
+  #         ipv4_address: 101.203.3.2
+
 
 networks:
   hermes_net_weagle:
     name: hermes_net_weagle
     driver: bridge
     external: true
-  hermes_net_chat:
-    name: hermes_net_chat
+  hermes_net_model_all:
+    name: hermes_net_model_all
     driver: bridge
     external: true
-  hermes_net_cloud:
-    name: hermes_net_cloud
+  hermes_net_model_chat:
+    name: hermes_net_model_chat
+    driver: bridge
+    external: true
+  hermes_net_model_cloud:
+    name: hermes_net_model_cloud
     driver: bridge
     external: true
   # radio:
