@@ -2,7 +2,7 @@ version: '3'
 
 services:
   synapse:
-    container_name: hermes_synapse
+    container_name: hermes_chat_synapse
     build: .
     restart: unless-stopped
     environment:
@@ -33,7 +33,7 @@ services:
 
   # move to data layer
   postgres:
-    container_name: hermes_postgres
+    container_name: hermes_chat_postgres
     image: docker.io/postgres:12-alpine
     environment:
       - POSTGRES_USER=${HERMES_DB_USER}
@@ -47,7 +47,7 @@ services:
 
   # move to web clients
   element:
-    container_name: hermes_element
+    container_name: hermes_chat_element
     image: vectorim/element-web:latest
     restart: unless-stopped
     volumes:
@@ -57,49 +57,49 @@ services:
         ipv4_address: 10.10.10.3
 
   # bridge-whatsapp:
-  #   container_name: hermes_whatsapp
+  #   container_name: hermes_chat_whatsapp
   #   image: dock.mau.dev/mautrix/whatsapp:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/whatsapp:/data
 
   # bridge-telegram:
-  #   container_name: hermes_telegram
+  #   container_name: hermes_chat_telegram
   #   image: dock.mau.dev/mautrix/telegram:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/telegram:/data
 
   # bridge-signal:
-  #   container_name: hermes_signal
+  #   container_name: hermes_chat_signal
   #   image: dock.mau.dev/mautrix/signal:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/signal:/data
 
   # bridge-slack:
-  #   container_name: hermes_slack
+  #   container_name: hermes_chat_slack
   #   image: dock.mau.dev/mautrix/slack:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/slack:/data
 
   # bridge-meta-messenger:
-  #   container_name: hermes_meta-messenger
+  #   container_name: hermes_chat_meta-messenger
   #   image: dock.mau.dev/mautrix/meta:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/meta/messenger:/data
 
   # bridge-meta-instagram:
-  #   container_name: hermes_meta-instagram
+  #   container_name: hermes_chat_meta-instagram
   #   image: dock.mau.dev/mautrix/meta:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/meta/instagram:/data
 
   # bridge-discord:
-  #   container_name: hermes_discord
+  #   container_name: hermes_chat_discord
   #   image: dock.mau.dev/mautrix/discord:latest
   #   restart: unless-stopped
   #   volumes:

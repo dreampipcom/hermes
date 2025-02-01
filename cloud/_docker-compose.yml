@@ -2,7 +2,7 @@
 services:
   nextcloud:
     image: nextcloud:fpm
-    container_name: hermes_nextcloud
+    container_name: hermes_cloud_nextcloud
     restart: always
     networks: 
       - hermes_net_weagle
@@ -34,48 +34,9 @@ services:
       - OBJECTSTORE_S3_KEY=${HERMES_CLOUD_S3_KEY}
       - OBJECTSTORE_S3_SECRET=${HERMES_CLOUD_S3_SECRET}
 
-  # split to data lib later
-  redis:
-    image: redis:alpine
-    container_name: hermes_redis
-    restart: always
-    networks:
-      - hermes_net_weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-
-  mariadb:
-    image: mariadb
-    container_name: hermes_mariadb
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    networks: 
-      - hermes_net_weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    volumes:
-      - ./data/db:/var/lib/mysql
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=UTC
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}
-      - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
-      - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-
-  # split to office lib later
   collabora:
     image: collabora/code
-    container_name: hermes_collabora
+    container_name: hermes_cloud_collabora
     restart: unless-stopped
     networks:
       - hermes_net_weagle
