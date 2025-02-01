@@ -3,6 +3,7 @@
 .env.*private
 _*/
 matrix/*
+
 chat/server/docker-compose.yml
 chat/server/element-config.json
 chat/server/files/
@@ -13,6 +14,7 @@ ingress/traefik.yml
 ingress/dynamic.yml
 ingress/prometheus.yml
 ingress/alertmanager.yml
+model/docker-compose.yml
 mail/docker-compose.yml
 auth/docker-compose.yml
 tmp.*
