@@ -22,30 +22,32 @@ entryPoints:
 http:
   routers:
     traefik:
+      entrypoints: websecure
       rule: "PathPrefix(`/_sre/dashboard`)"
+      tls: true
       service: "api@internal"
     grafana:
+      entrypoints: websecure
       rule: "PathPrefix(`/_sre/grafana`)"
       tls: true
       service: "grafana"
     prometheus:
+      entrypoints: websecure
       rule: "PathPrefix(`/_sre/prometheus`)"
       tls: true
       service: "prometheus"
     node-exporter:
+      entrypoints: websecure
       rule: "PathPrefix(`/_sre/node-exporter`)"
       tls: true
       service: "node-exporter"
   services:
     grafana:
       loadbalancer:
-        server:
           port: 3000
     prometheus:
       loadbalancer:
-        server:
           port: 9090
     node-exporter:
       loadbalancer:
-        server:
           port: 9100
