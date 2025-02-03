@@ -2,24 +2,6 @@
 global:
   checkNewVersion: true
 
-tls:
-  # options:
-  #   default:
-  #     sniStrict: true
-  stores:
-    default:
-      defaultCertificate:
-        certFile: "/etc/certs/${HERMES_CERT_FILE}"
-        keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
-  # certResolver: le-ssl
-  # domains:
-  #   main: ${HERMES_HOSTNAME}
-  certificates:
-    - certFile: "/etc/certs/${HERMES_CERT_FILE}"
-      keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
-      stores:
-        - default
-
 log:
   level: DEBUG
 
@@ -53,6 +35,20 @@ providers:
 #       httpChallenge:
 #         entryPoint:
 #           - web
+# - --certificatesResolvers.dns-cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory #LetsEncrypt Staging Server (uncomment when testing)
+# - --certificatesResolvers.dns-cloudflare.acme.email=$EMAIL
+# - --certificatesResolvers.dns-cloudflare.acme.storage=/acme.json
+# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
+# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.delayBeforeCheck=90
+
+#  ### HTTP Routers
+# - "traefik.http.routers.traefik-rtr.entrypoints=https"
+# - "traefik.http.routers.traefik-rtr.rule=Host(`traefik.$DOMAINNAME`)"
+# - "traefik.http.routers.traefik-rtr.tls=true"
+# - "traefik.http.routers.traefik-rtr.tls.certResolver=dns-cloudflare" #Comment out this line after first run of Traefik to force the use of wildcard certs
+# - "traefik.http.routers.traefik-rtr.tls.domains[0].main=$DOMAINNAME"
+# - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.$DOMAINNAME"
 
 entryPoints:
   web:
