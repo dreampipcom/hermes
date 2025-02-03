@@ -41,7 +41,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
+      - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
     networks:
       - hermes-net-weagle
@@ -60,7 +60,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+      - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
     networks:
       - hermes-net-weagle
