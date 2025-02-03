@@ -84,38 +84,38 @@ services:
   #   dns:
   #     - ${HERMES_DNS_RESOLVER}
 
-  hermes-ingress-prometheus:
-    image: prom/prometheus
-    container_name: hermes-ingress-prometheus
-    restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prometheus.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/metrics`)"
-      - "traefik.http.routers.prometheus.entrypoints=websecure"
-      - "traefik.http.routers.prometheus.tls=true"
-      - "traefik.http.routers.prometheus.service=prometheus"
-      - "traefik.http.middlewares.strippathprometheus.stripprefix.prefixes=/_sre/prometheus"
-      - "traefik.http.routers.prometheus.middlewares=strippathprometheus@docker"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
-    volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-      - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.size=768MB"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}09:9090/tcp"
+  # hermes-ingress-prometheus:
+  #   image: prom/prometheus
+  #   container_name: hermes-ingress-prometheus
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.prometheus.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/metrics`)"
+  #     - "traefik.http.routers.prometheus.entrypoints=websecure"
+  #     - "traefik.http.routers.prometheus.tls=true"
+  #     - "traefik.http.routers.prometheus.service=prometheus"
+  #     - "traefik.http.middlewares.strippathprometheus.stripprefix.prefixes=/_sre/prometheus"
+  #     - "traefik.http.routers.prometheus.middlewares=strippathprometheus@docker"
+  #     - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+  #   volumes:
+  #     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+  #     - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   command:
+  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  #     - "--storage.tsdb.path=/prometheus"
+  #     - "--storage.tsdb.retention.size=768MB"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   # ports:
+  #   #   - "${HERMES_PORT_PREFIX}09:9090/tcp"
 
   # hermes-ingress-node-exporter:
   #   image: prom/node-exporter
