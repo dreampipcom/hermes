@@ -6,18 +6,19 @@ tls:
   # options:
   #   default:
   #     sniStrict: true
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /etc/certs/${HERMES_CERT_FILE}
-        keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
+  # stores:
+  #   default:
+  #     defaultCertificate:
+  #       certFile: /etc/certs/${HERMES_CERT_FILE}
+  #       keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
+  certResolver: le-ssl
   domains:
     main: ${HERMES_HOSTNAME}
-  certificates:
-    - certFile: /etc/certs/${HERMES_CERT_FILE}
-      keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
-      stores:
-        - default
+  # certificates:
+  #   - certFile: /etc/certs/${HERMES_CERT_FILE}
+  #     keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
+  #     stores:
+  #       - default
 
 log:
   level: DEBUG
