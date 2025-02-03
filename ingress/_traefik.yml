@@ -47,7 +47,7 @@ certificateResolvers:
   le-ssl:
     acme:
       email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
-      storage: /etc/certs/acme.json
+      storage: acme.json
       httpchallenge:
         entryPoint:
           - web
