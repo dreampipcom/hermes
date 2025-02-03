@@ -1,7 +1,7 @@
   # Nextcloud
 services:
   hermes-cloud-nextcloud:
-    image: nextcloud:fpm
+    image: nextcloud
     container_name: hermes-cloud-nextcloud
     restart: always
     labels:
