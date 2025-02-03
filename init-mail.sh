@@ -82,9 +82,9 @@ else
 fi
 
 if [ "$1" == "setup:mailboxes" ]; then
-	for domain in ${HERMES_MAIL_//,/ }
+	for box in ${HERMES_MAIL_INITIAL_BOXES//,/ }
 	do
-	    setup_dns $domain
+	    setup_mailbox $box $HERMES_MAIL_INITIAL_BOXES_DEFAULT_PASSWORD
 	done
 else
 	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Mailboxes setup."
