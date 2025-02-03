@@ -30,8 +30,8 @@ services:
     labels:
         - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
         - "traefik.http.routers.traefik.entrypoints=websecure"
-        - "traefik.http.routers.traefik.service=api@internal"
         - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.routers.traefik.service=traefik"
         - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
   hermes-ingress-whoami:
@@ -43,6 +43,7 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.service=whoami"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks:
       - hermes-net-weagle
