@@ -10,6 +10,8 @@ services:
       - "traefik.http.routers.cloud.entrypoints=websecure"
       - "traefik.http.routers.cloud.tls=true"
       - "traefik.http.routers.cloud.service=cloud"
+      - "traefik.http.middlewares.strippathcloud.stripprefix.prefixes=/cloud"
+      - "traefik.http.routers.cloud.middlewares=strippathcloud@docker"
       - "traefik.http.services.cloud.loadbalancer.server.port=80"
     networks: 
       - hermes-net-weagle
