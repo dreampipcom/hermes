@@ -5,7 +5,7 @@ http:
       loadBalancer:
         passHostHeader: true
         servers:
-          - url: http://hermes-ingress-whoami:1423
+          - url: hermes-ingress-whoami:1423
     p3000:
       loadBalancer:
         passHostHeader: true
