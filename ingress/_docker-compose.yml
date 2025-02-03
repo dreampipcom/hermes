@@ -94,7 +94,7 @@ services:
       - "traefik.http.routers.prometheus.entrypoints=websecure"
       - "traefik.http.routers.prometheus.tls=true"
       - "traefik.http.routers.prometheus.service=prometheus"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=80"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
     volumes:
       - "./prometheus.yml:/etc/prometheus/prometheus.yml"
       - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
