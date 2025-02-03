@@ -45,14 +45,10 @@ take () {
 }
 
 setup_dns () {
-	if [ "$1" == "setup:dns" ]; then
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DNS Setup: Generating DKIMS." 2
 		docker exec -it hermes-mail-server setup config dkim domain $1
 		docker exec -it hermes-mail-server cat /tmp/docker-mailserver/opendkim/keys/$1/mail.txt >> ZONEFILE.$1.private
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DKIM generated, check the ZONEFILE for this domain in the dir system." 0
-	else
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
-	fi
 }
 
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
@@ -70,9 +66,13 @@ cd mail
 docker compose up -d
 cd $root_dir
 
-for domain in ${HERMES_MAIL_DOMAINS//,/ }
-do
-    setup_dns $domain
-done
+if [ "$1" == "setup:dns" ]; then
+	for domain in ${HERMES_MAIL_DOMAINS//,/ }
+	do
+	    setup_dns $domain
+	done
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+fi
 
 log "dp::hermes::mail::(idle)::all good." 0
