@@ -53,7 +53,7 @@ setup_dns () {
 
 setup_mailbox () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Creating initial mailboxes." 2
-		docker exec -it hermes-mail-mailserver setup email add $1 $2
+		docker exec -it hermes-mail-mailserver setup email add $1@$HERMES_APEX $2
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
 }
 
