@@ -60,5 +60,12 @@ cd mail
 docker compose up -d
 cd $root_dir
 
+# ENABLE_OPENDKIM=1 (default):
+docker exec -it hermes-mail-server setup config dkim domain ${HERMES_MAIL_DOMAINS}
+
+# ENABLE_RSPAMD=1 + ENABLE_OPENDKIM=0:
+# docker exec -it hermes-mail-server setup config dkim domain example.com
+# docker exec -it hermes-mail-server setup config dkim domain another-example.com
+
 
 log "dp::hermes::mail::(idle)::all good." 0
