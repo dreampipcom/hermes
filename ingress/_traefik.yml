@@ -9,14 +9,14 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /etc/certs/${HERMES_CERT_FILE}
-        keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
+        certFile: "/etc/certs/${HERMES_CERT_FILE}"
+        keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
   # certResolver: le-ssl
   # domains:
   #   main: ${HERMES_HOSTNAME}
   certificates:
-    - certFile: /etc/certs/${HERMES_CERT_FILE}
-      keyFile: /etc/certs/${HERMES_CERT_KEY_FILE}
+    - certFile: "/etc/certs/${HERMES_CERT_FILE}"
+      keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
       stores:
         - default
 
@@ -44,15 +44,15 @@ providers:
   #   fileName: /etc/traefik/dynamic.yml
   #   watch: true
 
-certificateResolvers:
-  le-ssl:
-    acme:
-      tlsChallenge: {}
-      email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
-      storage: /etc/traefik/acme/acme.json
-      httpChallenge:
-        entryPoint:
-          - web
+# certificateResolvers:
+#   le-ssl:
+#     acme:
+#       tlsChallenge: {}
+#       email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
+#       storage: etc/traefik/acme/acme.json
+#       httpChallenge:
+#         entryPoint:
+#           - web
 
 entryPoints:
   web:
