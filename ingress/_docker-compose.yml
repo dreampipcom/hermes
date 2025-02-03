@@ -5,8 +5,18 @@ services:
     container_name: hermes-ingress-traefik
     restart: always
     ports:
+      # web
       - "80:80"
       - "443:443"
+      # mail
+      - "25:25"
+      - "587:587"
+      - "465:465"
+      - "143:143"
+      - "993:993"
+      - "110:110"
+      - "995:995"
+      - "4190:4190"
       # - "8080:8080"
       # - target: 80
       #   published: 80

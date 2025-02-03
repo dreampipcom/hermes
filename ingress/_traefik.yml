@@ -55,3 +55,17 @@ entryPoints:
   websecure:
     asDefault: true
     address: :443
+  smtp:
+    address: :25
+  submissions:
+    address: :587
+  imap:
+    address: :143
+  imaps:
+    address: :993
+  pop3:
+    address: :110
+  pop3s:
+    address: :995
+  sieve:
+    address: :4190
