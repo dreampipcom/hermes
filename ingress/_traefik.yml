@@ -47,9 +47,10 @@ providers:
 certificateResolvers:
   le-ssl:
     acme:
+      tlsChallenge: {}
       email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
       storage: /etc/traefik/acme/acme.json
-      httpchallenge:
+      httpChallenge:
         entryPoint:
           - web
 
