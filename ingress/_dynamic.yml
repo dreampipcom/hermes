@@ -1,7 +1,7 @@
 # hermes/ingress/traefik/dynamic(fqdn)
 http:
   services:
-    p1423:
+    whoami:
       loadBalancer:
         servers:
           - url: http://localhost:1423
@@ -28,7 +28,7 @@ http:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       tls: {}
-      service: "hermes-ingress-whoami@docker"
+      service: "whoami"
     grafana:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"

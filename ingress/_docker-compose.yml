@@ -34,9 +34,9 @@ services:
     image: traefik/whoami
     container_name: hermes-ingress-whoami
     restart: always
-    labels:
-      - "traefik.enable=true"
-      - "--port=1423"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "--port=1423"
     networks:
       - hermes-net-weagle
     environment:
