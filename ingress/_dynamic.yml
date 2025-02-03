@@ -3,22 +3,18 @@ http:
   services:
     p1423:
       loadBalancer:
-        passHostHeader: true
         servers:
           - url: http://localhost:1423
     p3000:
       loadBalancer:
-        passHostHeader: true
         servers:
           - url: http://localhost:3000
     p9090:
       loadBalancer:
-        passHostHeader: true
         servers:
           - url: http://localhost:9090
     p9100:
       loadBalancer:
-        passHostHeader: true
         servers:
           - url: http://localhost:9100
 
@@ -32,7 +28,7 @@ http:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       tls: {}
-      service: "p1423"
+      service: "whoami@docker"
     grafana:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
