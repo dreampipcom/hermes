@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      # - "8080:8080"
       # - target: 80
       #   published: 80
       #   mode: host
@@ -25,13 +25,13 @@ services:
       - "../certs/data:/etc/certs/"
       - "./data:/data"
       - "./traefik.yml:/etc/traefik/traefik.yml"
-      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      # - "./dynamic.yml:/etc/traefik/dynamic.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    labels:
-        - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
-        - "traefik.http.routers.traefik.entrypoints=websecure"
-        - "traefik.http.routers.traefik.service=api@internal"
-        - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+    # labels:
+    #     - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
+    #     - "traefik.http.routers.traefik.entrypoints=websecure"
+    #     - "traefik.http.routers.traefik.service=api@internal"
+    #     - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
   hermes-ingress-whoami:
     image: traefik/whoami

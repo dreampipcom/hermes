@@ -39,9 +39,9 @@ providers:
     network: hermes-net-weagle
     exposedByDefault: false
     watch: true
-  file:
-    fileName: /etc/traefik/dynamic.yml
-    watch: true
+  # file:
+  #   fileName: /etc/traefik/dynamic.yml
+  #   watch: true
 
 entryPoints:
   web:
