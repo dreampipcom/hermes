@@ -60,8 +60,8 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.grafana.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
     networks:
       - hermes-net-weagle
     logging:
