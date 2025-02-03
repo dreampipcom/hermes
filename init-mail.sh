@@ -46,14 +46,14 @@ take () {
 
 setup_dns () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DNS Setup: Generating DKIMS." 2
-		docker exec -it hermes-mail-server setup config dkim domain $1
-		docker exec -it hermes-mail-server cat /tmp/docker-mailserver/opendkim/keys/$1/mail.txt >> ZONEFILE.$1.private
+		docker exec -it hermes-mail-mailserver setup config dkim domain $1
+		docker exec -it hermes-mail-mailserver cat /tmp/docker-mailserver/opendkim/keys/$1/mail.txt >> ZONEFILE.$1.private
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DKIM generated, check the ZONEFILE for this domain in the dir system." 0
 }
 
 setup_mailbox () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Creating initial mailboxes." 2
-		docker exec -it hermes-mail-server setup email add $1 $2
+		docker exec -it hermes-mail-mailserver setup email add $1 $2
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
 }
 
