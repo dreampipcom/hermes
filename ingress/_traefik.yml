@@ -29,12 +29,16 @@ providers:
 certificateResolvers:
   le-ssl:
     acme:
-      tlsChallenge: {}
+      dnsChallenge:
+        provider: cloudflare
+        resolvers: 1.1.1.1:53,1.0.0.1:53
+        delayBeforeCheck: 90
       email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
-      storage: etc/traefik/acme/acme.json
-      httpChallenge:
-        entryPoint:
-          - web
+      storage: "/etc/traefik/acme/acme.json"
+      # httpChallenge:
+      #   entryPoint:
+      #     - web
+      # tlsChallenge: {}
 # - --certificatesResolvers.dns-cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory #LetsEncrypt Staging Server (uncomment when testing)
 # - --certificatesResolvers.dns-cloudflare.acme.email=$EMAIL
 # - --certificatesResolvers.dns-cloudflare.acme.storage=/acme.json
