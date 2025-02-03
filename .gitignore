@@ -1,6 +1,8 @@
 .DS_Store
 .env
-.env.*private
+*.private
+
+
 _*/
 matrix/*
 
