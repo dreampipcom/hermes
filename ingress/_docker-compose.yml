@@ -21,8 +21,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    command:
-      - "--providers.docker"
     volumes:
       - "../certs/data:/etc/certs/"
       - "./data:/data"
