@@ -1,4 +1,4 @@
-#!/bin/bash
+
 # init 0 (shutdown)
 #
 # SCRAPBOOK: PRAGMA: EZSH SHELL PRAGMA DRAFT: Ergonomika ZSH: As an abstraction: e.g. I can reboot docker containers and perceive visual comfortable progress instead of crazy matrix logs, and interact with the real/physical world, all while glancing at my terminal and feeling psychologically safe that there is perceivable made progress.
@@ -64,8 +64,8 @@ docker rm hermes-model-redis hermes-model-mariadb hermes-model-postgres # to sor
 cd $root_dir
 
 cd mail
-docker stop hermes-mail-server
-docker rm hermes-mail-server
+docker stop hermes-mail-mailserver
+docker rm hermes-mail-mailserver
 cd $root_dir
 
 cd cloud
