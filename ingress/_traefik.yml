@@ -49,7 +49,6 @@ certificateResolvers:
       email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
       storage: /etc/certs/acme.json
       httpchallenge:
-        - true
         entryPoint:
           - web
 
