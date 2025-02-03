@@ -36,6 +36,7 @@ metrics:
 
 providers:
   docker:
+    network: hermes-net-weagle
     exposedByDefault: false
     watch: true
   file:
@@ -50,6 +51,6 @@ entryPoints:
         entryPoint:
           to: websecure
           scheme: https
-          permanent: false
+          permanent: true
   websecure:
     address: :443

@@ -37,6 +37,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "--port=1423"
+    networks:
+      - hermes-net-weagle
     environment:
       WHOAMI_PORT_NUMBER: 1423
     # traefik ignores ports,
