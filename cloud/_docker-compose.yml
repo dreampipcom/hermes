@@ -4,6 +4,7 @@ services:
     image: nextcloud:fpm
     container_name: hermes-cloud-nextcloud
     restart: always
+    labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cloud.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/cloud`)"
       - "traefik.http.routers.cloud.entrypoints=websecure"
