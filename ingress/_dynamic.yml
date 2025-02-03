@@ -28,7 +28,7 @@ http:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       tls: {}
-      service: "whoami@docker"
+      service: "hermes-ingress-whoami@docker"
     grafana:
       entryPoints: websecure
       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
