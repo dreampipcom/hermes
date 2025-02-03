@@ -88,7 +88,7 @@ services:
       - ./data/dms/config/:/tmp/docker-mailserver/
       - /etc/localtime:/etc/localtime:ro
     environment:
-      SSL_TYPE: ${HERMES_CERT_TYPE}
+      SSL_TYPE: ${HERMES_MAIL_CERT_TYPE}
       SSL_DOMAIN: ${HERMES_APEX}
       SSL_CERT_PATH: /tmp/dms/custom-certs/${HERMES_CERT_FILE}
       SSL_KEY_PATH: /tmp/dms/custom-certs/${HERMES_CERT_KEY_FILE}
