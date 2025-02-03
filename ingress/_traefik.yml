@@ -39,7 +39,7 @@ providers:
     exposedByDefault: false
     watch: true
   file:
-    fileName: /etc/traefik/dynamic.yml
+    fileName: /etc/traefik
     watch: true
 
 entryPoints:
