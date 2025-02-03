@@ -43,6 +43,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.services.whoami.loadbalancer.server.port=1423"
     networks:
       - hermes-net-weagle
     environment:
@@ -62,6 +63,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
       - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     networks:
       - hermes-net-weagle
     logging:
