@@ -60,8 +60,8 @@ log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Daegis (Databases)." 2
 # log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Drew: (Auth)." 2
 # ./init-auth.sh
 
-# log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Aemilia: (Mail)." 2
-# ./init-mail.sh
+log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Aemilia: (Mail)." 2
+./init-mail.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Claudia: (Storage, Calendar, MWC)." 2
 ./init-cloud.sh
