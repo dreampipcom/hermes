@@ -51,6 +51,12 @@ setup_dns () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DKIM generated, check the ZONEFILE for this domain in the dir system." 0
 }
 
+setup_mailbox () {
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Creating initial mailboxes." 2
+		docker exec -it hermes-mail-server setup email add $1 $2
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
+}
+
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
@@ -73,6 +79,15 @@ if [ "$1" == "setup:dns" ]; then
 	done
 else
 	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+fi
+
+if [ "$1" == "setup:mailboxes" ]; then
+	for domain in ${HERMES_MAIL_//,/ }
+	do
+	    setup_dns $domain
+	done
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Mailboxes setup."
 fi
 
 log "dp::hermes::mail::(idle)::all good." 0
