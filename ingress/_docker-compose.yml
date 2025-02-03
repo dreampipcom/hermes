@@ -39,6 +39,10 @@ services:
     image: traefik/whoami
     container_name: hermes-ingress-whoami
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
     networks:
       - hermes-net-weagle
     environment:
@@ -49,10 +53,6 @@ services:
     #   - "${HERMES_PORT_PREFIX}99:1423/tcp"
     dns:
       - ${HERMES_DNS_RESOLVER}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
 
   hermes-ingress-grafana:
     image: grafana/grafana-oss
@@ -60,6 +60,8 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
     networks:
       - hermes-net-weagle
     logging:
@@ -78,10 +80,6 @@ services:
     #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
     dns:
       - ${HERMES_DNS_RESOLVER}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule: Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
 
   # hermes-ingress-prometheus:
   #   image: prom/prometheus
