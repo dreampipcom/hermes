@@ -33,8 +33,8 @@ services:
         max-file: "3"
     volumes:
       - "../certs/data:/etc/certs/"
-      - "./data/acme.json:acme.json"
       - "./data:/data"
+      - "./data/acme/:/etc/traefik/acme"
       - "./traefik.yml:/etc/traefik/traefik.yml"
       # - "./dynamic.yml:/etc/traefik/dynamic.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
