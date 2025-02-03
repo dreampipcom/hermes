@@ -41,11 +41,12 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.services.whoami.loadbalancer.server.port=1423"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks:
       - hermes-net-weagle
-    environment:
-      WHOAMI_PORT_NUMBER: 1423
+    # environment:
+    #   WHOAMI_PORT_NUMBER: 1423
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     # ports:
@@ -53,33 +54,33 @@ services:
     dns:
       - ${HERMES_DNS_RESOLVER}
 
-  hermes-ingress-grafana:
-    image: grafana/grafana-oss
-    container_name: hermes-ingress-grafana
-    restart: always
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-    networks:
-      - hermes-net-weagle
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
-      GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
-      GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
-      GF_USERS_ALLOW_SIGN_UP: 'false'
-      GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
-    # traefik ignores ports,
-    # keep it for k8s/helm charts only. 
-    # ports:
-    #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
-    dns:
-      - ${HERMES_DNS_RESOLVER}
+  # hermes-ingress-grafana:
+  #   image: grafana/grafana-oss
+  #   container_name: hermes-ingress-grafana
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.grafana.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+  #     - "traefik.http.routers.grafana.entrypoints=websecure"
+  #     - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   environment:
+  #     GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
+  #     GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
+  #     GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
+  #     GF_USERS_ALLOW_SIGN_UP: 'false'
+  #     GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   # ports:
+  #   #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
 
   # hermes-ingress-prometheus:
   #   image: prom/prometheus
