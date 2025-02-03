@@ -43,6 +43,8 @@ services:
     # keep it for k8s/helm charts only. 
     # ports:
     #   - "${HERMES_PORT_PREFIX}99:1423/tcp"
+    dns:
+      - ${HERMES_DNS_RESOLVER}
 
   # hermes-ingress-grafana:
   #   image: grafana/grafana-oss
