@@ -72,8 +72,7 @@ cd $root_dir
 
 for domain in ${HERMES_MAIL_DOMAINS//,/ }
 do
-    # call your procedure/other scripts here below
-    echo setup_dns $domain
+    setup_dns $domain
 done
 
 log "dp::hermes::mail::(idle)::all good." 0
