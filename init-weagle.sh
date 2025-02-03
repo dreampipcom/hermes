@@ -78,8 +78,11 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 
 # dir setup
-# log "dp::hermes::${HERMES_ENV}::ingress::(busy):: Adding .PEM certificates (CA)." 2
-# cp ./certs/data/* ./ingress/data/certs
+log "dp::hermes::${HERMES_ENV}::ingress::(busy):: Adding .PEM certificates (CA)." 2
+cp ./certs/data/.env.*cert*.private ./ingress/data/certs
+cd ingress/data/certs
+for file in .env.cert.*; do cp -a "$file" "${file%%.private}";done;
+for file in .env.cert.*; do cp -a "$file" "${file#.env.cert.}";done;
 cd $root_dir
 
 take 5 "dp::hermes::${HERMES_ENV}::ingress::(busy):: Launching Docker Compose Swarms."
