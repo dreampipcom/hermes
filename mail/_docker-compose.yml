@@ -2,7 +2,7 @@
 services:
   hermes-mail-mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
-    container_name: hermes-mail-server
+    container_name: hermes-mail-mailserver
     hostname: ${HERMES_HOSTNAME}
     restart: always
     labels:
@@ -15,7 +15,7 @@ services:
       # - "traefik.http.middlewares.strippathmail.stripprefix.prefixes=/mail"
       # - "traefik.http.routers.mail.middlewares=strippathmail@docker"
       # - "traefik.http.services.mail.loadbalancer.server.port=80"
-      
+
       # TCP: port layer 6 switch
       #- traefik.tcp.routers.mail-submissions.rule=HostSNI(`mail.example.com`)
       #- traefik.tcp.routers.mail-submissions.tls.passthrough=true
