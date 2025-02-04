@@ -43,14 +43,6 @@ http:
       headers:
         customResponseHeaders:
           Strict-Transport-Security: "max-age=63072000"
-  # routers:
-  #   hsts:
-  #     rule: "Host(`${HERMES_HOSTNAME}`)"
-  #     service: ""
-  #     middlewares:
-  #       - hsts
-  #     tls:
-  #       options: intermediate
 
 #   services:
 #     whoami:
@@ -70,7 +62,14 @@ http:
 #         servers:
 #           - url: http://localhost:9100
 
-#   routers:
+routers:
+  hsts:
+    rule: "Host(`${HERMES_HOSTNAME}`)"
+    service: ""
+    middlewares:
+      - hsts
+    tls:
+      options: intermediate
 #     traefik:
 #       entryPoints: websecure
 #       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
