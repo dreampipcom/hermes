@@ -8,9 +8,9 @@ tls:
       defaultCertificate:
         certFile: "/etc/certs/${HERMES_CERT_FILE}"
         keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
-  # certResolver: le-ssl
-  # domains:
-  #   main: ${HERMES_HOSTNAME}
+  certResolver: le-ssl
+  domains:
+    main: ${HERMES_HOSTNAME}
   certificates:
     - certFile: "/etc/certs/${HERMES_CERT_FILE}"
       keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"

@@ -22,12 +22,12 @@ providers:
     network: hermes-net-weagle
     exposedByDefault: false
     watch: true
-  file:
-    fileName: /etc/traefik/traefik.yml
-    watch: true
   # file:
-  #   fileName: /etc/traefik/dynamic.yml
+  #   fileName: /etc/traefik/traefik.yml
   #   watch: true
+  file:
+    fileName: /etc/traefik/dynamic.yml
+    watch: true
 
 certificateResolvers:
   le-ssl:
