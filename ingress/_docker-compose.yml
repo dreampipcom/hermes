@@ -31,6 +31,9 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    environment:
+      CF_API_EMAIL: ${HERMES_CLOUDFLARE_EMAIL}
+      CF_API_KEY: ${HERMES_CLOUDFLARE_API_KEY}
     volumes:
       - "../certs/data:/etc/certs/"
       - "../certs/acme/:/etc/traefik/acme"
