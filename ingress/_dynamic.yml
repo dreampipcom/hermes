@@ -1,4 +1,6 @@
 # hermes/ingress/traefik/dynamic(fqdn)
+# https://ssl-config.mozilla.org/#server=traefik&version=3.4.0&config=intermediate&guideline=5.6
+
 tls:
   options:
     modern:
@@ -33,31 +35,17 @@ tls:
       stores:
         - default
 
-# [http.routers]
-#   [http.routers.router-secure]
-#     rule = "Host(`example.com`)"
-#     service = "service-id"
-#     middlewares = ["hsts-header"]
-
-#     [http.routers.router-secure.tls]
-#       options = "modern"
-
-#   [http.routers.router-insecure]
-#     rule = "Host(`example.com`)"
-#     service = "service-id"
-#     middlewares = ["redirect-to-https", "hsts-header"]
-
-# [http.middlewares]
-#   [http.middlewares.redirect-to-https.redirectScheme]
-#     scheme = "https"
-#   [http.middlewares.hsts-header.headers]
-#     [http.middlewares.hsts-header.headers.customResponseHeaders]
-#       Strict-Transport-Security = "max-age=63072000"
-
 http:
+  middlewares:
+    enforce-https:
+      scheme: "https"
+    hsts:
+      headers:
+        customResponseHeaders:
+          Strict-Transport-Security: "max-age=63072000"
   routers:
     hsts:
-      rule: "Host(`${HERMES_HOSTNAME`)"
+      rule: "Host(`${HERMES_HOSTNAME}`)"
       service: ""
       middlewares:
         - hsts
