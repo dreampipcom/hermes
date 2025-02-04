@@ -25,7 +25,7 @@ log:
 accesslog: true
 
 api:
-  insecure: true
+  insecure: false
   dashboard: true
 
 ping: {}
