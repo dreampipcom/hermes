@@ -1,22 +1,69 @@
-# # hermes/ingress/traefik/dynamic(fqdn)
+# hermes/ingress/traefik/dynamic(fqdn)
 tls:
-  # options:
-  #   default:
-  #     sniStrict: true
+  options:
+    modern:
+      minVersion: VersionTLS13
+      curvePreferences:
+        - "X25519"
+        - "CurveP256"
+        - "CurveP384"
+    intermediate:
+      minVersion: VersionTLS12
+      curvePreferences:
+        - "X25519"
+        - "CurveP256"
+        - "CurveP384"
+      cipherSuites:
+        - "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305"
+        - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+    default:
+      sniStrict: true
   stores:
     default:
       defaultCertificate:
         certFile: "/etc/certs/${HERMES_CERT_FILE}"
         keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
-  # certResolver: le-ssl
-  # domains:
-  #   main: ${HERMES_HOSTNAME}
   certificates:
     - certFile: "/etc/certs/${HERMES_CERT_FILE}"
       keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
       stores:
         - default
-# http:
+
+# [http.routers]
+#   [http.routers.router-secure]
+#     rule = "Host(`example.com`)"
+#     service = "service-id"
+#     middlewares = ["hsts-header"]
+
+#     [http.routers.router-secure.tls]
+#       options = "modern"
+
+#   [http.routers.router-insecure]
+#     rule = "Host(`example.com`)"
+#     service = "service-id"
+#     middlewares = ["redirect-to-https", "hsts-header"]
+
+# [http.middlewares]
+#   [http.middlewares.redirect-to-https.redirectScheme]
+#     scheme = "https"
+#   [http.middlewares.hsts-header.headers]
+#     [http.middlewares.hsts-header.headers.customResponseHeaders]
+#       Strict-Transport-Security = "max-age=63072000"
+
+http:
+  routers:
+    hsts:
+      rule: "Host(`${HERMES_HOSTNAME`)"
+      service: ""
+      middlewares:
+        - hsts
+      tls:
+        options: intermediate
+
 #   services:
 #     whoami:
 #       loadBalancer:

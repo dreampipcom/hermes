@@ -17,7 +17,8 @@ services:
       - "110:110"
       - "995:995"
       - "4190:4190"
-      # - "8080:8080"
+      # dashboard
+      - "8080:8080"
       # - target: 80
       #   published: 80
       #   mode: host
