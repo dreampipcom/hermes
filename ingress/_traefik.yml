@@ -13,6 +13,12 @@ certificateResolvers:
         resolvers: 1.1.1.1:53,1.0.0.1:53
         delayBeforeCheck: 10
 
+# apps might not provide a valid certificate to Traefik.
+# the user mostly needs to encrypt until Traefik.
+# (no mTLS use-case in the roadmap).
+serversTransport:
+  insecureSkipVerify: true
+
 log:
   level: DEBUG
 
