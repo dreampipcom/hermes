@@ -30,9 +30,9 @@ api:
 
 ping: {}
 
-metrics:
-  prometheus:
-    buckets: 0.1,0.3,1.2,5.0
+# metrics:
+#   prometheus:
+#     buckets: 0.1,0.3,1.2,5.0
 
 providers:
   docker:
@@ -85,7 +85,7 @@ entryPoints:
       trustedIPs: *cloudflareIPs
     http:
       tls:
-        certResolver: letsencrypt
+        certResolver: letsencrypt # cf uses le
         domains:
           - main: ${HERMES_HOSTNAME}
             sans:
