@@ -37,20 +37,20 @@ tls:
 
 http:
   middlewares:
-    enforce-https:
+    fn-https:
       scheme: "https"
-    hsts:
+    fn-hsts:
       headers:
         customResponseHeaders:
           Strict-Transport-Security: "max-age=63072000"
-  routers:
-    hsts:
-      rule: "Host(`${HERMES_HOSTNAME}`)"
-      service: ""
-      middlewares:
-        - hsts
-      tls:
-        options: intermediate
+  # routers:
+  #   hsts:
+  #     rule: "Host(`${HERMES_HOSTNAME}`)"
+  #     service: ""
+  #     middlewares:
+  #       - hsts
+  #     tls:
+  #       options: intermediate
 
 #   services:
 #     whoami:
