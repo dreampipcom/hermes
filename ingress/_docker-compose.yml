@@ -36,7 +36,7 @@ services:
       - "../certs/acme/:/etc/traefik/acme"
       - "./data:/data"
       - "./traefik.yml:/etc/traefik/traefik.yml"
-      # - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     # labels:
     #     - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
