@@ -2,6 +2,17 @@
 global:
   checkNewVersion: true
 
+certificateResolvers:
+  le-ssl:
+    acme:
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
+      storage: "/etc/traefik/acme/acme.json"
+      dnsChallenge:
+        provider: cloudflare
+        resolvers: 1.1.1.1:53,1.0.0.1:53
+        delayBeforeCheck: 10
+
 log:
   level: DEBUG
 
@@ -9,7 +20,7 @@ accesslog: true
 
 api:
   insecure: false
-  dashboard: true
+  dashboard: false
 
 ping: {}
 
@@ -22,41 +33,9 @@ providers:
     network: hermes-net-weagle
     exposedByDefault: false
     watch: true
-  # file:
-  #   fileName: /etc/traefik/traefik.yml
-  #   watch: true
   file:
     fileName: /etc/traefik/dynamic.yml
     watch: true
-
-certificateResolvers:
-  le-ssl:
-    acme:
-      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
-      dnsChallenge:
-        provider: cloudflare
-        resolvers: 1.1.1.1:53,1.0.0.1:53
-        delayBeforeCheck: 1-
-      email: ${HERMES_ROOT_HANDLE}@${HERMES_MAIL_MAIN_HOSTNAME}
-      storage: "/etc/traefik/acme/acme.json"
-      # httpChallenge:
-      #   entryPoint:
-      #     - web
-      # tlsChallenge: {}
-# - --certificatesResolvers.dns-cloudflare.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory #LetsEncrypt Staging Server (uncomment when testing)
-# - --certificatesResolvers.dns-cloudflare.acme.email=$EMAIL
-# - --certificatesResolvers.dns-cloudflare.acme.storage=/acme.json
-# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
-# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
-# - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.delayBeforeCheck=90
-
-#  ### HTTP Routers
-# - "traefik.http.routers.traefik-rtr.entrypoints=https"
-# - "traefik.http.routers.traefik-rtr.rule=Host(`traefik.$DOMAINNAME`)"
-# - "traefik.http.routers.traefik-rtr.tls=true"
-# - "traefik.http.routers.traefik-rtr.tls.certResolver=dns-cloudflare" #Comment out this line after first run of Traefik to force the use of wildcard certs
-# - "traefik.http.routers.traefik-rtr.tls.domains[0].main=$DOMAINNAME"
-# - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.$DOMAINNAME"
 
 entryPoints:
   web:
