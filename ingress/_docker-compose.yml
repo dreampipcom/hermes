@@ -35,11 +35,11 @@ services:
       CF_API_EMAIL: ${HERMES_CLOUDFLARE_EMAIL}
       CF_API_KEY: ${HERMES_CLOUDFLARE_API_KEY}
     volumes:
-      - "../certs/data:/etc/certs/"
-      - "../certs/acme/:/etc/traefik/acme"
+      - "../certs/data:/etc/certs/:ro"
+      - "../certs/acme/acme.json:/etc/traefik/acme/acme.json"
       - "./data:/data"
-      - "./traefik.yml:/etc/traefik/traefik.yml"
-      - "./dynamic.yml:/etc/traefik/dynamic.yml"
+      - "./traefik.yml:/etc/traefik/traefik.yml:ro"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     # labels:
     #     - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
