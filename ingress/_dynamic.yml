@@ -38,7 +38,8 @@ tls:
 http:
   middlewares:
     fn-https:
-      scheme: "https"
+      redirectscheme: 
+        scheme: "https"
     fn-hsts:
       headers:
         customResponseHeaders:
