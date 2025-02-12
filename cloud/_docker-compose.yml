@@ -2,6 +2,7 @@
 services:
   hermes-cloud-nextcloud:
     image: nextcloud
+    hostname: ${HERMES_HOSTNAME}
     container_name: hermes-cloud-nextcloud
     restart: always
     labels:
