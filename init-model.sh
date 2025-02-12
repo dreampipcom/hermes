@@ -2,6 +2,7 @@
 # init emailia
 echo -e "\033[0;62m\033[0;49;35m"
 set -a && source .env.common.private && set +a
+set -a && source .env.cloud.private && set +a
 set -a && source .env.model.private && set +a
 root_dir="$(pwd)"
 
