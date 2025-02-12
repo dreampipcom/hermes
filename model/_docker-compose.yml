@@ -11,8 +11,8 @@ services:
         max-file: "3"
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}16:6379/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}16:6379/tcp"
 
   hermes-model-mariadb:
     image: mariadb
@@ -37,8 +37,8 @@ services:
       - MYSQL_USER=${HERMES_CLOUD_DB_USER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}17:3306/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}17:3306/tcp"
 
   hermes-model-postgres:
     image: docker.io/postgres:12-alpine
@@ -54,8 +54,8 @@ services:
       - ./data/postgres:/var/lib/postgresql/data:default
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
-    ports:
-      - "${HERMES_PORT_PREFIX}18:5432/tcp"
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}18:5432/tcp"
 
 
 networks:
