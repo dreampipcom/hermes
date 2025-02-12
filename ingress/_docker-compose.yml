@@ -1,0 +1,192 @@
+# hermes/ingress/manualtls/cluster(prod)
+services:
+  hermes-ingress-traefik:
+    image: docker.io/traefik:latest
+    container_name: hermes-ingress-traefik
+    restart: always
+    ports:
+      # web
+      - "80:80"
+      - "443:443"
+      # mail
+      - "25:25"
+      - "587:587"
+      - "465:465"
+      - "143:143"
+      - "993:993"
+      - "110:110"
+      - "995:995"
+      - "4190:4190"
+      # dashboard
+      - "8080:8080"
+      # - target: 80
+      #   published: 80
+      #   mode: host
+      # - target: 443
+      #   published: 443
+      #   mode: host
+    networks:
+      hermes-net-weagle:
+          ipv4_address: ${HERMES_DNS_RESOLVER}
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      CF_API_EMAIL: ${HERMES_CLOUDFLARE_EMAIL}
+      CF_API_KEY: ${HERMES_CLOUDFLARE_API_KEY}
+    volumes:
+      - "../certs/data:/etc/certs/:ro"
+      - "${PWD}/certs/acme/acme.json:/etc/traefik/acme/acme.json"
+      - "./data:/data"
+      - "./traefik.yml:/etc/traefik/traefik.yml:ro"
+      - "./dynamic.yml:/etc/traefik/dynamic.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    # labels:
+    #     - "traefik.http.routers.traefik.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
+    #     - "traefik.http.routers.traefik.entrypoints=websecure"
+    #     - "traefik.http.routers.traefik.tls=true"
+    #     - "traefik.http.routers.traefik.service=traefik"
+    #     - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+
+  hermes-ingress-whoami:
+    image: traefik/whoami
+    container_name: hermes-ingress-whoami
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.service=whoami"
+      - "traefik.http.routers.whoami.tls.certResolver=le-ssl"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+    networks:
+      - hermes-net-weagle
+    # environment:
+    #   WHOAMI_PORT_NUMBER: 1423
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
+    # ports:
+    #   - "${HERMES_PORT_PREFIX}99:1423/tcp"
+    dns:
+      - ${HERMES_DNS_RESOLVER}
+
+  # hermes-ingress-grafana:
+  #   image: grafana/grafana-oss
+  #   container_name: hermes-ingress-grafana
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.grafana.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+  #     - "traefik.http.routers.grafana.entrypoints=websecure"
+  #     - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   environment:
+  #     GF_SECURITY_ADMIN_PASSWORD: ${HERMES_GRAFANA_SECURITY_ADMIN_PASS}
+  #     GF_SERVER_DOMAIN: ${HERMES_HOSTNAME}
+  #     GF_SERVER_ROOT_URL: https://${HERMES_HOSTNAME}
+  #     GF_USERS_ALLOW_SIGN_UP: 'false'
+  #     GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: 'true'
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   # ports:
+  #   #   - "${HERMES_PORT_PREFIX}08:3000/tcp"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+
+  # hermes-ingress-prometheus:
+  #   image: prom/prometheus
+  #   container_name: hermes-ingress-prometheus
+  #   restart: always
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.prometheus.rule=Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/metrics`)"
+  #     - "traefik.http.routers.prometheus.entrypoints=websecure"
+  #     - "traefik.http.routers.prometheus.tls=true"
+  #     - "traefik.http.routers.prometheus.service=prometheus"
+  #     - "traefik.http.middlewares.strippathprometheus.stripprefix.prefixes=/_sre/prometheus"
+  #     - "traefik.http.routers.prometheus.middlewares=strippathprometheus@docker"
+  #     - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+  #   volumes:
+  #     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+  #     - "${HERMES_PROM_VOLUME}:/etc/prometheus/prometheus"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   command:
+  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  #     - "--storage.tsdb.path=/prometheus"
+  #     - "--storage.tsdb.retention.size=768MB"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   # ports:
+  #   #   - "${HERMES_PORT_PREFIX}09:9090/tcp"
+
+  # hermes-ingress-node-exporter:
+  #   image: prom/node-exporter
+  #   container_name: hermes-ingress-node-exporter
+  #   restart: always
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   labels:
+  #     - "traefik.enable=true"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   ports:
+  #     - "${HERMES_PORT_PREFIX}10:9100/tcp"
+  
+  # hermes-ingress-alert-manager:
+  #   image: prom/alertmanager
+  #   container_name: hermes-ingress-alert-manager
+  #   restart: always
+  #   volumes:
+  #     - "./alertmanager.yml:/alertmanager/alertmanager.yml"
+  #   networks:
+  #     - hermes-net-weagle
+  #   logging:
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   labels:
+  #     - "traefik.enable=true"
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
+  #   # traefik ignores ports,
+  #   # keep it for k8s/helm charts only. 
+  #   ports:
+  #     - "${HERMES_PORT_PREFIX}11:9093/tcp"
+
+networks:
+  hermes-net-weagle:
+    name: hermes-net-weagle
+    driver: bridge
+    external: true
+  hermes-net-chat:
+    name: hermes-net-chat
+    driver: bridge
+    external: true
+  hermes-net-cloud:
+    name: hermes-net-cloud
+    driver: bridge
+    external: true
+  # radio:
+  #   name: hermes_net_radio
+  #   driver: bridge
+  #   external: true

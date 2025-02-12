@@ -1,0 +1,14 @@
+# hermes/ingress/prom/alerts
+global:
+  smtp_smarthost: 'smtp:25'
+  smtp_from: ${HERMES_INGRESS_STMP_FROM}
+cluster:
+  advertise-address:
+    - hermes_auth_hermes_auth_weagle:9093
+route:
+  receiver: sre-email
+  group_by: [alertname]
+receivers:
+ - name: sre-email
+   email_configs:
+    - to: ${HERMES_INGRESS_SRE_ALERT_EMAIL}

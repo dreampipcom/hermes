@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  synapse:
-    container_name: hermes-synapse
+  hermes-chat-synapse:
+    container_name: hermes-chat-synapse
     build: .
     restart: unless-stopped
     environment:
@@ -11,9 +11,11 @@ services:
     volumes:
       - ./files:/data:default
     depends_on:
-      - db
+      - hermes-model-mariadb
+    # traefik ignores ports,
+    # keep it for k8s/helm charts only. 
     ports:
-      - ${HERMES_MATRIX_INTERNAL_PORT}:8448/tcp
+      - ${HERMES_PORT_PREFIX}03:8448/tcp
     labels:
       - traefik.enable=true
       - traefik.http.routers.http-synapse.entryPoints=http
@@ -28,82 +30,85 @@ services:
       - traefik.http.services.synapse.loadbalancer.server.port=8008
       - traefik.http.routers.https-synapse.tls.certResolver=le-ssl
     networks:
-      default:
+      hermes_net_chat:
         ipv4_address: 10.10.10.4
+      hermes_net_model_chat: 
 
-  db:
-    container_name: hermes-db
-    image: docker.io/postgres:12-alpine
-    environment:
-      - POSTGRES_USER=${HERMES_DB_USER}
-      - POSTGRES_PASSWORD=${HERMES_DB_PASS}
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+  # move to web clients
+  hermes-chat-element:
+    container_name: hermes-chat-element
+    image: vectorim/element-web:latest
+    restart: unless-stopped
+    # # traefik ignores ports,
+    # # keep it for k8s/helm charts only. 
+    ports:
+      - ${HERMES_PORT_PREFIX}01:80/tcp
+      - ${HERMES_PORT_PREFIX}02:443/tcp
     volumes:
-      - ./data:/var/lib/postgresql/data:default
+      - ./element-config.json:/app/config.json
     networks:
-        default:
-          ipv4_address: 10.10.10.2
+      hermes_net_chat:
+        ipv4_address: 10.10.10.3
 
   # bridge-whatsapp:
-  #   container_name: hermes-whatsapp
+  #   container_name: hermes_chat_whatsapp
   #   image: dock.mau.dev/mautrix/whatsapp:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/whatsapp:/data
 
   # bridge-telegram:
-  #   container_name: hermes-telegram
+  #   container_name: hermes_chat_telegram
   #   image: dock.mau.dev/mautrix/telegram:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/telegram:/data
 
   # bridge-signal:
-  #   container_name: hermes-signal
+  #   container_name: hermes_chat_signal
   #   image: dock.mau.dev/mautrix/signal:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/signal:/data
 
   # bridge-slack:
-  #   container_name: hermes-slack
+  #   container_name: hermes_chat_slack
   #   image: dock.mau.dev/mautrix/slack:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/slack:/data
 
   # bridge-meta-messenger:
-  #   container_name: hermes-meta-messenger
+  #   container_name: hermes_chat_meta-messenger
   #   image: dock.mau.dev/mautrix/meta:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/meta/messenger:/data
 
   # bridge-meta-instagram:
-  #   container_name: hermes-meta-instagram
+  #   container_name: hermes_chat_meta-instagram
   #   image: dock.mau.dev/mautrix/meta:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/meta/instagram:/data
 
   # bridge-discord:
-  #   container_name: hermes-discord
+  #   container_name: hermes_chat_discord
   #   image: dock.mau.dev/mautrix/discord:latest
   #   restart: unless-stopped
   #   volumes:
   #     - ./data/bridge/discord:/data
 
-  element:
-    container_name: hermes-element
-    image: vectorim/element-web:latest
-    restart: unless-stopped
-    volumes:
-      - ./element-config.json:/app/config.json
-    networks:
-      default:
-        ipv4_address: 10.10.10.3
-
 networks:
-  default:
-    external:
-      name: matrix
+  hermes-net-weagle:
+    name: hermes-net-weagle
+    driver: bridge
+    external: true
+  hermes-net-chat:
+    name: hermes-net-chat
+    driver: bridge
+    external: true
+  hermes-net-model-chat:
+    name: hermes-net-model-chat
+    driver: bridge
+    external: true

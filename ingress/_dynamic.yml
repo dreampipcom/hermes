@@ -1,0 +1,98 @@
+# hermes/ingress/traefik/dynamic(fqdn)
+# https://ssl-config.mozilla.org/#server=traefik&version=3.4.0&config=intermediate&guideline=5.6
+
+tls:
+  options:
+    modern:
+      minVersion: VersionTLS13
+      curvePreferences:
+        - "X25519"
+        - "CurveP256"
+        - "CurveP384"
+    intermediate:
+      minVersion: VersionTLS12
+      curvePreferences:
+        - "X25519"
+        - "CurveP256"
+        - "CurveP384"
+      cipherSuites:
+        - "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305"
+        - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+    # default:
+    #   sniStrict: true
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "/etc/certs/${HERMES_CERT_FILE}"
+        keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
+  certificates:
+    - certFile: "/etc/certs/${HERMES_CERT_FILE}"
+      keyFile: "/etc/certs/${HERMES_CERT_KEY_FILE}"
+      stores:
+        - default
+
+http:
+  middlewares:
+    fn-https:
+      redirectscheme: 
+        scheme: "https"
+    fn-hsts:
+      headers:
+        customResponseHeaders:
+          Strict-Transport-Security: "max-age=63072000"
+
+#   services:
+#     whoami:
+#       loadBalancer:
+#         servers:
+#           - url: http://localhost:1423
+#     p3000:
+#       loadBalancer:
+#         servers:
+#           - url: http://localhost:3000
+#     p9090:
+#       loadBalancer:
+#         servers:
+#           - url: http://localhost:9090
+#     p9100:
+#       loadBalancer:
+#         servers:
+#           - url: http://localhost:9100
+
+#   routers:
+#     hsts:
+#       rule: "Host(`${HERMES_HOSTNAME}`)"
+#       service: ""
+#       middlewares:
+#         - hsts
+#       tls:
+#         options: intermediate
+#     traefik:
+#       entryPoints: websecure
+#       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/dashboard`)"
+#       tls: {}
+#       service: "api@internal"
+#     whoami:
+#       entryPoints: websecure
+#       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/whoami`)"
+#       tls: {}
+#       service: "whoami"
+#     grafana:
+#       entryPoints: websecure
+#       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/grafana`)"
+#       tls: {}
+#       service: "p3000"
+#     prometheus:
+#       entryPoints: websecure
+#       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/prometheus`)"
+#       tls: {}
+#       service: "p9090"
+#     node-exporter:
+#       entryPoints: websecure
+#       rule: "Host(`${HERMES_HOSTNAME}`) && PathPrefix(`/_sre/node-exporter`)"
+#       tls: {}
+#       service: "p9100"
