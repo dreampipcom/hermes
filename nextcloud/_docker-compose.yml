@@ -1,0 +1,72 @@
+  # Nextcloud
+  nextcloud:
+    image: nextcloud:28-fpm
+    container_name: nextcloud
+    restart: unless-stopped
+    networks: 
+      - cloud
+    depends_on:
+      - nextclouddb
+      - redis
+    ports:
+      - 81:81
+    volumes:
+      - ./nextcloud/html:/var/www/html
+      - ./nextcloud/custom_apps:/var/www/html/custom_apps
+      - ./nextcloud/config:/var/www/html/config
+      - ./nextcloud/data:/var/www/html/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - OVERWRITEWEBROOT="/nextcloud"
+      - TRUSTEDPROXIES="nginx" # csv, please add your docker network mask
+      - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
+      - MYSQL_USER=${HERMES_CLOUD_DB_USER}
+      - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}
+      - MYSQL_HOST=${HERMES_CLOUD_DB_HOST}
+      - REDIS_HOST=${HERMES_CLOUD_DB_REDIS}
+      - OBJECTSTORE_S3_BUCKET=${HERMES_CLOUD_S3_BUCKET}
+      - OBJECTSTORE_S3_REGION=${HERMES_CLOUD_S3_REGION}
+      - OBJECTSTORE_S3_KEY=${HERMES_CLOUD_S3_KEY}
+      - OBJECTSTORE_S3_SECRET=${HERMES_CLOUD_S3_SECRET}
+
+  nextclouddb:
+    image: mariadb
+    container_name: nextcloud-db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    networks: 
+      - cloud
+    volumes:
+      - ./nextclouddb:/var/lib/mysql
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_PASSWORD=${HERMES_CLOUD_DB_PASS}
+      - MYSQL_DATABASE=${HERMES_CLOUD_DB_NAME}
+      - MYSQL_USER=${HERMES_CLOUD_DB_NAME}
+
+  collabora:
+    image: collabora/code
+    container_name: collabora
+    restart: unless-stopped
+    networks:
+      - cloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - password=${HERMES_CLOUD_OFFICE_PASS}
+      - username=${HERMES_CLOUD_OFFICE_USER}
+      - domain=${HERMES_CLOUD_HOSTNAME}
+      - extra_params=--o:ssl.enable=true
+    ports:
+      - 9980:9980
+
+networks:
+  default:
+    external:
+      name: cloud

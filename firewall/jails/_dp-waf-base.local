@@ -1,8 +1,4 @@
 # please calibrate to your needs.
-[DEFAULT]
-ignoreip = 
-
-
 [dp-nginx-patience]
 enabled 	= true
 filter 		= dp-nginx-patience

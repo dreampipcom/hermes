@@ -30,8 +30,8 @@ sudo apt-get install python3-venv libpq-dev
 log "dp::hermes::(busy)::preparing Hermes Matrix Synapsis configuration files."
 echo $HERMES_SERVER_NAME
 
-data_dir="./chat/server/data"
-files_dir="./chat/server/files"
+data_dir="./matrix/server/data"
+files_dir="./matrix/server/files"
 
 docker run -it --rm \
     --mount type=volume,src=synapse-data,dst=/data \
