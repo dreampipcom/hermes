@@ -37,7 +37,7 @@ services:
       CF_API_KEY: ${HERMES_CLOUDFLARE_API_KEY}
     volumes:
       - "../certs/data:/etc/certs/:ro"
-      - "${PWD}/certs/acme/acme.json:/etc/traefik/acme/acme.json:wo"
+      - "${PWD}/certs/acme/acme.json:/etc/traefik/acme/acme.json"
       - "./data:/data"
       - "./traefik.yml:/etc/traefik/traefik.yml:ro"
       - "./dynamic.yml:/etc/traefik/dynamic.yml:ro"
