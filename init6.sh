@@ -48,6 +48,11 @@ take 10 "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: shutt
 
 ./init0.sh
 
+if [ "$1" == "wipe" ]; then
+	take 5 "dp::hermes::${HERMES_ENV}::(busy):: WARNING, WIPING ALL DATA."
+  rm -rf ./**/data/**
+fi
+
 log "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: booting up ${HERMES_ENV}."
 
 ./init.sh

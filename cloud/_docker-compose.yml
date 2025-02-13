@@ -2,6 +2,7 @@
 services:
   hermes-cloud-nextcloud:
     image: nextcloud
+    hostname: ${HERMES_HOSTNAME}
     container_name: hermes-cloud-nextcloud
     restart: always
     labels:
@@ -25,25 +26,33 @@ services:
       - "./data/cloud/custom_apps:/var/www/html/custom_apps"
       - "./data/cloud/config:/var/www/html/config"
       - "./data/cloud/data:/var/www/html/data"
+    external_links:
+      - hermes-model-mariadb
+      - hermes-model-redis
     environment:
       PUID: 1000
       PGID: 1000
       TZ: UTC
-      TRUSTED_PROXIES: "hermes-ingress-traefik,${HERMES_DNS_RESOLVER},${HERMES_INGRESS_SUBNET},${HERMES_MODEL_CLOUD_SUBNET}"
+      TRUSTED_PROXIES: "${HERMES_INGRESS_SUBNET}"
       OVERWRITEPROTOCOL: "https"
       OVERWRITEHOST: "${HERMES_HOSTNAME}"
       OVERWRITEWEBROOT: "${HERMES_CLOUD_BASEPATH}"
+      # NEXTCLOUD_INIT_HTACCESS: true
       MYSQL_DATABASE: "${HERMES_CLOUD_DB_NAME}"
       MYSQL_USER: "${HERMES_CLOUD_DB_USER}"
       MYSQL_PASSWORD: "${HERMES_CLOUD_DB_PASS}"
       MYSQL_HOST: "${HERMES_CLOUD_DB_HOST}"
       REDIS_HOST: "${HERMES_CLOUD_DB_REDIS}"
       OBJECTSTORE_S3_BUCKET: "${HERMES_CLOUD_S3_BUCKET}"
+      # OBJECTSTORE_S3_HOST: "${HERMES_CLOUD_S3_HOST}"
       OBJECTSTORE_S3_REGION: "${HERMES_CLOUD_S3_REGION}"
       OBJECTSTORE_S3_KEY: "${HERMES_CLOUD_S3_KEY}"
       OBJECTSTORE_S3_SECRET: "${HERMES_CLOUD_S3_SECRET}"
+      OBJECTSTORE_S3_AUTOCREATE: true
     dns:
         - ${HERMES_DNS_RESOLVER}
+        - 1.1.1.1
+        - 8.8.8.8
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     # ports:
@@ -51,22 +60,22 @@ services:
     #   - "${HERMES_PORT_PREFIX}05:443/tcp"
     #   - "${HERMES_PORT_PREFIX}06:8080/tcp"
 
-  hermes-cloud-collabora:
-    image: collabora/code
-    container_name: hermes-cloud-collabora
-    restart: always
-    networks:
-      - hermes-net-weagle
-    environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: UTC
-      password: ${HERMES_CLOUD_OFFICE_PASS}
-      username: ${HERMES_CLOUD_OFFICE_USER}
-      domain: ${HERMES_CLOUD_HOSTNAME}
-      extra_params: --o:ssl.enable=true
-    dns:
-      - ${HERMES_DNS_RESOLVER}
+  # hermes-cloud-collabora:
+  #   image: collabora/code
+  #   container_name: hermes-cloud-collabora
+  #   restart: always
+  #   networks:
+  #     - hermes-net-weagle
+  #   environment:
+  #     PUID: 1000
+  #     PGID: 1000
+  #     TZ: UTC
+  #     password: ${HERMES_CLOUD_OFFICE_PASS}
+  #     username: ${HERMES_CLOUD_OFFICE_USER}
+  #     domain: ${HERMES_CLOUD_HOSTNAME}
+  #     extra_params: --o:ssl.enable=true
+  #   dns:
+  #     - ${HERMES_DNS_RESOLVER}
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     # ports:
