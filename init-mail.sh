@@ -63,11 +63,9 @@ setup_storage () {
 		chmod 600 ~/.passwd-s3fs
 		mkdir mail/data/email-data
 		touch mail/data/email-data/dummy
-		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o url=https://${HERMES_MAIL_S3_BUCKET}.${HERMES_MAIL_S3_HOST}
+		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST}
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud storage created." 0
 }
-
-s3fs dpip-next-email mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o url=https://dpip-next-email.ams1.vultrobjects.com -o use_path_request_style
 
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
 origin="./mail/_docker-compose.yml"
