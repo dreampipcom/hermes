@@ -51,6 +51,8 @@ services:
       OBJECTSTORE_S3_AUTOCREATE: true
     dns:
         - ${HERMES_DNS_RESOLVER}
+        - 1.1.1.1
+        - 8.8.8.8
     # traefik ignores ports,
     # keep it for k8s/helm charts only. 
     # ports:
