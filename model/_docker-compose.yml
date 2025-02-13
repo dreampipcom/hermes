@@ -17,6 +17,7 @@ services:
   hermes-model-mariadb:
     image: mariadb
     container_name: hermes-model-mariadb
+    hostname: hermes-model-mariadb
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
