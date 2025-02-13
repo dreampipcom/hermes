@@ -57,6 +57,12 @@ setup_mailbox () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
 }
 
+setup_storage () {
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Preparing cloud email storage." 2
+		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
+}
+
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
@@ -64,13 +70,21 @@ tmpfile=$(mktemp --tmpdir=.)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
-
 # dir setup
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
 docker compose up -d
 cd $root_dir
+
+# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Installing setup CLI." 2
+# wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
+# chmod a+x ./setup.sh
+
+# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Adding mailboxes." 2
+# ./setup.sh email add $HERMES_MAIN_MAILBOX
+
+
 
 if [ "$1" == "setup:dns" ]; then
 	for domain in ${HERMES_MAIL_DOMAINS//,/ }
