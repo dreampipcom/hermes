@@ -45,11 +45,17 @@ take () {
 
 log "dp::hermes::ci::(busy):: Deploying secrets." 2
 
-if [ "$1" == "install" ]; then
+if [ "$1" == "install:next" ]; then
 	log "dp::hermes::ci::(busy):: Sending to installation dir."
+	cd kubesec/next
+  scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_HOME
+elif [ "$1" == "install:prod" ]; then
+	log "dp::hermes::ci::(busy):: Sending to hermes dir."
+	cd kubesec/prod
   scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_HOME
 else
-	log "dp::hermes::ci::(busy):: Sending to hermes dir."
+	log "dp::hermes::ci::(busy):: Please specify an environment (first flag) Copying from staging instead."
+	cd kubesec/next
   scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_ROOT
 fi
 
