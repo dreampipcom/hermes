@@ -79,11 +79,20 @@ tmpfile=$(mktemp --tmpdir=.)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
+
+
+if [ "$1" == "setup:storage" ]; then
+	setup_storage
+else
+	init_storage
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+fi
+
+
 # dir setup
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
-init_storage
 docker compose up -d
 cd $root_dir
 
@@ -93,14 +102,6 @@ cd $root_dir
 
 # log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Adding mailboxes." 2
 # ./setup.sh email add $HERMES_MAIN_MAILBOX
-
-
-if [ "$1" == "setup:storage" ]; then
-	setup_storage
-else
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
-fi
-
 
 if [ "$1" == "setup:dns" ]; then
 	for domain in ${HERMES_MAIL_DOMAINS//,/ }
