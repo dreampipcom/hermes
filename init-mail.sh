@@ -85,6 +85,12 @@ cd $root_dir
 # ./setup.sh email add $HERMES_MAIN_MAILBOX
 
 
+if [ "$1" == "setup:storage" ]; then
+	setup_storage
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+fi
+
 
 if [ "$1" == "setup:dns" ]; then
 	for domain in ${HERMES_MAIL_DOMAINS//,/ }
