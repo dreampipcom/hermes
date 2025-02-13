@@ -61,9 +61,9 @@ setup_storage () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Preparing cloud email storage." 2
 		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
 		chmod 600 ~/.passwd-s3fs
-		mkdir mail/data/emaildata
-		touch mail/data/emaildata/dummy
-		s3fs $HERMES_MAIL_S3_BUCKET mail/data/emaildata -o nonempty
+		mkdir mail/data/email-data
+		touch mail/data/email-data/dummy
+		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud storage created." 0
 }
 
