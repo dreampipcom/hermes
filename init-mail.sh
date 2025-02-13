@@ -67,6 +67,8 @@ setup_storage () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud storage created." 0
 }
 
+s3fs dpip-next-email mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o url=https://dpip-next-email.ams1.vultrobjects.com -o use_path_request_style
+
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
