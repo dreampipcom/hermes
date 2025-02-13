@@ -87,6 +87,7 @@ for file in .env.cert.*; do cp -a "$file" "${file#.env.cert.}";done;
 cd $root_dir
 
 take 5 "dp::hermes::${HERMES_ENV}::ingress::(busy):: Launching Docker Compose Swarms."
+mkdir certs/acme
 touch certs/acme/acme.json
 chmod 600 certs/acme/acme.json
 cd ingress

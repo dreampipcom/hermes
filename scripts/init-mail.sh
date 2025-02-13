@@ -100,6 +100,8 @@ fi
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
+mkdir mail/data
+mkdir mail/data/email-data
 docker compose up -d
 cd $root_dir
 
