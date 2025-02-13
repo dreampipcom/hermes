@@ -82,10 +82,11 @@ services:
         max-file: "3"
     volumes:
       - ../certs/data/:/tmp/dms/custom-certs/:ro
-      - ./data/dms/mail-data/:/var/mail/
+      # - ./data/dms/mail-data/:/var/mail/
       - ./data/dms/mail-state/:/var/mail-state/
       - ./data/dms/mail-logs/:/var/log/mail/
       - ./data/dms/config/:/tmp/docker-mailserver/
+      - ./data/email-data/:/var/mail/
       - /etc/localtime:/etc/localtime:ro
     environment:
       SSL_TYPE: ${HERMES_MAIL_CERT_TYPE}
