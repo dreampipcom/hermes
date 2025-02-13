@@ -63,7 +63,7 @@ setup_storage () {
 		chmod 600 ~/.passwd-s3fs
 		mkdir mail/data/email-data
 		touch mail/data/email-data/dummy
-		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST}
+		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud storage created." 0
 }
 

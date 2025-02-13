@@ -86,7 +86,7 @@ services:
       - ./data/dms/mail-state/:/var/mail-state/
       - ./data/dms/mail-logs/:/var/log/mail/
       - ./data/dms/config/:/tmp/docker-mailserver/
-      - ./data/email-data:/var/mail/
+      - ./data/email-data/:/var/mail/
       - /etc/localtime:/etc/localtime:ro
     environment:
       SSL_TYPE: ${HERMES_MAIL_CERT_TYPE}
