@@ -57,6 +57,21 @@ setup_mailbox () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
 }
 
+setup_storage () {
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Preparing cloud email storage." 2
+		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
+		chmod 600 ~/.passwd-s3fs
+		mkdir mail/data/email-data
+		touch mail/data/email-data/dummy
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage ready." 0
+}
+
+init_storage () {
+		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
+		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f &
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage mounted." 0
+}
+
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
@@ -65,12 +80,29 @@ cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 
+
+if [ "$1" == "setup:storage" ]; then
+	setup_storage
+	init_storage
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Storage setup."
+	init_storage
+fi
+
+
 # dir setup
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
 docker compose up -d
 cd $root_dir
+
+# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Installing setup CLI." 2
+# wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
+# chmod a+x ./setup.sh
+
+# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Adding mailboxes." 2
+# ./setup.sh email add $HERMES_MAIN_MAILBOX
 
 if [ "$1" == "setup:dns" ]; then
 	for domain in ${HERMES_MAIL_DOMAINS//,/ }

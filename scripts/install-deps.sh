@@ -44,7 +44,7 @@ take () {
 }
 
 log "dp::hermes::ci::(busy):: Installing dependencies: Deploying secrets." 2
-if [[ "$(which pv)" == "" || "$(which docker)" == "" ]]; then
+if [[ "$(which pv)" == "" || "$(which docker)" == "" || "$(which s3fs)" == ""]]; then
         if [ "$(uname)" == "Darwin" ]; then
                         log "dp::hermes::ci::(busy)::installing for MacOS."
                         brew install docker --cask
@@ -54,7 +54,7 @@ if [[ "$(which pv)" == "" || "$(which docker)" == "" ]]; then
             if [[ $ID == "debian" || $ID == "ubuntu" ]]; then \
             		# from docker official docs
 								sudo apt-get update
-								sudo apt-get install ca-certificates curl
+								sudo apt-get install s3fs ca-certificates curl
 								sudo install -m 0755 -d /etc/apt/keyrings
 								sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 								sudo chmod a+r /etc/apt/keyrings/docker.asc
