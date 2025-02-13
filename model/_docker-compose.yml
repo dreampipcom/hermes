@@ -20,7 +20,8 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks: 
-      - hermes-net-model-cloud
+      hermes-net-model-cloud:
+        ipv4_address: ${HERMES_MODEL_CLOUD_MARIA_IP}
     logging:
       options:
         max-size: "10m"
