@@ -58,6 +58,9 @@ else
 	cd kubesec/next
   scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_ROOT
 fi
+cd $root_dir
 
+log "dp::hermes::${HERMES_ENV}::ingress::(busy):: Copying .PEM certificates (CA)."
+scp ./.env.*cert*.private $HERMES_REMOTE:$HERMES_REMOTE_HOME
 
 log "dp::hermes::ci::(idle)::all good." 0
