@@ -63,6 +63,10 @@ setup_storage () {
 		chmod 600 ~/.passwd-s3fs
 		mkdir mail/data/email-data
 		touch mail/data/email-data/dummy
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage ready." 0
+}
+
+init_storage () {
 		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
 		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage mounted." 0
@@ -80,6 +84,7 @@ take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
 docker compose up -d
+init_storage
 cd $root_dir
 
 # log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Installing setup CLI." 2
