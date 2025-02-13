@@ -46,7 +46,7 @@ take () {
 log "dp::hermes::${HERMES_ENV}::(busy):: Reboot. Are you sure?."
 take 10 "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: shutting down ${HERMES_ENV}."
 
-./init0.sh
+./scripts/init0.sh
 
 if [ "$1" == "wipe" ]; then
 	take 5 "dp::hermes::${HERMES_ENV}::(busy):: WARNING, WIPING ALL DATA."
@@ -55,7 +55,7 @@ fi
 
 log "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: booting up ${HERMES_ENV}."
 
-./init.sh
+./scripts/init.sh
 
 
 log "dp::hermes::${HERMES_ENV}::reboot::(idle)::all good." 0

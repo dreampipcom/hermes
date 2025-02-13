@@ -44,7 +44,7 @@ take () {
 }
 
 log "dp::hermes::ci::(busy):: Installing on server: Deploying secrets."
-./deploy-secrets.sh install
+./scripts/deploy-secrets.sh install
 
 # sudo rm -rf /var/lib/rancher/k3s/server/manifests/traefik.yaml
 # helm uninstall traefik traefik-crd -n kube-system
