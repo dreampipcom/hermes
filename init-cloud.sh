@@ -45,12 +45,18 @@ take () {
 }
 
 # Cloud
-log "dp::hermes::hermes_net_cloud::(busy):: Preparign Claudia (Storage, Calendar, Mail Web Client: Nextcloud)." 2
+log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia (Storage, Calendar, Mail Web Client: Nextcloud)." 2
+
+log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
 origin="./cloud/_docker-compose.yml"
 destination="./cloud/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir=.)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
+
+log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
+sed -i "\$a'host' => 'redis'] = \"'host' => '$HERMES_CLOUD_DB_REDIS'\";" cloud/data/cloud/config/config.php
+sed -i "\$a'htaccess.RewriteBase' => '/'] = \"'htaccess.RewriteBase' => '$HERMES_CLOUD_BASEPATH\"';" cloud/data/cloud/config/config.php
 
 # dir setup
 take 5 "dp::hermes::hermes_net_cloud::(busy):: Launching Docker Compose Swarms."

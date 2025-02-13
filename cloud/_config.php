@@ -7,7 +7,6 @@ $CONFIG = array (
   'redis' => [
      'host' => '${HERMES_CLOUD_DB_REDIS}',
      'port' => 6379,
-
   ],
   'apps_paths' =>
   array (
