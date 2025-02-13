@@ -83,8 +83,8 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
-docker compose up -d
 init_storage
+docker compose up -d
 cd $root_dir
 
 # log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Installing setup CLI." 2
