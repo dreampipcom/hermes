@@ -44,7 +44,7 @@ take () {
 }
 
 log "dp::hermes::ci::(busy):: Installing dependencies: Deploying secrets." 2
-if [[ "$(which pv)" == "" || "$(which docker)" == "" || "$(which s3fs)" == ""]]; then
+if [[ "$(which pv)" == "" || "$(which docker)" == "" || "$(which s3fs)" == "" ]]; then
         if [ "$(uname)" == "Darwin" ]; then
                         log "dp::hermes::ci::(busy)::installing for MacOS."
                         brew install docker --cask
