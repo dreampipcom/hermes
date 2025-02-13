@@ -68,7 +68,7 @@ setup_storage () {
 
 init_storage () {
 		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
-		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f
+		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f &
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage mounted." 0
 }
 
@@ -83,9 +83,10 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 if [ "$1" == "setup:storage" ]; then
 	setup_storage
-else
 	init_storage
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Storage setup."
+	init_storage
 fi
 
 
