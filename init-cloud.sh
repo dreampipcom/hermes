@@ -55,8 +55,8 @@ cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
-sed -i "s/'host' => 'redis'/{'host' => '$HERMES_CLOUD_DB_REDIS'}/g" cloud/data/cloud/config/config.php
-sed -i "s/'htaccess.RewriteBase' => '/'/{'htaccess.RewriteBase' => '$HERMES_CLOUD_BASEPATH'}/g" cloud/data/cloud/config/config.php
+sed -i "s/'host' => 'redis'/'host' => '$HERMES_CLOUD_DB_REDIS'/g" cloud/data/cloud/config/config.php
+sed -i "s/'htaccess.RewriteBase' => '/'/'htaccess.RewriteBase' => '$HERMES_CLOUD_BASEPATH'/g" cloud/data/cloud/config/config.php
 
 # dir setup
 take 5 "dp::hermes::hermes_net_cloud::(busy):: Launching Docker Compose Swarms."
