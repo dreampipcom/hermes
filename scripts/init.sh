@@ -45,25 +45,25 @@ take () {
 
 # docker setup
 log "dp::hermes::init::(busy):: Configuring networks."
-./init-networks.sh
+./scripts/init-networks.sh
 
 
 # docker setup
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Initiating ${HERMES_ENV} env."
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Weagle (Ingress)." 2
-./init-weagle.sh
+./scripts/init-weagle.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Daegis (Databases)." 2
-./init-model.sh
+./scripts/init-model.sh
 
 # log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Drew: (Auth)." 2
-# ./init-auth.sh
+# ./scripts/init-auth.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Aemilia: (Mail)." 2
-./init-mail.sh
+./scripts/init-mail.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(busy)::Starting: Claudia: (Storage, Calendar, MWC)." 2
-./init-cloud.sh
+./scripts/init-cloud.sh
 
 log "dp::hermes::${HERMES_ENV}::init::(idle)::all good." 0

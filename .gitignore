@@ -2,6 +2,7 @@
 .env
 *.private
 
+kubesec/**/*.private
 
 _*/
 matrix/*

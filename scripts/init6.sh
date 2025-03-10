@@ -1,5 +1,5 @@
 #!/bin/bash
-# init emailia
+# init 6 (reboot)
 echo -e "\033[0;62m\033[0;49;35m"
 set -a && source .env.common.private && set +a
 root_dir="$(pwd)"
@@ -40,18 +40,22 @@ gosu () {
 
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
-	while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
+	while true; do echo -n .; sleep 1; done | pv -s $1 * $HERMES_COOLDOWN_POINTER  -S -F '%t %p' > /dev/null
 }
 
-log "dp::hermes::ci::(busy):: Deploying secrets." 2
+log "dp::hermes::${HERMES_ENV}::(busy):: Reboot. Are you sure?."
+take 10 "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: shutting down ${HERMES_ENV}."
 
-if [ "$1" == "install" ]; then
-	log "dp::hermes::ci::(busy):: Sending to installation dir."
-  scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_HOME
-else
-	log "dp::hermes::ci::(busy):: Sending to hermes dir."
-  scp .env.*.private $HERMES_REMOTE:$HERMES_REMOTE_ROOT
+./scripts/init0.sh
+
+if [ "$1" == "wipe" ]; then
+	take 5 "dp::hermes::${HERMES_ENV}::(busy):: WARNING, WIPING ALL DATA."
+  rm -rf ./**/data/**
 fi
 
+log "dp::hermes::${HERMES_ENV}::reboot::(busy):: Gracefully rebooting: booting up ${HERMES_ENV}."
 
-log "dp::hermes::ci::(idle)::all good." 0
+./scripts/init.sh
+
+
+log "dp::hermes::${HERMES_ENV}::reboot::(idle)::all good." 0

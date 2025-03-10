@@ -1,7 +1,6 @@
 #!/bin/bash
 # init install
 echo -e "\033[0;62m\033[0;49;35m"
-set -a && source .env.common.private && set +a
 root_dir="$(pwd)"
 
 log () {
@@ -43,8 +42,19 @@ take () {
 	while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
 }
 
-log "dp::hermes::ci::(busy):: Installing on server: Deploying secrets."
-./deploy-secrets.sh install
+if [ "$1" == "install:prod" ]; then
+	cp kubesec/prod/.env.*.private .
+	log "dp::hermes::ci::(busy):: Installing on prod server: Deploying secrets."
+	./scripts/deploy-secrets.sh install:prod
+elif [ "$1" == "install:next" ]; then
+	cp kubesec/next/.env.*.private .
+	log "dp::hermes::ci::(busy):: Installing on next server: Deploying secrets."
+	./scripts/deploy-secrets.sh install:next
+else
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping installation, pleace specify environment."
+fi
+
+set -a && source .env.common.private && set +a
 
 # sudo rm -rf /var/lib/rancher/k3s/server/manifests/traefik.yaml
 # helm uninstall traefik traefik-crd -n kube-system
@@ -57,10 +67,10 @@ ssh ${HERMES_REMOTE} "mkdir dp; \
 											git clone https://github.com/dreampipcom/hermes.git; \
 											mv ../.env.*.private hermes/; \
 											cd hermes; \
-											git checkout ${HERMES_BRANCH}; \
+											git checkout ${HERMES_REMOTE_BRANCH}; \
 											git pull; \
-											chmod +x ./install-deps.sh; \
-											./install-deps.sh;
+											chmod +x ./scripts/install-deps.sh; \
+											./scripts/install-deps.sh;
 											"
 
 

@@ -76,6 +76,7 @@ tmpfile=$(mktemp --tmpdir=.)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
+for f in *.cert.* ; do mv -- "$f" ".env.$f" ; done
 
 # dir setup
 log "dp::hermes::${HERMES_ENV}::ingress::(busy):: Adding .PEM certificates (CA)." 2
@@ -86,6 +87,8 @@ for file in .env.cert.*; do cp -a "$file" "${file#.env.cert.}";done;
 cd $root_dir
 
 take 5 "dp::hermes::${HERMES_ENV}::ingress::(busy):: Launching Docker Compose Swarms."
+mkdir certs/acme
+touch certs/acme/acme.json
 chmod 600 certs/acme/acme.json
 cd ingress
 docker compose up -d

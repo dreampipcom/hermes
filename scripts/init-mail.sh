@@ -57,6 +57,12 @@ setup_mailbox () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
 }
 
+setup_aliases () {
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Creating initial aliases." 2
+		docker exec -it hermes-mail-mailserver setup alias add $1@$HERMES_MAIL_MAIN_HOSTNAME $2
+		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
+}
+
 setup_storage () {
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Preparing cloud email storage." 2
 		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
@@ -94,6 +100,8 @@ fi
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
+mkdir mail/data
+mkdir mail/data/email-data
 docker compose up -d
 cd $root_dir
 
@@ -117,6 +125,10 @@ if [ "$1" == "setup:mailboxes" ]; then
 	for box in ${HERMES_MAIL_INITIAL_BOXES//,/ }
 	do
 	    setup_mailbox $box $HERMES_MAIL_INITIAL_BOXES_DEFAULT_PASSWORD
+	    for alias in ${HERMES_DOMAIN_ALIASES//,/ }
+	    do
+	    	setup_aliases $alias $box
+	    done
 	done
 else
 	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Mailboxes setup."
