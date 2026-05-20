@@ -81,8 +81,7 @@ log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating fil
 origin="$root_dir/cloud/_docker-compose.yml"
 destination="$root_dir/cloud/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir="$root_dir")
-cp -p $origin $tmpfile
-cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
+envsubst < "$origin" > "$tmpfile" && mv "$tmpfile" "$destination"
 
 log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
 cloud_config_destination="$root_dir/cloud/data/cloud/config/hermes.config.php"
