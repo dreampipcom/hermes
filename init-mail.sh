@@ -99,24 +99,29 @@ setup_storage () {
 }
 
 init_storage () {
+		local s3_mount_log="$root_dir/mail/data/email-data/.s3fs.log"
+		local s3fs_pid=""
 		command -v s3fs >/dev/null 2>&1 || {
 			log "dp::hermes::mail::(error)::s3fs is required for setup:storage." 1
 			exit 1
 		}
 		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
 		if ! mountpoint -q "$root_dir/mail/data/email-data"; then
-			s3_mount_log="$root_dir/mail/data/email-data/.s3fs.log"
 			s3fs $HERMES_MAIL_S3_BUCKET "$root_dir/mail/data/email-data" -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} >"$s3_mount_log" 2>&1 &
+			s3fs_pid=$!
 			for _ in $(seq 1 "$S3_MOUNT_MAX_RETRIES")
 			do
 				if mountpoint -q "$root_dir/mail/data/email-data"; then
+					break
+				fi
+				if [[ -n "$s3fs_pid" ]] && ! kill -0 "$s3fs_pid" 2>/dev/null; then
 					break
 				fi
 				sleep 1
 			done
 		fi
 		mountpoint -q "$root_dir/mail/data/email-data" || {
-			if [[ -s "${s3_mount_log:-}" ]]; then
+			if [[ -s "$s3_mount_log" ]]; then
 				log "dp::hermes::mail::(error)::Cloud email storage mount log: $(tail -n 1 "$s3_mount_log")" 1
 			fi
 			log "dp::hermes::mail::(error)::Cloud email storage mount failed." 1
