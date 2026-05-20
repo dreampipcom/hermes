@@ -103,8 +103,20 @@ init_storage () {
 			exit 1
 		}
 		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
-		mountpoint -q "$root_dir/mail/data/email-data" || \
-			s3fs $HERMES_MAIL_S3_BUCKET "$root_dir/mail/data/email-data" -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f &
+		if ! mountpoint -q "$root_dir/mail/data/email-data"; then
+			s3fs $HERMES_MAIL_S3_BUCKET "$root_dir/mail/data/email-data" -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} >/dev/null 2>&1 &
+			for _ in $(seq 1 10)
+			do
+				if mountpoint -q "$root_dir/mail/data/email-data"; then
+					break
+				fi
+				sleep 1
+			done
+		fi
+		mountpoint -q "$root_dir/mail/data/email-data" || {
+			log "dp::hermes::mail::(error)::Cloud email storage mount failed." 1
+			exit 1
+		}
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage mounted." 0
 }
 
@@ -124,7 +136,7 @@ if [ "${1:-}" == "setup:storage" ]; then
 	setup_storage
 	init_storage
 else
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Storage setup."
+	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Storage setup, using local mail/data/email-data."
 fi
 
 
