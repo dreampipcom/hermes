@@ -19,31 +19,25 @@ services:
       # TCP: port layer 6 switch
       #- traefik.tcp.routers.mail-submissions.rule=HostSNI(`mail.example.com`)
       # - traefik.tcp.routers.mail-submissions.tls.passthrough=true
-      - "traefik.tcp.routers.smtp.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.smtp.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.smtp.entrypoints=smtp"
       - "traefik.tcp.routers.smtp.service=smtp"
-      # - "traefik.tcp.routers.smtp.tls.certresolver=le-ssl"
-      - "traefik.tcp.routers.smtp.tls.passthrough=true"
       - "traefik.tcp.services.smtp.loadbalancer.server.port=25"
       - "traefik.tcp.services.smtp.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.submissions.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.submissions.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.submissions.entrypoints=submissions"
-      # - "traefik.tcp.routers.submissions.tls.certresolver=le-ssl"
-      - "traefik.tcp.routers.submissions.tls.passthrough=true"
       - "traefik.tcp.routers.submissions.service=submissions"
-      - "traefik.tcp.services.submissions.loadbalancer.server.port=465"
+      - "traefik.tcp.services.submissions.loadbalancer.server.port=587"
       - "traefik.tcp.services.submissions.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.imap.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.imap.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.imap.entrypoints=imap"
-      # - "traefik.tcp.routers.imap.tls.certresolver=le-ssl"
-      - "traefik.tcp.routers.imap.tls.passthrough=true"
-      - "traefik.tcp.routers.imap.service=imaps"
+      - "traefik.tcp.routers.imap.service=imap"
       - "traefik.tcp.services.imap.loadbalancer.server.port=143"
       - "traefik.tcp.services.imap.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.imaps.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.imaps.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.imaps.entrypoints=imaps"
       # - "traefik.tcp.routers.imaps.tls.certresolver=le-ssl"
       - "traefik.tcp.routers.imaps.tls.passthrough=true"
@@ -51,15 +45,13 @@ services:
       - "traefik.tcp.services.imaps.loadbalancer.server.port=993"
       - "traefik.tcp.services.imaps.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.pop3.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.pop3.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.pop3.entrypoints=pop3"
-      # - "traefik.tcp.routers.pop3.tls.certresolver=le-ssl"
-      - "traefik.tcp.routers.pop3.tls.passthrough=true"
       - "traefik.tcp.routers.pop3.service=pop3"
       - "traefik.tcp.services.pop3.loadbalancer.server.port=110"
       - "traefik.tcp.services.pop3.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.pop3s.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.pop3s.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.pop3s.entrypoints=pop3s"
       # - "traefik.tcp.routers.pop3s.tls.certresolver=le-ssl"
       - "traefik.tcp.routers.pop3s.tls.passthrough=true"
@@ -67,10 +59,8 @@ services:
       - "traefik.tcp.services.pop3s.loadbalancer.server.port=995"
       - "traefik.tcp.services.pop3s.loadbalancer.proxyProtocol.version=2"
 
-      - "traefik.tcp.routers.sieve.rule=HostSNI(`${HERMES_HOSTNAME}`)"
+      - "traefik.tcp.routers.sieve.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.sieve.entrypoints=sieve"
-      # - "traefik.tcp.routers.sieve.tls.certresolver=le-ssl"
-      - "traefik.tcp.routers.sieve.tls.passthrough=true"
       - "traefik.tcp.routers.sieve.service=sieve"
       - "traefik.tcp.services.sieve.loadbalancer.server.port=4190"
       - "traefik.tcp.services.sieve.loadbalancer.proxyProtocol.version=2"
@@ -118,9 +108,12 @@ services:
     # keep it for k8s/helm charts only. 
     ports:
       - "${HERMES_PORT_PREFIX}12:25/tcp"
-      - "${HERMES_PORT_PREFIX}13:465/tcp"
-      - "${HERMES_PORT_PREFIX}14:995/tcp"
+      - "${HERMES_PORT_PREFIX}13:587/tcp"
+      - "${HERMES_PORT_PREFIX}14:143/tcp"
       - "${HERMES_PORT_PREFIX}15:993/tcp"
+      - "${HERMES_PORT_PREFIX}16:110/tcp"
+      - "${HERMES_PORT_PREFIX}17:995/tcp"
+      - "${HERMES_PORT_PREFIX}18:4190/tcp"
 
 networks:
   hermes-net-weagle:
