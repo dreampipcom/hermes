@@ -85,8 +85,13 @@ cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
+cloud_config_destination="$root_dir/cloud/data/cloud/config/hermes.config.php"
 envsubst '${HERMES_CLOUD_BASEPATH} ${HERMES_HOSTNAME} ${HERMES_CLOUD_DB_REDIS} ${HERMES_INGRESS_SUBNET}' \
-	< "$root_dir/cloud/_config.php" > "$root_dir/cloud/data/cloud/config/hermes.config.php"
+	< "$root_dir/cloud/_config.php" > "$cloud_config_destination"
+if [[ ! -s "$cloud_config_destination" ]]; then
+	log "dp::hermes::cloud::(error)::Failed to generate $cloud_config_destination" 1
+	exit 1
+fi
 
 # dir setup
 take 5 "dp::hermes::hermes_net_cloud::(busy):: Launching Docker Compose Swarms."
