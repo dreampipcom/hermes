@@ -86,6 +86,7 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 log "dp::hermes::hermes_net_cloud::(busy):: Preparing Claudia: Consolidating files."
 cloud_config_destination="$root_dir/cloud/data/cloud/config/hermes.config.php"
+# Limit substitution to Hermes placeholders so PHP symbols like $CONFIG stay intact.
 envsubst '${HERMES_CLOUD_BASEPATH} ${HERMES_HOSTNAME} ${HERMES_CLOUD_DB_REDIS} ${HERMES_INGRESS_SUBNET}' \
 	< "$root_dir/cloud/_config.php" > "$cloud_config_destination"
 if [[ ! -s "$cloud_config_destination" ]]; then

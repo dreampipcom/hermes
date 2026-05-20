@@ -7,6 +7,7 @@ set -a && source "$script_dir/.env.common.private" && set +a
 set -a && source "$script_dir/.env.mail.private" && set +a
 root_dir="$script_dir"
 S3_MOUNT_MAX_RETRIES=10
+S3FS_PASSWD_FILE="$HOME/.passwd-s3fs"
 
 log () {
 	local level="${2:-}"
@@ -91,8 +92,8 @@ setup_storage () {
 		require_env HERMES_MAIL_S3_HOST
 		require_env HERMES_MAIL_S3_KEY
 		require_env HERMES_MAIL_S3_SECRET
-		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
-		chmod 600 ~/.passwd-s3fs
+		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > "$S3FS_PASSWD_FILE"
+		chmod 600 "$S3FS_PASSWD_FILE"
 		mkdir -p "$root_dir/mail/data/email-data"
 		touch "$root_dir/mail/data/email-data/dummy"
 		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage ready." 0
@@ -107,7 +108,7 @@ init_storage () {
 		}
 		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
 		if ! mountpoint -q "$root_dir/mail/data/email-data"; then
-			s3fs $HERMES_MAIL_S3_BUCKET "$root_dir/mail/data/email-data" -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} >"$s3_mount_log" 2>&1 &
+			s3fs $HERMES_MAIL_S3_BUCKET "$root_dir/mail/data/email-data" -o nonempty -o passwd_file="$S3FS_PASSWD_FILE" -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} >"$s3_mount_log" 2>&1 &
 			s3fs_pid=$!
 			for _ in $(seq 1 "$S3_MOUNT_MAX_RETRIES")
 			do
