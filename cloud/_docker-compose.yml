@@ -26,9 +26,6 @@ services:
       - "./data/cloud/custom_apps:/var/www/html/custom_apps"
       - "./data/cloud/config:/var/www/html/config"
       - "./data/cloud/data:/var/www/html/data"
-    external_links:
-      - hermes-model-mariadb
-      - hermes-model-redis
     environment:
       PUID: 1000
       PGID: 1000
