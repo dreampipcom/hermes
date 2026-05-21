@@ -2,10 +2,11 @@
 
 The `./mail` stack now uses:
 
+- **PostgreSQL** for the optional Stalwart metadata datastore when you want database-backed metadata
 - **Stalwart** for SMTP / Submission / IMAP / POP3 / JMAP and the admin UI
 - **Bulwark Webmail** for the browser client
 
-Running `./init-mail.sh` renders `./mail/docker-compose.yml`, archives any legacy docker-mailserver data under `./mail/archive/`, and starts both containers.
+Running `./init-mail.sh` renders `./mail/docker-compose.yml`, archives any legacy docker-mailserver data under `./mail/archive/`, and starts all three containers.
 
 ## Required environment variables
 
@@ -20,6 +21,12 @@ Set these in `./.env.common.private` and `./.env.mail.private` (or rely on the `
 | `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default expands to `http://localhost:${HERMES_PORT_PREFIX}19` (`http://localhost:7719` when `HERMES_PORT_PREFIX=77`). |
 | `HERMES_MAIL_ADMIN_USER` | Bootstrap administrator username for the first Stalwart login. |
 | `HERMES_MAIL_ADMIN_PASSWORD` | Bootstrap administrator password for the first Stalwart login. Leave it blank to let `./init-mail.sh` generate one into `./mail/docker-compose.yml` for the current run, or set it explicitly for persistent deployments. |
+| `HERMES_MAIL_METADATA_BACKEND` | Planned Stalwart metadata backend during bootstrap (`rocksdb` for local-only setups, `postgres` when pairing metadata with the bundled Postgres service). |
+| `HERMES_MAIL_METADATA_DB_HOST` | Hostname for the bundled Postgres metadata service inside the mail compose network. |
+| `HERMES_MAIL_METADATA_DB_PORT` | Port for the bundled Postgres metadata service inside the mail compose network. |
+| `HERMES_MAIL_METADATA_DB_NAME` | Database name created for Stalwart metadata. |
+| `HERMES_MAIL_METADATA_DB_USER` | Database user created for Stalwart metadata. |
+| `HERMES_MAIL_METADATA_DB_PASSWORD` | Database password for the bundled Postgres metadata service. Leave it blank to let `./init-mail.sh` generate one into `./mail/docker-compose.yml` for the current run, or set it explicitly for persistent deployments. |
 | `HERMES_MAIL_WEBMAIL_SESSION_SECRET` | Bulwark session secret. Leave it blank to let `./init-mail.sh` generate one locally, or set it explicitly for persistent deployments. |
 
 Optional Bulwark branding variables are also available in `./.env.mail.public`:
@@ -33,6 +40,12 @@ Optional Bulwark branding variables are also available in `./.env.mail.public`:
 - `HERMES_MAIL_PRIMARY_DOMAIN`
 - `HERMES_MAIL_ADDITIONAL_DOMAINS`
 - `HERMES_MAIL_ALIAS_DOMAINS`
+- `HERMES_MAIL_METADATA_BACKEND`
+- `HERMES_MAIL_METADATA_DB_HOST`
+- `HERMES_MAIL_METADATA_DB_PORT`
+- `HERMES_MAIL_METADATA_DB_NAME`
+- `HERMES_MAIL_METADATA_DB_USER`
+- `HERMES_MAIL_METADATA_DB_PASSWORD`
 - `HERMES_MAIL_STORAGE_BACKEND`
 - `HERMES_MAIL_S3_BUCKET`
 - `HERMES_MAIL_S3_ENDPOINT`
@@ -81,16 +94,25 @@ Use `HERMES_MAIL_ALIAS_DOMAINS` to keep track of any alias-only domains you inte
 
 ## S3-backed storage
 
-The Compose stack currently persists Stalwart locally in:
+The Compose stack now includes a bundled `hermes-mail-postgres` container so Stalwart can keep metadata in Postgres while storing message blobs in S3-compatible object storage.
 
+The local persistent paths are:
+
+- `./mail/data/postgres`
 - `./mail/data/stalwart/etc`
 - `./mail/data/stalwart/data`
 
-If you want Stalwart to store mail/blob data in AWS S3 or an S3-compatible backend such as MinIO, keep the config volume mounted and apply the S3 settings inside Stalwart after the first bootstrap.
+If you want Stalwart to store mail/blob data in AWS S3 or an S3-compatible backend such as MinIO, keep the config volume mounted and use the bundled Postgres service for metadata during the Stalwart bootstrap flow.
 
 Suggested private env values:
 
 ```bash
+HERMES_MAIL_METADATA_BACKEND=postgres
+HERMES_MAIL_METADATA_DB_HOST=hermes-mail-postgres
+HERMES_MAIL_METADATA_DB_PORT=5432
+HERMES_MAIL_METADATA_DB_NAME=stalwart
+HERMES_MAIL_METADATA_DB_USER=stalwart
+HERMES_MAIL_METADATA_DB_PASSWORD=...
 HERMES_MAIL_STORAGE_BACKEND=s3
 HERMES_MAIL_S3_BUCKET=hermes-mail
 HERMES_MAIL_S3_ENDPOINT=https://s3.example.org
@@ -100,9 +122,9 @@ HERMES_MAIL_S3_SECRET_KEY=...
 HERMES_MAIL_S3_PATH_STYLE=true
 ```
 
-Use those values when switching Stalwart's mailbox/blob storage backend to S3 in its configuration. For AWS S3 you can usually leave `HERMES_MAIL_S3_ENDPOINT` empty; for MinIO/Ceph/other S3-compatible stores, set the endpoint explicitly and keep path-style access enabled when required by the provider.
+During bootstrap, point Stalwart's metadata/data store at `hermes-mail-postgres:5432` with `HERMES_MAIL_METADATA_DB_NAME`, `HERMES_MAIL_METADATA_DB_USER`, and `HERMES_MAIL_METADATA_DB_PASSWORD`, then configure the blob/object store with the S3 values above. For AWS S3 you can usually leave `HERMES_MAIL_S3_ENDPOINT` empty; for MinIO/Ceph/other S3-compatible stores, set the endpoint explicitly and keep path-style access enabled when required by the provider.
 
-Because the current stack boots Stalwart in its normal self-managed mode, this PR documents the S3 parameters and workflow rather than forcing a single backend at compose time.
+For small local-only setups you can keep `HERMES_MAIL_METADATA_BACKEND=rocksdb` and `HERMES_MAIL_STORAGE_BACKEND=local`, but for external S3 storage the recommended pairing is Postgres metadata + S3 blobs.
 
 ## Exposed ports
 
@@ -126,4 +148,4 @@ After the stack is up, run:
 ./mail/smoke-test.sh
 ```
 
-The smoke test checks that the two containers are running, the Stalwart admin endpoint answers over HTTP, the Bulwark login page answers over HTTP, and the SMTP / IMAP / POP3 ports accept TCP connections.
+The smoke test checks that the Postgres, Stalwart, and Bulwark containers are running, the Stalwart admin endpoint answers over HTTP, the Bulwark login page answers over HTTP, and the SMTP / IMAP / POP3 ports accept TCP connections.

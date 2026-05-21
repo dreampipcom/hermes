@@ -45,6 +45,7 @@ retry () {
 cd "$root_dir/mail"
 
 running_services=$(docker compose ps --status running --services)
+echo "$running_services" | grep -qx "hermes-mail-postgres"
 echo "$running_services" | grep -qx "hermes-mail-stalwart"
 echo "$running_services" | grep -qx "hermes-mail-bulwark"
 
