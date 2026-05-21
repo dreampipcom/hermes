@@ -31,13 +31,13 @@ check_tcp () {
 retry () {
 	local attempts=$1
 	shift
-	local count=1
+	local attempt=1
 
 	while ! "$@"; do
-		if [ "$count" -ge "$attempts" ]; then
+		if [ "$attempt" -ge "$attempts" ]; then
 			return 1
 		fi
-		count=$((count + 1))
+		attempt=$((attempt + 1))
 		sleep 1
 	done
 }

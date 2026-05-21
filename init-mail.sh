@@ -15,6 +15,7 @@ load_env () {
 load_env .env.common.private .env.common.public
 load_env .env.mail.private .env.mail.public
 root_dir="$(pwd)"
+generated_admin_password=false
 
 if [ -z "$HERMES_MAIL_WEBMAIL_SESSION_SECRET" ]; then
 	if command -v openssl > /dev/null 2>&1; then
@@ -23,6 +24,16 @@ if [ -z "$HERMES_MAIL_WEBMAIL_SESSION_SECRET" ]; then
 		HERMES_MAIL_WEBMAIL_SESSION_SECRET=$(head -c 32 /dev/urandom | base64)
 	fi
 	export HERMES_MAIL_WEBMAIL_SESSION_SECRET
+fi
+
+if [ -z "$HERMES_MAIL_ADMIN_PASSWORD" ]; then
+	if command -v openssl > /dev/null 2>&1; then
+		HERMES_MAIL_ADMIN_PASSWORD=$(openssl rand -base64 18)
+	else
+		HERMES_MAIL_ADMIN_PASSWORD=$(head -c 18 /dev/urandom | base64)
+	fi
+	export HERMES_MAIL_ADMIN_PASSWORD
+	generated_admin_password=true
 fi
 
 log () {
@@ -122,4 +133,7 @@ cd $root_dir
 log "dp::hermes::mail::(busy):: Stalwart admin available at ${HERMES_MAIL_SERVER_URL}/admin." 0
 log "dp::hermes::mail::(busy):: Bulwark webmail available at http://localhost:${HERMES_PORT_PREFIX}20." 0
 log "dp::hermes::mail::(busy):: Bulwark session secret prepared from env or generated locally." 0
+if [ "$generated_admin_password" = true ]; then
+	log "dp::hermes::mail::(busy):: Generated a temporary Stalwart admin password and wrote it to ./mail/docker-compose.yml for this run." 0
+fi
 log "dp::hermes::mail::(idle)::all good." 0
