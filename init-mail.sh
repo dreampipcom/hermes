@@ -1,9 +1,51 @@
 #!/bin/bash
 # init emailia
 echo -e "\033[0;62m\033[0;49;35m"
-set -a && source .env.common.private && set +a
-set -a && source .env.mail.private && set +a
+
+load_env () {
+	local private_env=$1
+	local public_env=$2
+	if [ -f "$private_env" ]; then
+		set -a && source "$private_env" && set +a
+	else
+		set -a && source "$public_env" && set +a
+	fi
+}
+
+load_env .env.common.private .env.common.public
+load_env .env.mail.private .env.mail.public
 root_dir="$(pwd)"
+generated_admin_password=false
+generated_mail_db_password=false
+
+if [ -z "$HERMES_MAIL_WEBMAIL_SESSION_SECRET" ]; then
+	if command -v openssl > /dev/null 2>&1; then
+		HERMES_MAIL_WEBMAIL_SESSION_SECRET=$(openssl rand -base64 32)
+	else
+		HERMES_MAIL_WEBMAIL_SESSION_SECRET=$(head -c 32 /dev/urandom | base64)
+	fi
+	export HERMES_MAIL_WEBMAIL_SESSION_SECRET
+fi
+
+if [ -z "$HERMES_MAIL_ADMIN_PASSWORD" ]; then
+	if command -v openssl > /dev/null 2>&1; then
+		HERMES_MAIL_ADMIN_PASSWORD=$(openssl rand -base64 18)
+	else
+		HERMES_MAIL_ADMIN_PASSWORD=$(head -c 18 /dev/urandom | base64)
+	fi
+	export HERMES_MAIL_ADMIN_PASSWORD
+	generated_admin_password=true
+fi
+
+if [ -z "$HERMES_MAIL_METADATA_DB_PASSWORD" ]; then
+	if command -v openssl > /dev/null 2>&1; then
+		HERMES_MAIL_METADATA_DB_PASSWORD=$(openssl rand -base64 18)
+	else
+		HERMES_MAIL_METADATA_DB_PASSWORD=$(head -c 18 /dev/urandom | base64)
+	fi
+	export HERMES_MAIL_METADATA_DB_PASSWORD
+	generated_mail_db_password=true
+fi
 
 log () {
 	echo -e "\033[0;49;35m"
@@ -41,52 +83,68 @@ gosu () {
 
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
-	while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
+	if command -v pv > /dev/null 2>&1; then
+		i=0
+		while [ "$i" -lt "$1" ]; do
+			echo -n .
+			sleep 1
+			i=$((i + 1))
+		done | pv -s "$1"  -S -F '%t %p' > /dev/null
+	else
+		sleep "$1"
+	fi
 }
 
-setup_dns () {
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DNS Setup: Generating DKIMS." 2
-		docker exec -it hermes-mail-mailserver setup config dkim domain $1
-		docker exec -it hermes-mail-mailserver cat /tmp/docker-mailserver/opendkim/keys/$1/mail.txt >> ZONEFILE.$1.private
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): DKIM generated, check the ZONEFILE for this domain in the dir system." 0
+prepare_directories () {
+		mkdir -p mail/data/stalwart/etc
+		mkdir -p mail/data/stalwart/data
+		mkdir -p mail/data/postgres
+		mkdir -p mail/data/bulwark/admin
+		mkdir -p mail/data/bulwark/admin-state
+		mkdir -p mail/data/bulwark/settings
+		mkdir -p mail/archive
 }
 
-setup_mailbox () {
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Creating initial mailboxes." 2
-		docker exec -it hermes-mail-mailserver setup email add $1@$HERMES_MAIL_MAIN_HOSTNAME $2
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailboxes created." 0
+archive_legacy_docker_mailserver () {
+		legacy_dms_dir=mail/data/dms
+		legacy_maildir=mail/data/email-data
+
+		if [ -d "$legacy_dms_dir" ] || [ -d "$legacy_maildir" ]; then
+			archive_dir=mail/archive/docker-mailserver-$(date -u +%Y-%m-%dT%H:%M:%SZ)
+			mkdir -p "$archive_dir"
+			[ -d "$legacy_dms_dir" ] && mv "$legacy_dms_dir" "$archive_dir/dms"
+			[ -d "$legacy_maildir" ] && mv "$legacy_maildir" "$archive_dir/email-data"
+			log "dp::hermes::mail::(busy):: Archived legacy docker-mailserver data to $archive_dir." 0
+		else
+			log "dp::hermes::mail::(busy):: No legacy docker-mailserver data detected." 0
+		fi
 }
 
-setup_storage () {
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Preparing cloud email storage." 2
-		echo $HERMES_MAIL_S3_KEY:$HERMES_MAIL_S3_SECRET > ~/.passwd-s3fs
-		chmod 600 ~/.passwd-s3fs
-		mkdir mail/data/email-data
-		touch mail/data/email-data/dummy
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage ready." 0
+ensure_shared_ingress_network () {
+		if ! docker network inspect hermes-net-weagle > /dev/null 2>&1; then
+			docker network create \
+				--driver bridge \
+				--subnet="$HERMES_INGRESS_SUBNET" \
+				--gateway="$HERMES_INGRESS_GATEWAY" \
+				--attachable \
+				hermes-net-weagle > /dev/null
+			log "dp::hermes::mail::(busy):: Created missing hermes-net-weagle network for the Bulwark reverse proxy." 0
+		fi
 }
 
-init_storage () {
-		take 2 "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Mailbox Setup: Fusing S3 bucket."
-		s3fs $HERMES_MAIL_S3_BUCKET mail/data/email-data -o nonempty -o passwd_file=~/.passwd-s3fs -o use_path_request_style -o url=https://${HERMES_MAIL_S3_HOST} -f &
-		log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Cloud email storage mounted." 0
-}
-
-log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) configuration files." 2
+log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: Stalwart/Bulwark) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
 tmpfile=$(mktemp --tmpdir=.)
 cp -p $origin $tmpfile
 cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
+prepare_directories
+archive_legacy_docker_mailserver
+ensure_shared_ingress_network
 
-
-if [ "$1" == "setup:storage" ]; then
-	setup_storage
-	init_storage
-else
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Storage setup."
-	init_storage
+if [ "$1" != "" ]; then
+	log "dp::hermes::mail::(busy):: '$1' is deprecated for the Stalwart/Bulwark stack (legacy values: setup:dns, setup:mailboxes, setup:storage). Finish the bootstrap flow at ${HERMES_MAIL_SERVER_URL}/admin and create domains/mailboxes there." 2
 fi
 
 
@@ -94,32 +152,18 @@ fi
 take 5 "dp::hermes::mail::(busy):: Launching Docker Compose Swarms."
 
 cd mail
-docker compose up -d
+docker compose up -d --remove-orphans
 cd $root_dir
 
-# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Installing setup CLI." 2
-# wget https://raw.githubusercontent.com/docker-mailserver/docker-mailserver/master/setup.sh
-# chmod a+x ./setup.sh
-
-# log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS) Adding mailboxes." 2
-# ./setup.sh email add $HERMES_MAIN_MAILBOX
-
-if [ "$1" == "setup:dns" ]; then
-	for domain in ${HERMES_MAIL_DOMAINS//,/ }
-	do
-	    setup_dns $domain
-	done
-else
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping DNS setup."
+log "dp::hermes::mail::(busy):: Stalwart admin available at ${HERMES_MAIL_SERVER_URL}/admin." 0
+log "dp::hermes::mail::(busy):: Bulwark webmail available at http://localhost:${HERMES_PORT_PREFIX}20." 0
+log "dp::hermes::mail::(busy):: Bulwark reverse proxy available at https://${HERMES_MAIL_MAIN_HOSTNAME}/client when Weagle (Traefik) is running." 0
+log "dp::hermes::mail::(busy):: Internal Postgres metadata service available at ${HERMES_MAIL_METADATA_DB_HOST}:${HERMES_MAIL_METADATA_DB_PORT} inside the mail compose network." 0
+log "dp::hermes::mail::(busy):: Bulwark session secret prepared from env or generated locally." 0
+if [ "$generated_admin_password" = true ]; then
+	log "dp::hermes::mail::(busy):: Generated a temporary Stalwart admin password and wrote it to ./mail/docker-compose.yml for this run." 0
 fi
-
-if [ "$1" == "setup:mailboxes" ]; then
-	for box in ${HERMES_MAIL_INITIAL_BOXES//,/ }
-	do
-	    setup_mailbox $box $HERMES_MAIL_INITIAL_BOXES_DEFAULT_PASSWORD
-	done
-else
-	log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: DMS): Skipping Mailboxes setup."
+if [ "$generated_mail_db_password" = true ]; then
+	log "dp::hermes::mail::(busy):: Generated a temporary Postgres metadata password and wrote it to ./mail/docker-compose.yml for this run." 0
 fi
-
 log "dp::hermes::mail::(idle)::all good." 0
