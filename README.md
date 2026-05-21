@@ -9,6 +9,8 @@ What: socket.io, Notion, OpenAI, Whatsapp/Telegram/etc APIs
 
 Documentation: [Research Paper](https://angeloreale.notion.site/Lady-Science-100-Days-of-Products-Day-012-DreamLetter-Angelo-Reale-078155e635a747e8b06ba1c67ec28bfe?pvs=4)
 
+Mail stack: [mail/README.md](mail/README.md)
+
 Dev Environment: https://dev.dreampip.com/letters
 
 Prod Environment: https://www.dreampip.com/letters
