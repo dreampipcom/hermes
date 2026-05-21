@@ -62,7 +62,12 @@ gosu () {
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
 	if command -v pv > /dev/null 2>&1; then
-		while true; do echo -n .; sleep 1; done | pv -s "$1"  -S -F '%t %p' > /dev/null
+		i=0
+		while [ "$i" -lt "$1" ]; do
+			echo -n .
+			sleep 1
+			i=$((i + 1))
+		done | pv -s "$1"  -S -F '%t %p' > /dev/null
 	else
 		sleep "$1"
 	fi
@@ -82,7 +87,7 @@ archive_legacy_docker_mailserver () {
 		legacy_maildir=mail/data/email-data
 
 		if [ -d "$legacy_dms_dir" ] || [ -d "$legacy_maildir" ]; then
-			archive_dir=mail/archive/docker-mailserver-$(date -u +%Y%m%dT%H%M%SZ)
+			archive_dir=mail/archive/docker-mailserver-$(date -u +%Y-%m-%dT%H:%M:%SZ)
 			mkdir -p "$archive_dir"
 			[ -d "$legacy_dms_dir" ] && mv "$legacy_dms_dir" "$archive_dir/dms"
 			[ -d "$legacy_maildir" ] && mv "$legacy_maildir" "$archive_dir/email-data"
@@ -103,7 +108,7 @@ prepare_directories
 archive_legacy_docker_mailserver
 
 if [ "$1" != "" ]; then
-	log "dp::hermes::mail::(busy):: '$1' is deprecated for the Stalwart/Bulwark stack. Finish the bootstrap flow at ${HERMES_MAIL_SERVER_URL}/admin and create domains/mailboxes there." 2
+	log "dp::hermes::mail::(busy):: '$1' is deprecated for the Stalwart/Bulwark stack (legacy values: setup:dns, setup:mailboxes, setup:storage). Finish the bootstrap flow at ${HERMES_MAIL_SERVER_URL}/admin and create domains/mailboxes there." 2
 fi
 
 
