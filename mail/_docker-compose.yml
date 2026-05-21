@@ -106,6 +106,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=hermes-net-weagle"
+      # Keep the Traefik path list aligned with mail/bulwark-client.nginx.conf.
       - "traefik.http.routers.mail-client.rule=Host(`${HERMES_MAIL_MAIN_HOSTNAME}`) && (PathPrefix(`/client`) || PathPrefix(`/_next`) || PathPrefix(`/branding`) || Path(`/manifest.webmanifest`) || Path(`/sw.js`))"
       - "traefik.http.routers.mail-client.entrypoints=websecure"
       - "traefik.http.routers.mail-client.tls=true"
