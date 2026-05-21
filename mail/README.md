@@ -5,11 +5,11 @@ The `./mail` stack now uses:
 - **Stalwart** for SMTP / Submission / IMAP / POP3 / JMAP and the admin UI
 - **Bulwark Webmail** for the browser client
 
-Running `/home/runner/work/hermes/hermes/init-mail.sh` renders `/home/runner/work/hermes/hermes/mail/docker-compose.yml`, archives any legacy docker-mailserver data under `/home/runner/work/hermes/hermes/mail/archive/`, and starts both containers.
+Running `./init-mail.sh` renders `./mail/docker-compose.yml`, archives any legacy docker-mailserver data under `./mail/archive/`, and starts both containers.
 
 ## Required environment variables
 
-Set these in `/home/runner/work/hermes/hermes/.env.common.private` and `/home/runner/work/hermes/hermes/.env.mail.private` (or rely on the `.public` templates for local defaults):
+Set these in `./.env.common.private` and `./.env.mail.private` (or rely on the `.public` templates for local defaults):
 
 | Variable | Purpose |
 | --- | --- |
@@ -19,9 +19,9 @@ Set these in `/home/runner/work/hermes/hermes/.env.common.private` and `/home/ru
 | `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default is `http://localhost:7719`. |
 | `HERMES_MAIL_ADMIN_USER` | Bootstrap administrator username for the first Stalwart login. |
 | `HERMES_MAIL_ADMIN_PASSWORD` | Bootstrap administrator password for the first Stalwart login. Replace it immediately in real environments. |
-| `HERMES_MAIL_WEBMAIL_SESSION_SECRET` | Bulwark session secret. Generate with `openssl rand -base64 32`. |
+| `HERMES_MAIL_WEBMAIL_SESSION_SECRET` | Bulwark session secret. Leave it blank to let `./init-mail.sh` generate one locally, or set it explicitly for persistent deployments. |
 
-Optional Bulwark branding variables are also available in `/home/runner/work/hermes/hermes/.env.mail.public`:
+Optional Bulwark branding variables are also available in `./.env.mail.public`:
 
 - `HERMES_MAIL_WEBMAIL_HOSTNAME`
 - `HERMES_MAIL_WEBMAIL_APP_NAME`
@@ -32,7 +32,7 @@ Optional Bulwark branding variables are also available in `/home/runner/work/her
 
 ## Local bootstrap
 
-1. Run `/home/runner/work/hermes/hermes/init-mail.sh`
+1. Run `./init-mail.sh`
 2. Open `http://localhost:7719/admin` (or replace `77` with your `HERMES_PORT_PREFIX`)
 3. Sign in with `HERMES_MAIL_ADMIN_USER` / `HERMES_MAIL_ADMIN_PASSWORD`
 4. Complete the Stalwart bootstrap flow, then create your domains and mailboxes
@@ -57,7 +57,7 @@ Optional Bulwark branding variables are also available in `/home/runner/work/her
 After the stack is up, run:
 
 ```bash
-/home/runner/work/hermes/hermes/mail/smoke-test.sh
+./mail/smoke-test.sh
 ```
 
 The smoke test checks that the two containers are running, the Stalwart admin endpoint answers over HTTP, the Bulwark login page answers over HTTP, and the SMTP / IMAP / POP3 ports accept TCP connections.

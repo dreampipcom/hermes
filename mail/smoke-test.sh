@@ -25,7 +25,21 @@ fi
 
 check_tcp () {
 	local port=$1
-	timeout 5 bash -lc "cat < /dev/null > /dev/tcp/127.0.0.1/$port"
+	timeout 5 bash -lc ": < /dev/tcp/127.0.0.1/$port"
+}
+
+retry () {
+	local attempts=$1
+	shift
+	local count=1
+
+	while ! "$@"; do
+		if [ "$count" -ge "$attempts" ]; then
+			return 1
+		fi
+		count=$((count + 1))
+		sleep 1
+	done
 }
 
 cd "$root_dir/mail"
@@ -34,12 +48,12 @@ running_services=$(docker compose ps --status running --services)
 echo "$running_services" | grep -qx "hermes-mail-stalwart"
 echo "$running_services" | grep -qx "hermes-mail-bulwark"
 
-curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}19/admin" > /dev/null
-curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}20" > /dev/null
+retry 30 curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}19/admin" > /dev/null
+retry 30 curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}20" > /dev/null
 
-check_tcp "${HERMES_PORT_PREFIX}12"
-check_tcp "${HERMES_PORT_PREFIX}13"
-check_tcp "${HERMES_PORT_PREFIX}15"
-check_tcp "${HERMES_PORT_PREFIX}17"
+retry 30 check_tcp "${HERMES_PORT_PREFIX}12"
+retry 30 check_tcp "${HERMES_PORT_PREFIX}13"
+retry 30 check_tcp "${HERMES_PORT_PREFIX}15"
+retry 30 check_tcp "${HERMES_PORT_PREFIX}17"
 
 echo "mail smoke test passed"

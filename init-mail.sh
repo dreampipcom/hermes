@@ -16,6 +16,15 @@ load_env .env.common.private .env.common.public
 load_env .env.mail.private .env.mail.public
 root_dir="$(pwd)"
 
+if [ -z "$HERMES_MAIL_WEBMAIL_SESSION_SECRET" ]; then
+	if command -v openssl > /dev/null 2>&1; then
+		HERMES_MAIL_WEBMAIL_SESSION_SECRET=$(openssl rand -base64 32)
+	else
+		HERMES_MAIL_WEBMAIL_SESSION_SECRET=$(head -c 32 /dev/urandom | base64)
+	fi
+	export HERMES_MAIL_WEBMAIL_SESSION_SECRET
+fi
+
 log () {
 	echo -e "\033[0;49;35m"
 	# warning
@@ -107,4 +116,5 @@ cd $root_dir
 
 log "dp::hermes::mail::(busy):: Stalwart admin available at ${HERMES_MAIL_SERVER_URL}/admin." 0
 log "dp::hermes::mail::(busy):: Bulwark webmail available at http://localhost:${HERMES_PORT_PREFIX}20." 0
+log "dp::hermes::mail::(busy):: Bulwark session secret prepared from env or generated locally." 0
 log "dp::hermes::mail::(idle)::all good." 0
