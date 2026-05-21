@@ -19,7 +19,7 @@ load_env "$root_dir/.env.mail.private" "$root_dir/.env.mail.public"
 compose_file="$root_dir/mail/docker-compose.yml"
 
 if [ ! -f "$compose_file" ]; then
-	echo "missing $compose_file, run $root_dir/init-mail.sh first" >&2
+	echo "missing $compose_file, run ./init-mail.sh first" >&2
 	exit 1
 fi
 
