@@ -1,7 +1,7 @@
 # hermes/mail
 services:
   hermes-mail-stalwart:
-    image: stalwartlabs/stalwart:latest
+    image: stalwartlabs/stalwart:v0.16
     container_name: hermes-mail-stalwart
     hostname: ${HERMES_MAIL_MAIN_HOSTNAME}
     restart: unless-stopped
@@ -31,7 +31,7 @@ services:
       - "${HERMES_PORT_PREFIX}19:8080/tcp"
 
   hermes-mail-bulwark:
-    image: ghcr.io/bulwarkmail/webmail:latest
+    image: ghcr.io/bulwarkmail/webmail:1.6.7
     container_name: hermes-mail-bulwark
     hostname: ${HERMES_MAIL_WEBMAIL_HOSTNAME}
     restart: unless-stopped

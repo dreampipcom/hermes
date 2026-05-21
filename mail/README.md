@@ -16,7 +16,7 @@ Set these in `./.env.common.private` and `./.env.mail.private` (or rely on the `
 | `HERMES_PORT_PREFIX` | Host port prefix used by the compose file (`77` => SMTP on `7712`, admin on `7719`, Bulwark on `7720`). |
 | `HERMES_DNS_RESOLVER` | DNS resolver injected into both containers. |
 | `HERMES_MAIL_MAIN_HOSTNAME` | Mail hostname advertised by Stalwart for SMTP / IMAP / POP3. |
-| `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default is `http://localhost:7719`. |
+| `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default expands to `http://localhost:${HERMES_PORT_PREFIX}19` (`http://localhost:7719` when `HERMES_PORT_PREFIX=77`). |
 | `HERMES_MAIL_ADMIN_USER` | Bootstrap administrator username for the first Stalwart login. |
 | `HERMES_MAIL_ADMIN_PASSWORD` | Bootstrap administrator password for the first Stalwart login. Leave it blank to let `./init-mail.sh` generate one into `./mail/docker-compose.yml` for the current run, or set it explicitly for persistent deployments. |
 | `HERMES_MAIL_WEBMAIL_SESSION_SECRET` | Bulwark session secret. Leave it blank to let `./init-mail.sh` generate one locally, or set it explicitly for persistent deployments. |
