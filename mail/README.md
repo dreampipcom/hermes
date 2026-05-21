@@ -21,7 +21,7 @@ Set these in `./.env.common.private` and `./.env.mail.private` (or rely on the `
 | `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default expands to `http://localhost:${HERMES_PORT_PREFIX}19` (`http://localhost:7719` when `HERMES_PORT_PREFIX=77`). |
 | `HERMES_MAIL_ADMIN_USER` | Bootstrap administrator username for the first Stalwart login. |
 | `HERMES_MAIL_ADMIN_PASSWORD` | Bootstrap administrator password for the first Stalwart login. Leave it blank to let `./init-mail.sh` generate one into `./mail/docker-compose.yml` for the current run, or set it explicitly for persistent deployments. |
-| `HERMES_MAIL_METADATA_BACKEND` | Planning/bootstrap helper value for the metadata backend you intend to choose in Stalwart (`rocksdb` for local-only setups, `postgres` when pairing metadata with the bundled Postgres service). `./init-mail.sh` does not apply this automatically inside Stalwart. |
+| `HERMES_MAIL_METADATA_BACKEND` | Planning/bootstrap helper value for the metadata backend you intend to choose in Stalwart (`rocksdb` for local-only setups, `postgres` when pairing metadata with the bundled Postgres service). `./init-mail.sh` does not apply this automatically inside Stalwart; choose it yourself during the Stalwart storage/bootstrap flow in the admin UI. |
 | `HERMES_MAIL_METADATA_DB_HOST` | Hostname for the bundled Postgres metadata service inside the mail compose network. |
 | `HERMES_MAIL_METADATA_DB_PORT` | Port for the bundled Postgres metadata service inside the mail compose network. |
 | `HERMES_MAIL_METADATA_DB_NAME` | Database name created for Stalwart metadata. |
@@ -122,7 +122,14 @@ HERMES_MAIL_S3_SECRET_KEY=...
 HERMES_MAIL_S3_PATH_STYLE=true
 ```
 
-During bootstrap, point Stalwart's metadata/data store at `hermes-mail-postgres:5432` with `HERMES_MAIL_METADATA_DB_NAME`, `HERMES_MAIL_METADATA_DB_USER`, and `HERMES_MAIL_METADATA_DB_PASSWORD`, then configure the blob/object store with the S3 values above. For AWS S3 you can usually leave `HERMES_MAIL_S3_ENDPOINT` empty; for MinIO/Ceph/other S3-compatible stores, set the endpoint explicitly and keep path-style access enabled when required by the provider.
+During bootstrap:
+
+1. choose Postgres for Stalwart's metadata/data store
+2. point it at `hermes-mail-postgres:5432`
+3. use `HERMES_MAIL_METADATA_DB_NAME`, `HERMES_MAIL_METADATA_DB_USER`, and `HERMES_MAIL_METADATA_DB_PASSWORD`
+4. configure the blob/object store with the S3 values above
+
+For AWS S3 you can usually leave `HERMES_MAIL_S3_ENDPOINT` empty. For MinIO/Ceph/other S3-compatible stores, set the endpoint explicitly and keep path-style access enabled when required by the provider.
 
 For small local-only setups you can keep `HERMES_MAIL_METADATA_BACKEND=rocksdb` and `HERMES_MAIL_STORAGE_BACKEND=local`, but for external S3 storage the recommended pairing is Postgres metadata + S3 blobs.
 
