@@ -6,7 +6,7 @@ The `./mail` stack now uses:
 - **Stalwart** for SMTP / Submission / IMAP / POP3 / JMAP and the admin UI
 - **Bulwark Webmail** for the browser client
 
-Running `./init-mail.sh` renders `./mail/docker-compose.yml`, archives any legacy docker-mailserver data under `./mail/archive/`, and starts all three containers.
+Running `./init-mail.sh` renders `./mail/docker-compose.yml`, archives any legacy docker-mailserver data under `./mail/archive/`, and starts all services in the compose file: Postgres, Stalwart, and Bulwark.
 
 ## Required environment variables
 
@@ -21,7 +21,7 @@ Set these in `./.env.common.private` and `./.env.mail.private` (or rely on the `
 | `HERMES_MAIL_SERVER_URL` | Public Stalwart URL used by the admin UI and by Bulwark's JMAP client. For local development the default expands to `http://localhost:${HERMES_PORT_PREFIX}19` (`http://localhost:7719` when `HERMES_PORT_PREFIX=77`). |
 | `HERMES_MAIL_ADMIN_USER` | Bootstrap administrator username for the first Stalwart login. |
 | `HERMES_MAIL_ADMIN_PASSWORD` | Bootstrap administrator password for the first Stalwart login. Leave it blank to let `./init-mail.sh` generate one into `./mail/docker-compose.yml` for the current run, or set it explicitly for persistent deployments. |
-| `HERMES_MAIL_METADATA_BACKEND` | Planned Stalwart metadata backend during bootstrap (`rocksdb` for local-only setups, `postgres` when pairing metadata with the bundled Postgres service). |
+| `HERMES_MAIL_METADATA_BACKEND` | Planning/bootstrap helper value for the metadata backend you intend to choose in Stalwart (`rocksdb` for local-only setups, `postgres` when pairing metadata with the bundled Postgres service). `./init-mail.sh` does not apply this automatically inside Stalwart. |
 | `HERMES_MAIL_METADATA_DB_HOST` | Hostname for the bundled Postgres metadata service inside the mail compose network. |
 | `HERMES_MAIL_METADATA_DB_PORT` | Port for the bundled Postgres metadata service inside the mail compose network. |
 | `HERMES_MAIL_METADATA_DB_NAME` | Database name created for Stalwart metadata. |
