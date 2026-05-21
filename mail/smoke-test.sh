@@ -25,7 +25,7 @@ fi
 
 check_tcp () {
 	local port=$1
-	timeout 5 bash -lc ": < /dev/tcp/127.0.0.1/$port"
+	timeout 5 bash -c ": < /dev/tcp/127.0.0.1/$port"
 }
 
 retry () {

@@ -62,7 +62,7 @@ gosu () {
 take () {
 	log "dp::(idle)::let's wait $1 seconds for $2." 2
 	if command -v pv > /dev/null 2>&1; then
-		while true; do echo -n .; sleep 1; done | pv -s $1  -S -F '%t %p' > /dev/null
+		while true; do echo -n .; sleep 1; done | pv -s "$1"  -S -F '%t %p' > /dev/null
 	else
 		sleep "$1"
 	fi
