@@ -145,7 +145,7 @@ When Weagle/Traefik is running:
 - the same route also proxies Bulwark's required static asset paths such as `/_next/`, `/branding/`, `manifest.webmanifest`, and `sw.js`
 - Bulwark itself is still available directly on `http://localhost:${HERMES_PORT_PREFIX}20` for local testing
 
-Point the DNS `A` record for `${HERMES_MAIL_MAIN_HOSTNAME}` at the compute instance, then start both ingress and mail (`./init-weagle.sh` + `./init-mail.sh`, or just `./init.sh`).
+Point the DNS `A` record for `${HERMES_MAIL_MAIN_HOSTNAME}` at the compute instance, then start both ingress and mail (`./init-weagle.sh` + `./init-mail.sh`, or `./init.sh`, which runs the shared network/bootstrap flow plus both services together).
 
 ## Exposed ports
 
