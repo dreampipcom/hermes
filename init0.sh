@@ -64,8 +64,8 @@ docker rm hermes-model-redis hermes-model-mariadb hermes-model-postgres # to sor
 cd $root_dir
 
 cd mail
-docker stop hermes-mail-stalwart hermes-mail-bulwark hermes-mail-postgres hermes-mail-mailserver
-docker rm hermes-mail-stalwart hermes-mail-bulwark hermes-mail-postgres hermes-mail-mailserver
+docker stop hermes-mail-stalwart hermes-mail-bulwark hermes-mail-bulwark-proxy hermes-mail-postgres hermes-mail-mailserver
+docker rm hermes-mail-stalwart hermes-mail-bulwark hermes-mail-bulwark-proxy hermes-mail-postgres hermes-mail-mailserver
 cd $root_dir
 
 cd cloud

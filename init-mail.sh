@@ -120,6 +120,18 @@ archive_legacy_docker_mailserver () {
 		fi
 }
 
+ensure_shared_ingress_network () {
+		if ! docker network inspect hermes-net-weagle > /dev/null 2>&1; then
+			docker network create \
+				--driver bridge \
+				--subnet="$HERMES_INGRESS_SUBNET" \
+				--gateway="$HERMES_INGRESS_GATEWAY" \
+				--attachable \
+				hermes-net-weagle > /dev/null
+			log "dp::hermes::mail::(busy):: Created missing hermes-net-weagle network for the Bulwark reverse proxy." 0
+		fi
+}
+
 log "dp::hermes::mail::(busy):: Preparing Aemilia (Mail: Stalwart/Bulwark) configuration files." 2
 origin="./mail/_docker-compose.yml"
 destination="./mail/docker-compose.yml"
@@ -129,6 +141,7 @@ cat $origin | envsubst > $tmpfile && mv $tmpfile $destination
 
 prepare_directories
 archive_legacy_docker_mailserver
+ensure_shared_ingress_network
 
 if [ "$1" != "" ]; then
 	log "dp::hermes::mail::(busy):: '$1' is deprecated for the Stalwart/Bulwark stack (legacy values: setup:dns, setup:mailboxes, setup:storage). Finish the bootstrap flow at ${HERMES_MAIL_SERVER_URL}/admin and create domains/mailboxes there." 2
@@ -144,6 +157,7 @@ cd $root_dir
 
 log "dp::hermes::mail::(busy):: Stalwart admin available at ${HERMES_MAIL_SERVER_URL}/admin." 0
 log "dp::hermes::mail::(busy):: Bulwark webmail available at http://localhost:${HERMES_PORT_PREFIX}20." 0
+log "dp::hermes::mail::(busy):: Bulwark reverse proxy available at https://${HERMES_MAIL_MAIN_HOSTNAME}/client when Weagle (Traefik) is running." 0
 log "dp::hermes::mail::(busy):: Internal Postgres metadata service available at ${HERMES_MAIL_METADATA_DB_HOST}:${HERMES_MAIL_METADATA_DB_PORT} inside the mail compose network." 0
 log "dp::hermes::mail::(busy):: Bulwark session secret prepared from env or generated locally." 0
 if [ "$generated_admin_password" = true ]; then

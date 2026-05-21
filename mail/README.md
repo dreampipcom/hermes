@@ -64,6 +64,8 @@ Optional Bulwark branding variables are also available in `./.env.mail.public`:
 4. Complete the Stalwart bootstrap flow, then create your domains and mailboxes
 5. Open Bulwark at `http://localhost:7720` (or replace `77` with your `HERMES_PORT_PREFIX`)
 
+If `./init-weagle.sh` (or `./init.sh`) is also running, Bulwark is additionally reverse-proxied at `https://${HERMES_MAIL_MAIN_HOSTNAME}/client`.
+
 ## Multiple domains and aliases
 
 Stalwart can serve multiple mailbox domains while still using a single mail hostname.
@@ -133,6 +135,18 @@ For AWS S3 you can usually leave `HERMES_MAIL_S3_ENDPOINT` empty. For MinIO/Ceph
 
 For small local-only setups you can keep `HERMES_MAIL_METADATA_BACKEND=RocksDB` and `HERMES_MAIL_STORAGE_BACKEND=local`, but for external S3 storage the recommended pairing is Postgres metadata + S3 blobs.
 
+## Reverse proxy for `mail.dupip.com/client`
+
+The mail stack now includes a small Nginx sidecar in front of Bulwark for the shared ingress host.
+
+When Weagle/Traefik is running:
+
+- `https://${HERMES_MAIL_MAIN_HOSTNAME}/client` routes to Bulwark through the Nginx sidecar
+- the same route also proxies Bulwark's required static asset paths such as `/_next/`, `/branding/`, `manifest.webmanifest`, and `sw.js`
+- Bulwark itself is still available directly on `http://localhost:${HERMES_PORT_PREFIX}20` for local testing
+
+Point the DNS `A` record for `${HERMES_MAIL_MAIN_HOSTNAME}` at the compute instance, then start both ingress and mail (`./init-weagle.sh` + `./init-mail.sh`, or just `./init.sh`).
+
 ## Exposed ports
 
 | Service | Container port | Host port |
@@ -155,4 +169,4 @@ After the stack is up, run:
 ./mail/smoke-test.sh
 ```
 
-The smoke test checks that the Postgres, Stalwart, and Bulwark containers are running, the Stalwart admin endpoint answers over HTTP, the Bulwark login page answers over HTTP, and the SMTP / IMAP / POP3 ports accept TCP connections.
+The smoke test checks that the Postgres, Stalwart, Bulwark, and Bulwark Nginx proxy containers are running, the Stalwart admin endpoint answers over HTTP, the Bulwark login page answers over HTTP, and the SMTP / IMAP / POP3 ports accept TCP connections.

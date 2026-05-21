@@ -48,6 +48,7 @@ running_services=$(docker compose ps --status running --services)
 echo "$running_services" | grep -qx "hermes-mail-postgres"
 echo "$running_services" | grep -qx "hermes-mail-stalwart"
 echo "$running_services" | grep -qx "hermes-mail-bulwark"
+echo "$running_services" | grep -qx "hermes-mail-bulwark-proxy"
 
 retry 30 curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}19/admin" > /dev/null
 retry 30 curl -fsS "http://127.0.0.1:${HERMES_PORT_PREFIX}20" > /dev/null
